@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OHAutomate.Engine")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a2b5169ddf8582a83c059a016cf0aa6897560dd5")]
 [assembly: System.Reflection.AssemblyProductAttribute("OHAutomate.Engine")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OHAutomate.Engine")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

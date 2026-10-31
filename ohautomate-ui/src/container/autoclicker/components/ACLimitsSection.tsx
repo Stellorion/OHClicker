@@ -36,6 +36,7 @@ export const ACLimitsSection: React.FC = () => {
             options={repeatTypeOptions}
             value={repeatType}
             onChange={(val) => updateSettings({ repeatType: val })}
+            className="w-full"
           />
 
           <div className="flex items-center">

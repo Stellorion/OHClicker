@@ -6,8 +6,16 @@ export const useUIStore = create<UIState & UIActions>((set) => ({
   clickerMode: 'minimized',
   macroMode: 'minimized',
   settingsMode: 'minimized',
+  isExpanded: true,
 
   setActiveTab: (tab) => set({ activeTab: tab }),
+
+  setIsExpanded: (expanded) =>
+    set((state) => ({
+      isExpanded: typeof expanded === 'function' ? expanded(state.isExpanded) : expanded,
+    })),
+
+  toggleSidebar: () => set((state) => ({ isExpanded: !state.isExpanded })),
 
   setPageMode: (page, mode) =>
     set((state) => {

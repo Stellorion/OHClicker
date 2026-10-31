@@ -8,7 +8,11 @@ export const ACHeader: React.FC = () => {
   const { settings, stats, toggleExecution } = useAC();
 
   return (
-    <div className="bg-app-surface border border-app-border rounded-xl p-4 space-y-4 shadow-sm">
+    <div
+      className={`bg-app-surface border rounded-xl p-4 space-y-4 shadow-sm transition-colors duration-300 ${
+        stats.isRunning ? "border-app-red" : "border-app-border"
+      }`}
+    >
       <div className="flex items-center justify-between">
         <div className="space-y-1">
           <div className="flex items-center space-x-2">
@@ -34,7 +38,10 @@ export const ACHeader: React.FC = () => {
           </div>
 
           <p className="text-xs font-mono text-app-text-muted">
-            {((1000 / (stats.isRunning ? stats.currentCps : settings.cps || 1))).toFixed(1)} ms interval
+            {(
+              1000 / (stats.isRunning ? stats.currentCps : settings.cps || 1)
+            ).toFixed(1)}{" "}
+            ms interval
           </p>
         </div>
 
@@ -87,9 +94,12 @@ export const ACHeader: React.FC = () => {
         </div>
 
         <div>
-          <p className="text-xs font-medium text-app-text-secondary">Avg. rate</p>
+          <p className="text-xs font-medium text-app-text-secondary">
+            Avg. rate
+          </p>
           <p className="text-xl font-extrabold text-app-text-primary font-mono tracking-tight mt-0.5">
-            {(stats.avgRate ?? 0).toFixed(1)} <span className="text-xs font-normal text-app-text-muted">CPS</span>
+            {(stats.avgRate ?? 0).toFixed(1)}{" "}
+            <span className="text-xs font-normal text-app-text-muted">CPS</span>
           </p>
         </div>
       </div>

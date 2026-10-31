@@ -24,7 +24,7 @@ export const ACTimingSection: React.FC = () => {
         min={1}
         max={100}
         value={settings.cps}
-        unit="CPS"
+        unit="cps"
         showSlider={true}
         onChange={(cps) => updateSettings({ cps })}
       />
