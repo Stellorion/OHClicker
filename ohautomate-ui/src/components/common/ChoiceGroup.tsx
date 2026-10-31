@@ -1,0 +1,66 @@
+import React from 'react';
+import { Button } from './Button';
+import { cn } from '../../lib/utils';
+
+export interface ChoiceOption<T extends string | number> {
+  id: T;
+  label: string;
+}
+
+interface ChoiceGroupProps<T extends string | number> {
+  label?: string;
+  description?: string;
+  icon?: React.ReactNode;
+  options: ChoiceOption<T>[];
+  value: T;
+  onChange: (value: T) => void;
+  className?: string;
+}
+
+export function ChoiceGroup<T extends string | number>({
+  label,
+  description,
+  icon,
+  options,
+  value,
+  onChange,
+  className,
+}: ChoiceGroupProps<T>) {
+  return (
+    <div className={cn("flex items-center justify-between gap-4", className)}>
+      {label && (
+        <div className="flex items-start gap-2.5 max-w-[45%]">
+          {icon && <span className="shrink-0 mt-0.5">{icon}</span>}
+          <div>
+            <p className="text-sm font-bold text-app-text-primary">{label}</p>
+            {description && (
+              <label className="font-semibold text-app-text-secondary block leading-relaxed text-xs">
+                {description}
+              </label>
+            )}
+          </div>
+        </div>
+      )}
+
+      <div className="flex items-center gap-0.5 bg-app-bg p-0.5 rounded-lg border border-app-border flex-wrap">
+        {options.map((option) => {
+          const isSelected = value === option.id;
+          return (
+            <Button
+              key={String(option.id)}
+              type="button"
+              onClick={() => onChange(option.id)}
+              className={`px-3 py-1.5 rounded-md font-bold transition-all text-xs ${
+                isSelected
+                  ? "bg-app-red text-white shadow-sm"
+                  : "text-app-text-secondary hover:text-app-text-primary bg-transparent hover:bg-app-surface"
+              }`}
+            >
+              {option.label}
+            </Button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

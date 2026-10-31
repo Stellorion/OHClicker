@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  /* Dark surfaces & backgrounds */
+  --color-app-bg: oklch(0.185 0.003 285);
+  --color-app-surface: oklch(0.22 0.004 285);
+  --color-app-surface-hover: oklch(0.25 0.006 285);
+  --color-app-border: oklch(1 0 0 / 9%);
+  --color-app-border-light: oklch(1 0 0 / 8%);
+
+  /* Text colors */
+  --color-app-text-primary: oklch(0.93 0.004 285);
+  --color-app-text-secondary: oklch(0.68 0.01 285);
+  --color-app-text-muted: oklch(0.68 0.01 285);
+
+  /* Red accent colors */
+--color-app-red: oklch(0.63 0.215 25);
+--color-app-red-hover: oklch(0.69 0.20 25);
+--color-app-red-glow: oklch(0.63 0.215 25 / 40%);
+}
+
+/* Base resets & smooth transitions */
+body {
+  background-color: var(--color-app-bg);
+  color: var(--color-app-text-primary);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+  user-select: none;
+}
