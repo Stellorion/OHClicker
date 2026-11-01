@@ -15,4 +15,14 @@ export const clickerService = {
   updateClickType: async (clickType: string) => {
     await invoke("update_click_type", { clickType });
   },
+  updateRepeatType: async (repeatType: string) => {
+    await invoke("update_repeat_type", { repeatType });
+  },
+  updateFixedCountLimit: (limit: number) => 
+    invoke("update_fixed_count_limit", { limit }),
+  updateMaxDurationEnabled: async (enabled: boolean) => {
+    await invoke("update_max_duration_enabled", { enabled });
+  },
+  updateMaxDurationSec: (sec: number) => 
+    invoke("update_max_duration_sec", { sec }),
 };

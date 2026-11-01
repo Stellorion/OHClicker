@@ -38,6 +38,18 @@ export const useAC = () => {
     if (newSettings.clickType !== undefined) {
       await clickerService.updateClickType(newSettings.clickType);
     }
+    if (newSettings.repeatType !== undefined) {
+      await clickerService.updateRepeatType(newSettings.repeatType);
+    }
+    if (newSettings.fixedCountLimit !== undefined) {
+      await clickerService.updateFixedCountLimit(newSettings.fixedCountLimit);
+    }
+    if (newSettings.maxDurationEnabled !== undefined) {
+      await clickerService.updateMaxDurationEnabled(newSettings.maxDurationEnabled);
+    }
+    if (newSettings.maxDurationSec !== undefined) {
+      await clickerService.updateMaxDurationSec(newSettings.maxDurationSec);
+    }
   };
 
   useEffect(() => {

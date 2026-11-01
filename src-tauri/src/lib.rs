@@ -6,6 +6,7 @@ pub mod global_search;
 pub mod macro_tool;
 pub mod timers;
 
+use std::sync::Arc;
 use tauri::{Emitter, Manager};
 use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Shortcut, ShortcutState};
 
@@ -21,11 +22,19 @@ pub fn run() {
             commands::clicker::update_button_hold_ms,
             commands::clicker::update_start_delay_ms,
             commands::clicker::update_mouse_button,
-            commands::clicker::update_click_type
+            commands::clicker::update_click_type,
+            commands::clicker::update_repeat_type,
+            commands::clicker::update_fixed_count_limit,
+            commands::clicker::update_max_duration_enabled,
+            commands::clicker::update_max_duration_sec
         ])
         .setup(move |app| {
             let state = app.state::<app_state::AppState>();
-            clicker::service::start_engine(app.handle().clone(), state.clicker.clone());
+            clicker::service::start_engine(
+                app.handle().clone(),
+                state.clicker.clone(),
+                Arc::clone(&state.execution),
+            );
 
             let toggle_shortcut = Shortcut::new(None, Code::F6);
 

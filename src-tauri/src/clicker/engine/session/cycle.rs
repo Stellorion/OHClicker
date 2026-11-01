@@ -7,6 +7,8 @@ use std::thread;
 use std::time::{Duration, Instant};
 use tauri::AppHandle;
 
+mod limits;
+
 pub(super) fn tick(
     session: &mut ClickSession,
     app: &AppHandle,
@@ -18,6 +20,7 @@ pub(super) fn tick(
         session.sampled_clicks = 0;
         session.last_stats_update = Instant::now();
         session.was_running = true;
+        session.start_time = None;
         stats::emit(app, 0, 0.0);
     }
     let delay = state.start_delay_ms.load(Ordering::Relaxed);
@@ -26,7 +29,16 @@ pub(super) fn tick(
         session.has_delayed = true;
         session.next_click = Instant::now();
         session.last_stats_update = Instant::now();
+        session.start_time = Some(Instant::now());
+    } else if delay == 0 && session.start_time.is_none() {
+        session.start_time = Some(Instant::now());
     }
+
+    if limits::reached(session, state) {
+        state.is_running.store(false, Ordering::Relaxed);
+        return;
+    }
+
     let button = lifecycle::get_button(*state.mouse_button.lock().unwrap());
     if *state.click_type.lock().unwrap() == RustClickType::Hold {
         hold(session, app, enigo, button);

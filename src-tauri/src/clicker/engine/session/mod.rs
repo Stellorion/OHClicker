@@ -15,6 +15,7 @@ pub(super) struct ClickSession {
     pub(super) total_clicks: u64,
     pub(super) sampled_clicks: u64,
     pub(super) last_stats_update: Instant,
+    pub(super) start_time: Option<Instant>,
 }
 
 impl Default for ClickSession {
@@ -28,6 +29,7 @@ impl Default for ClickSession {
             total_clicks: 0,
             sampled_clicks: 0,
             last_stats_update: now,
+            start_time: None,
         }
     }
 }

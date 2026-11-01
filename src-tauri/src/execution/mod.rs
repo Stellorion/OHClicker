@@ -46,6 +46,15 @@ impl ExecutionCoordinator {
         *active = None;
         true
     }
+
+    pub fn request_stop(&self, tool: ExclusiveTool, deactivate: impl FnOnce()) -> bool {
+        let active = self.active.lock().unwrap();
+        if *active != Some(tool) {
+            return false;
+        }
+        deactivate();
+        true
+    }
 }
 
 #[cfg(test)]
