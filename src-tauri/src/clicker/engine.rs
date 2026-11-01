@@ -15,7 +15,7 @@ pub fn start_click_loop(
     cps: Arc<AtomicU32>,
     interval_randomization_pct: Arc<AtomicU32>,
     button_hold_ms: Arc<AtomicU32>,
-    start_delay_ms: Arc<AtomicU32>, // <-- Add this parameter
+    start_delay_ms: Arc<AtomicU32>,
 ) {
     CLICK_LOOP_INITIALIZED.get_or_init(move || {
         thread::spawn(move || {
@@ -37,7 +37,7 @@ pub fn start_click_loop(
                     if delay > 0 && !has_delayed {
                         thread::sleep(Duration::from_millis(delay as u64));
                         has_delayed = true;
-                        next_click = Instant::now(); // Reset timing baseline after delay
+                        next_click = Instant::now();
                     }
 
                     let target_cps = cps.load(Ordering::Relaxed).max(1) as f64;

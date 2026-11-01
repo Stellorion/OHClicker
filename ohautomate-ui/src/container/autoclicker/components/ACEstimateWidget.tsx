@@ -31,7 +31,7 @@ export const ACEstimateWidget: React.FC = () => {
       )}
 
       <p className="text-xs text-app-text-muted">
-        ±{randomizationPct}px jitter · {holdTimeMs} ms hold · {mouseButton} {clickType}
+        ±{randomizationPct}% jitter · {holdTimeMs} ms hold · {mouseButton} {clickType}
       </p>
     </div>
   );

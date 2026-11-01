@@ -5,7 +5,7 @@ mod state;
 use state::AutoClickerState;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
-use tauri::{Emitter, Manager};
+use tauri::{Emitter};
 use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Shortcut, ShortcutState};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
