@@ -7,7 +7,7 @@ import { Play, Square } from "lucide-react";
 export const ACHeader: React.FC = () => {
   const { settings, stats, toggleExecution } = useAC();
 
-  const currentCps = stats.isRunning ? (stats.currentCps || settings.cps) : settings.cps;
+  const currentCps = stats.isRunning ? stats.currentCps : settings.cps;
   const intervalMs = (1000 / (currentCps || 1)).toFixed(1);
 
   return (
@@ -33,9 +33,9 @@ export const ACHeader: React.FC = () => {
 
           <div className="flex items-baseline space-x-2">
             <span className="text-4xl font-extrabold text-app-text-primary tracking-tight">
-              {currentCps}
+              {currentCps.toFixed(1)}
             </span>
-            <span className="text-sm font-medium text-app-text-muted">clicks / sec</span>
+            <span className="text-sm font-medium text-app-text-muted">cps</span>
           </div>
 
           <p className="text-xs font-mono text-app-text-muted">{intervalMs} ms interval</p>

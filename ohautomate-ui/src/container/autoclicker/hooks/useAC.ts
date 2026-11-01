@@ -2,13 +2,17 @@ import { useEffect } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { useACStore } from "../store/useACStore";
 import { clickerService } from "../../../services/clickerService";
+import { useACTimer } from "./useACTimer";
 
 export const useAC = () => {
   const settings = useACStore((state) => state.settings);
   const stats = useACStore((state) => state.stats);
+  const isRunning = useACStore((state) => state.stats.isRunning);
   const setRunningState = useACStore((state) => state.setRunningState);
   const updateStats = useACStore((state) => state.updateStats);
   const resetStats = useACStore((state) => state.resetStats);
+
+  useACTimer({ isRunning, settings, totalClicks: stats.totalClicks, updateStats });
 
   const updateSettings = async (newSettings: Partial<typeof settings>) => {
     useACStore.getState().updateSettings(newSettings);
@@ -16,19 +20,23 @@ export const useAC = () => {
     if (newSettings.cps !== undefined) {
       await clickerService.updateCps(newSettings.cps);
     }
-
     if (newSettings.intervalRandomizationPct !== undefined) {
       await clickerService.updateIntervalRandomizationPct(
         newSettings.intervalRandomizationPct,
       );
     }
-
     if (newSettings.buttonHoldTimeMs !== undefined) {
       await clickerService.updateButtonHoldMs(newSettings.buttonHoldTimeMs);
     }
-
     if (newSettings.startDelaySec !== undefined) {
       await clickerService.updateStartDelayMs(newSettings.startDelaySec * 1000);
+    }
+
+    if (newSettings.mouseButton !== undefined) {
+      await clickerService.updateMouseButton(newSettings.mouseButton);
+    }
+    if (newSettings.clickType !== undefined) {
+      await clickerService.updateClickType(newSettings.clickType);
     }
   };
 
@@ -43,11 +51,11 @@ export const useAC = () => {
 
     const setupListener = async () => {
       unlisten = await listen<boolean>("clicker-state-changed", (event) => {
-        const isRunning = event.payload;
-        if (isRunning) {
+        const running = event.payload;
+        if (running) {
           resetStats();
         }
-        setRunningState(isRunning);
+        setRunningState(running);
       });
     };
 
@@ -60,17 +68,41 @@ export const useAC = () => {
     };
   }, [setRunningState, resetStats]);
 
+  useEffect(() => {
+    let unlisten: (() => void) | undefined;
+
+    const setupListener = async () => {
+      unlisten = await listen<{ totalClicks: number; currentCps: number }>(
+        "clicker-stats",
+        (event) => updateStats(event.payload),
+      );
+    };
+
+    setupListener();
+
+    return () => {
+      if (unlisten) {
+        unlisten();
+      }
+    };
+  }, [updateStats]);
+
   const toggleExecution = async () => {
-    const isRunningNow = await clickerService.toggleClicker();
-    if (isRunningNow) {
-      resetStats();
+    try {
+      const isRunningNow = await clickerService.toggleClicker();
+      if (isRunningNow) {
+        resetStats();
+      }
+      setRunningState(isRunningNow);
+    } catch (error) {
+      console.error("Unable to toggle the autoclicker:", error);
     }
-    setRunningState(isRunningNow);
   };
 
   return {
     settings,
     stats,
+    isRunning,
     updateSettings,
     toggleExecution,
     updateStats,

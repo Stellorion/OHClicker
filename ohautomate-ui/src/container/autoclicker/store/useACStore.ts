@@ -22,7 +22,7 @@ const initialSettings: ACSettings = {
   mouseButton: 'left',
   clickType: 'single',
 
-  positionMode: 'fixed',
+  positionMode: 'cursor',
   coordinateType: 'absolute',
   targetWindow: 'Active Window',
   targetX: 960,
@@ -39,7 +39,7 @@ const initialSettings: ACSettings = {
   boundaryX: 320,
   boundaryY: 180,
   boundaryWidth: 1280,
-  boundaryHeight: 720,
+  boundaryHeight: 800,
   stopWhenCursorLeaves: false,
 
   startStopHotkey: 'F6',

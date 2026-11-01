@@ -1,5 +1,5 @@
 export type ACMouseButton = 'left' | 'middle' | 'right';
-export type ACClickType = 'single' | 'double' | 'hold';
+export type ACClickType = 'single' | 'hold';
 export type ACPositionMode = 'cursor' | 'fixed' | 'sequence';
 export type ACCoordinateType = 'absolute' | 'relative';
 export type ACRegionMode = 'fullscreen' | 'window' | 'custom' | 'active_window';

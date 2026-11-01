@@ -10,7 +10,6 @@ const MOUSE_BUTTON_OPTIONS: ChoiceOption<ACMouseButton>[] = [
 
 const CLICK_TYPE_OPTIONS: ChoiceOption<ACClickType>[] = [
   { id: "single", label: "Single" },
-  { id: "double", label: "Double" },
   { id: "hold", label: "Hold" },
 ];
 
