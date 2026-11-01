@@ -7,6 +7,9 @@ import { Play, Square } from "lucide-react";
 export const ACHeader: React.FC = () => {
   const { settings, stats, toggleExecution } = useAC();
 
+  const currentCps = stats.isRunning ? (stats.currentCps || settings.cps) : settings.cps;
+  const intervalMs = (1000 / (currentCps || 1)).toFixed(1);
+
   return (
     <div
       className={`bg-app-surface border rounded-xl p-4 space-y-4 shadow-sm transition-colors duration-300 ${
@@ -30,25 +33,18 @@ export const ACHeader: React.FC = () => {
 
           <div className="flex items-baseline space-x-2">
             <span className="text-4xl font-extrabold text-app-text-primary tracking-tight">
-              {stats.isRunning ? stats.currentCps : settings.cps}
+              {currentCps}
             </span>
-            <span className="text-sm font-medium text-app-text-muted">
-              clicks / sec
-            </span>
+            <span className="text-sm font-medium text-app-text-muted">clicks / sec</span>
           </div>
 
-          <p className="text-xs font-mono text-app-text-muted">
-            {(
-              1000 / (stats.isRunning ? stats.currentCps : settings.cps || 1)
-            ).toFixed(1)}{" "}
-            ms interval
-          </p>
+          <p className="text-xs font-mono text-app-text-muted">{intervalMs} ms interval</p>
         </div>
 
         <div className="flex flex-col items-end space-y-1.5">
           <Button
             onClick={toggleExecution}
-            className={`flex items-center justify-center gap-2 w-36 py-5 rounded-lg font-bold text-sm transition-all shadow-md ${
+            className={`flex items-center justify-center gap-2 w-36 py-6 rounded-lg font-bold text-sm transition-all shadow-md ${
               stats.isRunning
                 ? "bg-app-surface text-app-red border border-app-red hover:bg-app-surface-hover"
                 : "bg-app-red text-white hover:bg-app-red-hover active:bg-app-red-active"
@@ -56,13 +52,11 @@ export const ACHeader: React.FC = () => {
           >
             {stats.isRunning ? (
               <>
-                <Square className="size-4 fill-current" />
-                Stop Clicking
+                <Square className="size-4 fill-current" /> Stop Clicking
               </>
             ) : (
               <>
-                <Play className="size-4 fill-current" />
-                Start Clicking
+                <Play className="size-4 fill-current" /> Start Clicking
               </>
             )}
           </Button>
@@ -94,9 +88,7 @@ export const ACHeader: React.FC = () => {
         </div>
 
         <div>
-          <p className="text-xs font-medium text-app-text-secondary">
-            Avg. rate
-          </p>
+          <p className="text-xs font-medium text-app-text-secondary">Avg. rate</p>
           <p className="text-xl font-extrabold text-app-text-primary font-mono tracking-tight mt-0.5">
             {(stats.avgRate ?? 0).toFixed(1)}{" "}
             <span className="text-xs font-normal text-app-text-muted">CPS</span>

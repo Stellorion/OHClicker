@@ -7,7 +7,6 @@ import { Minimize2, Maximize2, MousePointerClick, Workflow, Settings } from "luc
 export default function App() {
   const { activeTab, currentMode, setPageMode } = useNav();
 
-  // Map active tab titles and icons
   const tabConfig = {
     clicker: { label: "Auto Clicker", icon: MousePointerClick },
     macro: { label: "Macro Editor", icon: Workflow },
