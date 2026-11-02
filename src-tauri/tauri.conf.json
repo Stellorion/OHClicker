@@ -1,18 +1,18 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "ACAutomate",
+  "productName": "OHClicker",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.ohclicker.desktop",
   "build": {
-    "frontendDist": "ohautomate-ui/dist",
+    "frontendDist": "../ohclicker-ui/dist",
     "devUrl": "http://localhost:5173/",
-    "beforeDevCommand": "npm --prefix ohautomate-ui run dev",
-    "beforeBuildCommand": "npm --prefix ohautomate-ui run build"
+    "beforeDevCommand": "npm --prefix ohclicker-ui run dev",
+    "beforeBuildCommand": "npm --prefix ohclicker-ui run build"
   },
   "app": {
     "windows": [
       {
-        "title": "ACAutomate",
+        "title": "OHClicker",
         "width": 1280,
         "height": 800,
         "resizable": true,

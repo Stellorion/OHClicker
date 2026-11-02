@@ -1,6 +1,6 @@
-# ACAutomate
+# OHClicker
 
-ACAutomate is a Windows desktop auto-clicker built with Tauri, Rust, React, and TypeScript.
+OHClicker is a Windows desktop auto-clicker built with Tauri, Rust, React, and TypeScript.
 
 ## Features
 
@@ -16,7 +16,7 @@ Install the root and frontend dependencies, then run the Tauri development app:
 
 ```powershell
 npm install
-npm --prefix ohautomate-ui install
+npm --prefix ohclicker-ui install
 npm run tauri dev
 ```
 
