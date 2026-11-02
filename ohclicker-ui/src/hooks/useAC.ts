@@ -50,6 +50,25 @@ export const useAC = () => {
     if (newSettings.maxDurationSec !== undefined) {
       await clickerService.updateMaxDurationSec(newSettings.maxDurationSec);
     }
+    if (newSettings.positionMode !== undefined) {
+      await clickerService.updatePositionMode(newSettings.positionMode);
+    }
+    if (newSettings.selectedDisplayId !== undefined) {
+      await clickerService.selectDisplay(newSettings.selectedDisplayId);
+    }
+    if (newSettings.coordinateType !== undefined) {
+      await clickerService.updateCoordinateType(newSettings.coordinateType);
+    }
+    if (newSettings.targetX !== undefined || newSettings.targetY !== undefined) {
+      const { targetX, targetY } = useACStore.getState().settings;
+      await clickerService.updateTargetPosition(targetX, targetY);
+    }
+    if (newSettings.positionJitterPx !== undefined) {
+      await clickerService.updatePositionJitter(newSettings.positionJitterPx);
+    }
+    if (newSettings.sequencePoints !== undefined) {
+      await clickerService.updateSequencePoints(newSettings.sequencePoints);
+    }
   };
 
   useEffect(() => {
@@ -98,6 +117,35 @@ export const useAC = () => {
       }
     };
   }, [updateStats]);
+
+  useEffect(() => {
+    let unlisten: (() => void) | undefined;
+
+    const setupListener = async () => {
+      unlisten = await listen<{ x: number; y: number; pointId?: string | null }>(
+        "position-picked",
+        (event) => {
+          const { x, y, pointId } = event.payload;
+          if (pointId) {
+            const points = (
+              useACStore.getState().settings.sequencePoints ?? []
+            ).map((point) => (point.id === pointId ? { ...point, x, y } : point));
+            useACStore.getState().updateSettings({ sequencePoints: points });
+            void clickerService.updateSequencePoints(points);
+            return;
+          }
+          useACStore.getState().updateSettings({
+            positionMode: "fixed",
+            targetX: x,
+            targetY: y,
+          });
+        },
+      );
+    };
+
+    setupListener();
+    return () => unlisten?.();
+  }, []);
 
   const toggleExecution = async () => {
     try {

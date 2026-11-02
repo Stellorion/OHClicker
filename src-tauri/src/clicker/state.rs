@@ -1,3 +1,4 @@
+use crate::clicker::position::PositionSettings;
 use serde::{Deserialize, Serialize};
 use std::sync::atomic::{AtomicBool, AtomicU32};
 use std::sync::{Arc, Mutex};
@@ -37,6 +38,7 @@ pub struct AutoClickerState {
     pub(crate) fixed_count_limit: Arc<AtomicU32>,
     pub(crate) max_duration_enabled: Arc<AtomicBool>,
     pub(crate) max_duration_sec: Arc<AtomicU32>,
+    pub(crate) position: PositionSettings,
 }
 
 impl AutoClickerState {
@@ -53,6 +55,7 @@ impl AutoClickerState {
             fixed_count_limit: Arc::new(AtomicU32::new(500)),
             max_duration_enabled: Arc::new(AtomicBool::new(false)),
             max_duration_sec: Arc::new(AtomicU32::new(300)),
+            position: PositionSettings::new(),
         }
     }
 }

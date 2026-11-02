@@ -1,5 +1,5 @@
 import React from "react";
-import { SCREEN, pct } from "./constants";
+import { pct } from "./constants";
 
 interface ScreenBoundsOverlayProps {
   enabled: boolean;
@@ -7,6 +7,7 @@ interface ScreenBoundsOverlayProps {
   y: number;
   width: number;
   height: number;
+  screenSize: { width: number; height: number };
 }
 
 export const ScreenBoundsOverlay: React.FC<ScreenBoundsOverlayProps> = ({
@@ -15,6 +16,7 @@ export const ScreenBoundsOverlay: React.FC<ScreenBoundsOverlayProps> = ({
   y,
   width,
   height,
+  screenSize,
 }) => {
   if (!enabled) return null;
 
@@ -22,10 +24,10 @@ export const ScreenBoundsOverlay: React.FC<ScreenBoundsOverlayProps> = ({
     <div
       className="absolute border border-dashed border-app-red rounded-sm bg-app-red/4 pointer-events-none"
       style={{
-        left: pct(x, SCREEN.w),
-        top: pct(y, SCREEN.h),
-        width: pct(width, SCREEN.w),
-        height: pct(height, SCREEN.h),
+        left: pct(x, screenSize.width),
+        top: pct(y, screenSize.height),
+        width: pct(width, screenSize.width),
+        height: pct(height, screenSize.height),
       }}
     >
       <span className="absolute -top-5 left-0 bg-app-red text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded shadow-sm tracking-wider">

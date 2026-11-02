@@ -5,7 +5,6 @@ interface ACState {
   settings: ACSettings;
   stats: ACStats;
 
-  // Actions
   updateSettings: (partial: Partial<ACSettings>) => void;
   setRunningState: (isRunning: boolean) => void;
   updateStats: (stats: Partial<ACStats>) => void;
@@ -23,11 +22,17 @@ const initialSettings: ACSettings = {
   clickType: 'single',
 
   positionMode: 'cursor',
+  selectedDisplayId: 'primary',
   coordinateType: 'absolute',
   targetWindow: 'Active Window',
   targetX: 960,
   targetY: 540,
   positionJitterPx: 2,
+  sequencePoints: [
+    { id: '1', x: 412, y: 288, dwell: 40 },
+    { id: '2', x: 1280, y: 420, dwell: 40 },
+    { id: '3', x: 960, y: 780, dwell: 120 },
+  ],
 
   repeatType: 'until_stopped',
   fixedCountLimit: 500,

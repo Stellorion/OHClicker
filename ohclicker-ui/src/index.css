@@ -16,7 +16,6 @@
   /* Red accent colors */
 --color-app-red: oklch(0.63 0.215 25);
 --color-app-red-hover: oklch(0.69 0.20 25);
---color-app-red-glow: oklch(0.63 0.215 25 / 40%);
 }
 
 /* Width and height of the scrollbar */

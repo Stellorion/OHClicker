@@ -1,5 +1,5 @@
 import React from "react";
-import { Trash2, Plus } from "lucide-react";
+import { Trash2, Plus, Crosshair } from "lucide-react";
 import { Input } from "../common/Input";
 import { Button } from "../common/Button";
 import type { SequencePoint } from "../../hooks/usePosition";
@@ -9,6 +9,8 @@ interface ACSequenceListProps {
   onUpdatePoint: (id: string, fields: Partial<SequencePoint>) => void;
   onRemovePoint: (id: string) => void;
   onAddPoint: () => void;
+  onPickPoint: (id: string) => void;
+  pickingPointId: string | null;
 }
 
 export const ACSequenceList: React.FC<ACSequenceListProps> = ({
@@ -16,10 +18,12 @@ export const ACSequenceList: React.FC<ACSequenceListProps> = ({
   onUpdatePoint,
   onRemovePoint,
   onAddPoint,
+  onPickPoint,
+  pickingPointId,
 }) => {
   return (
     <div className="space-y-3 pt-1">
-      <div className="grid grid-cols-[24px_1fr_1fr_1fr_28px] items-center gap-2 px-1 text-xs font-medium text-app-text-muted">
+      <div className="grid grid-cols-[24px_1fr_1fr_1fr_28px_28px] items-center gap-2 px-1 text-xs font-medium text-app-text-muted">
         <span>#</span>
         <span className="pl-1">X</span>
         <span className="pl-1">Y</span>
@@ -31,7 +35,7 @@ export const ACSequenceList: React.FC<ACSequenceListProps> = ({
         {points.map((point, index) => (
           <div
             key={point.id}
-            className="grid grid-cols-[24px_1fr_1fr_1fr_28px] items-center gap-2"
+            className="grid grid-cols-[24px_1fr_1fr_1fr_28px_28px] items-center gap-2"
           >
             <div className="flex items-center justify-center size-6 rounded-full border border-app-red/40 text-app-red text-xs font-bold">
               {index + 1}
@@ -71,8 +75,25 @@ export const ACSequenceList: React.FC<ACSequenceListProps> = ({
 
             <Button
               type="button"
+              onClick={() => onPickPoint(point.id)}
+              className={`flex items-center justify-center size-7 bg-app-bg border border-app-border rounded-lg transition-colors p-4 ${
+                pickingPointId === point.id
+                  ? "text-app-red bg-app-red/10 animate-pulse"
+                  : "text-app-text-muted hover:text-app-red hover:bg-app-border/30"
+              }`}
+              title={
+                pickingPointId === point.id
+                  ? "Click a screen location…"
+                  : `Pick location for point ${index + 1}`
+              }
+            >
+              <Crosshair className="size-4 text-app-red" />
+            </Button>
+
+            <Button
+              type="button"
               onClick={() => onRemovePoint(point.id)}
-              className="flex items-center justify-center size-7 text-app-text-muted hover:text-app-red hover:bg-app-border/30 rounded-lg transition-colors p-0"
+              className="flex items-center justify-center size-7 text-app-text-muted hover:text-app-red hover:bg-app-border/30 rounded-lg transition-colors p-4"
               title="Delete point"
             >
               <Trash2 className="size-4" />

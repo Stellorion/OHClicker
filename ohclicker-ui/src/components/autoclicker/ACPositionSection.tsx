@@ -17,6 +17,10 @@ export const ACPositionSection: React.FC = () => {
     sequencePoints,
     positionModeOptions,
     updateSettings,
+    beginPositionPick,
+    beginSequencePointPick,
+    isPicking,
+    pickingPointId,
     addSequencePoint,
     updateSequencePoint,
     removeSequencePoint,
@@ -67,10 +71,12 @@ export const ACPositionSection: React.FC = () => {
 
               <Button
                 type="button"
+                onClick={() => void beginPositionPick()}
+                title="Arm the picker, then click a screen location (F7)"
                 className="flex items-center gap-1.5 px-3 py-1.5 bg-app-bg hover:bg-app-border/40 border border-app-border rounded-lg text-xs font-bold text-app-text-primary transition-all"
               >
                 <Crosshair className="size-3.5 text-app-red" />
-                Pick
+                {isPicking ? "Click target" : "Pick"}
               </Button>
             </div>
           </div>
@@ -85,6 +91,8 @@ export const ACPositionSection: React.FC = () => {
             onUpdatePoint={updateSequencePoint}
             onRemovePoint={removeSequencePoint}
             onAddPoint={addSequencePoint}
+            onPickPoint={(id) => void beginSequencePointPick(id)}
+            pickingPointId={pickingPointId}
           />
         </>
       )}

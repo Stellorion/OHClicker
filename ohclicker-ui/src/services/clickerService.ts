@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
+import type { ACDisplay } from "../types/ac-types";
 
 export const clickerService = {
   toggleClicker: () => invoke<boolean>("toggle_clicker"),
@@ -25,4 +26,20 @@ export const clickerService = {
   },
   updateMaxDurationSec: (sec: number) => 
     invoke("update_max_duration_sec", { sec }),
+  updatePositionMode: (mode: string) => invoke("update_position_mode", { mode }),
+  updateCoordinateType: (coordinateType: string) =>
+    invoke("update_coordinate_type", { coordinateType }),
+  updateTargetPosition: (x: number, y: number) =>
+    invoke("update_target_position", { x, y }),
+  updatePositionJitter: (jitterPx: number) =>
+    invoke("update_position_jitter", { jitterPx }),
+  updateSequencePoints: (points: Array<{ id: string; x: number; y: number; dwell: number }>) =>
+    invoke("update_sequence_points", { points }),
+  beginPositionPick: (pointId?: string) =>
+    invoke<void>("begin_position_pick", { pointId }),
+  togglePositionOverlay: () => invoke<boolean>("toggle_position_overlay"),
+  getPositionOverlayState: () => invoke<{ picking: boolean; pickPointId?: string | null }>("get_position_overlay_state"),
+  getScreenSize: () => invoke<{ width: number; height: number }>("get_screen_size"),
+  getDisplays: () => invoke<ACDisplay[]>("get_displays"),
+  selectDisplay: (displayId: string) => invoke("select_display", { displayId }),
 };

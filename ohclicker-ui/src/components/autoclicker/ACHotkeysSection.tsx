@@ -41,7 +41,7 @@ export const ACHotkeysSection: React.FC = () => {
               Pick position
             </p>
             <label className="text-xs text-app-text-secondary block leading-relaxed">
-              Capture the cursor location as the target
+              Arm the picker, then click a screen location
             </label>
           </div>
           <HotkeyInput

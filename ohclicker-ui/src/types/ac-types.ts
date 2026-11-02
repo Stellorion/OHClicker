@@ -25,6 +25,7 @@ export interface ACSettings {
 
   // Target Location & Window
   positionMode: ACPositionMode;
+  selectedDisplayId: string;
   coordinateType: ACCoordinateType;
   targetWindow: string;
   targetX: number;
@@ -61,4 +62,15 @@ export interface ACStats {
   totalClicks: number;
   elapsedMs: number;
   currentCps: number;
+}
+
+export interface ACDisplay {
+  id: string;
+  name: string;
+  width: number;
+  height: number;
+  originX: number;
+  originY: number;
+  scaleFactor: number;
+  isPrimary: boolean;
 }

@@ -3,7 +3,8 @@
   "identifier": "default",
   "description": "Default capabilities for OHClicker",
   "windows": [
-    "main"
+    "main",
+    "position-overlay"
   ],
   "permissions": [
     "core:default"
