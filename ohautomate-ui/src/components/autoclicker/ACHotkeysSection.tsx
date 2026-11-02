@@ -1,8 +1,8 @@
 import React from "react";
-import { Separator } from "../../../components/common/Separator";
+import { Separator } from "../common/Separator";
 import { Keyboard } from "lucide-react";
-import { HotkeyInput } from "../../../components/common/HotkeyInput";
-import { useHotkeys } from "../hooks/useHotkeys";
+import { HotkeyInput } from "../common/HotkeyInput";
+import { useHotkeys } from "../../hooks/useHotkeys";
 
 export const ACHotkeysSection: React.FC = () => {
   const { startStopKey, pickPositionKey, toggleOverlayKey, updateSettings } =

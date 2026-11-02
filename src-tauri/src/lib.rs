@@ -1,12 +1,7 @@
 mod app_state;
 mod clicker;
 mod commands;
-pub mod execution;
-pub mod global_search;
-pub mod macro_tool;
-pub mod timers;
 
-use std::sync::Arc;
 use tauri::{Emitter, Manager};
 use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Shortcut, ShortcutState};
 
@@ -30,11 +25,7 @@ pub fn run() {
         ])
         .setup(move |app| {
             let state = app.state::<app_state::AppState>();
-            clicker::service::start_engine(
-                app.handle().clone(),
-                state.clicker.clone(),
-                Arc::clone(&state.execution),
-            );
+            clicker::service::start_engine(app.handle().clone(), state.clicker.clone());
 
             let toggle_shortcut = Shortcut::new(None, Code::F6);
 
@@ -42,14 +33,8 @@ pub fn run() {
                 .on_shortcut(toggle_shortcut, move |app, _shortcut, event| {
                     if event.state() == ShortcutState::Pressed {
                         let state = app.state::<app_state::AppState>();
-                        match clicker::service::toggle(&state) {
-                            Ok(running) => {
-                                let _ = app.emit("clicker-state-changed", running);
-                            }
-                            Err(error) => {
-                                let _ = app.emit("automation-start-blocked", error);
-                            }
-                        }
+                        let running = clicker::service::toggle(&state);
+                        let _ = app.emit("clicker-state-changed", running);
                     }
                 })?;
 

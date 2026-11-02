@@ -1,8 +1,8 @@
 import React from "react";
 import { Trash2, Plus } from "lucide-react";
-import { Input } from "../../../components/common/Input";
-import { Button } from "../../../components/common/Button";
-import type { SequencePoint } from "../hooks/usePosition";
+import { Input } from "../common/Input";
+import { Button } from "../common/Button";
+import type { SequencePoint } from "../../hooks/usePosition";
 
 interface ACSequenceListProps {
   points: SequencePoint[];

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { useACStore } from "../store/useACStore";
-import { clickerService } from "../../../services/clickerService";
+import { clickerService } from "../services/clickerService";
 import { useACTimer } from "./useACTimer";
 
 export const useAC = () => {

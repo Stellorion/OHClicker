@@ -1,5 +1,5 @@
 import { useAC } from "./useAC";
-import type { ChoiceOption } from "../../../components/common/ChoiceGroup";
+import type { ChoiceOption } from "../components/common/ChoiceGroup";
 import type { ACRegionMode } from "../types/ac-types";
 
 const REGION_MODE_OPTIONS: ChoiceOption<ACRegionMode>[] = [

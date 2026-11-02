@@ -1,12 +1,12 @@
 import React from "react";
-import { Separator } from "../../../components/common/Separator";
+import { Separator } from "../common/Separator";
 import { Target, Crosshair } from "lucide-react";
-import { ChoiceGroup } from "../../../components/common/ChoiceGroup";
-import { usePosition } from "../hooks/usePosition";
-import { SettingRow } from "../../../components/common/SettingRow";
-import { Button } from "../../../components/common/Button";
+import { ChoiceGroup } from "../common/ChoiceGroup";
+import { usePosition } from "../../hooks/usePosition";
+import { SettingRow } from "../common/SettingRow";
+import { Button } from "../common/Button";
 import { ACSequenceList } from "./ACSequenceList";
-import { LabeledInput } from "../../../components/common/LabeledInput";
+import { LabeledInput } from "../common/LabeledInput";
 
 export const ACPositionSection: React.FC = () => {
   const {

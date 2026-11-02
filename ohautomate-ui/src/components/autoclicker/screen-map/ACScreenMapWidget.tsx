@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Target } from "lucide-react";
-import { useAC } from "../../hooks/useAC";
-import { Separator } from "../../../../components/common/Separator";
+import { useAC } from "../../../hooks/useAC";
+import { Separator } from "../../common/Separator";
 import { SCREEN } from "./constants";
 import { ScreenGrid } from "./ScreenGrid";
 import { ScreenBoundsOverlay } from "./ScreenBoundsOverlay";

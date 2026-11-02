@@ -51,7 +51,6 @@ export const ScreenTargets: React.FC<ScreenTargetsProps> = ({
     );
   }
 
-  // Fixed Point Mode ONLY: Target circle + tracking crosshair lines that follow targetX / targetY
   return (
     <>
       {/* Vertical tracking line following targetX */}

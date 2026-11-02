@@ -1,14 +1,14 @@
 import React from "react";
-import { ACHeader } from "../components/ACHeader";
+import { ACHeader } from "../components/autoclicker/ACHeader";
 import { MousePointerClick, Repeat } from "lucide-react";
-import { SettingRow } from "../../../components/common/SettingRow";
-import { Separator } from "../../../components/common/Separator";
-import { ChoiceGroup } from "../../../components/common/ChoiceGroup";
+import { SettingRow } from "../components/common/SettingRow";
+import { Separator } from "../components/common/Separator";
+import { ChoiceGroup } from "../components/common/ChoiceGroup";
 import { useClick } from "../hooks/useClick";
 import { useLimits } from "../hooks/useLimit";
-import { HotkeyInput } from "../../../components/common/HotkeyInput";
+import { HotkeyInput } from "../components/common/HotkeyInput";
 import { useHotkeys } from "../hooks/useHotkeys";
-import { Input } from "../../../components/common/Input";
+import { Input } from "../components/common/Input";
 
 export const ACMinimizedView: React.FC = () => {
   const {

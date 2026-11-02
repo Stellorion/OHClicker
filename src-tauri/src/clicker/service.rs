@@ -1,38 +1,15 @@
 use crate::app_state::AppState;
 use crate::clicker::engine;
 use crate::clicker::state::{AutoClickerState, RustClickType, RustMouseButton, RustRepeatType};
-use crate::execution::ExclusiveTool;
-use std::sync::Arc;
 use std::sync::atomic::Ordering;
 use tauri::AppHandle;
 
-pub fn start_engine(
-    app_handle: AppHandle,
-    state: AutoClickerState,
-    execution: Arc<crate::execution::ExecutionCoordinator>,
-) {
-    engine::start_click_loop(app_handle, state, execution);
+pub fn start_engine(app_handle: AppHandle, state: AutoClickerState) {
+    engine::start_click_loop(app_handle, state);
 }
 
-pub fn toggle(state: &AppState) -> Result<bool, String> {
-    if state.clicker.is_running.load(Ordering::SeqCst) {
-        let stopped = state
-            .execution
-            .request_stop(ExclusiveTool::AutoClicker, || {
-                state.clicker.is_running.store(false, Ordering::SeqCst);
-            });
-        return stopped
-            .then_some(false)
-            .ok_or_else(|| "AutoClicker is not the active tool".to_string());
-    }
-
-    state
-        .execution
-        .start(ExclusiveTool::AutoClicker, || {
-            state.clicker.is_running.store(true, Ordering::SeqCst);
-        })
-        .map(|()| true)
-        .map_err(|active| format!("{active} is already running"))
+pub fn toggle(state: &AppState) -> bool {
+    !state.clicker.is_running.fetch_xor(true, Ordering::SeqCst)
 }
 
 pub fn update_cps(state: &AutoClickerState, value: u32) {

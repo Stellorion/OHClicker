@@ -1,6 +1,6 @@
 import { useAC } from "./useAC";
 import type { ACMouseButton, ACClickType } from "../types/ac-types";
-import type { ChoiceOption } from "../../../components/common/ChoiceGroup";
+import type { ChoiceOption } from "../components/common/ChoiceGroup";
 
 const MOUSE_BUTTON_OPTIONS: ChoiceOption<ACMouseButton>[] = [
   { id: "left", label: "Left" },

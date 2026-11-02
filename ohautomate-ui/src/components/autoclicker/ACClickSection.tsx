@@ -1,8 +1,8 @@
 import React from "react";
-import { Separator } from "../../../components/common/Separator";
+import { Separator } from "../common/Separator";
 import { Mouse } from "lucide-react";
-import { ChoiceGroup } from "../../../components/common/ChoiceGroup";
-import { useClick } from "../hooks/useClick";
+import { ChoiceGroup } from "../common/ChoiceGroup";
+import { useClick } from "../../hooks/useClick";
 
 export const ACClickSection: React.FC = () => {
   const {

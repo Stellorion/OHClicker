@@ -1,10 +1,10 @@
 import React from 'react';
-import { useNav } from '../../hooks/useNav';
-import { ACMinimizedView } from './views/ACMiniView';
-import { ACAdvancedView } from './views/ACAdvView';
+import { useUIStore } from '../store/useUIStore';
+import { ACMinimizedView } from './ACMiniView';
+import { ACAdvancedView } from './ACAdvView';
 
 export const ACPage: React.FC = () => {
-  const { currentMode } = useNav();
+  const currentMode = useUIStore((state) => state.clickerMode);
   const isAdvanced = currentMode === 'advanced';
 
   return (

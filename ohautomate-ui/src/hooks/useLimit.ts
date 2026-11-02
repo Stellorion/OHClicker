@@ -1,5 +1,5 @@
 import { useAC } from "./useAC";
-import type { ChoiceOption } from "../../../components/common/ChoiceGroup";
+import type { ChoiceOption } from "../components/common/ChoiceGroup";
 
 export type RepeatType = "until_stopped" | "fixed_count";
 

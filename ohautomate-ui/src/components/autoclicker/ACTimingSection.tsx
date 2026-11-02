@@ -1,7 +1,7 @@
 import React from "react";
-import { useAC } from "../hooks/useAC";
-import { SettingRow } from "../../../components/common/SettingRow";
-import { Separator } from "../../../components/common/Separator";
+import { useAC } from "../../hooks/useAC";
+import { SettingRow } from "../common/SettingRow";
+import { Separator } from "../common/Separator";
 import { Gauge } from "lucide-react";
 
 export const ACTimingSection: React.FC = () => {

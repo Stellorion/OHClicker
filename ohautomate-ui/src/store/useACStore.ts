@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { ACSettings, ACStats } from '../types/ac-types';
+import type { ACSettings, ACStats } from '../../../types/ac-types';
 
 interface ACState {
   settings: ACSettings;

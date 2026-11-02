@@ -3,7 +3,7 @@ use crate::clicker::service;
 use crate::clicker::state::{RustClickType, RustMouseButton, RustRepeatType};
 
 #[tauri::command]
-pub fn toggle_clicker(state: tauri::State<'_, AppState>) -> Result<bool, String> {
+pub fn toggle_clicker(state: tauri::State<'_, AppState>) -> bool {
     service::toggle(&state)
 }
 

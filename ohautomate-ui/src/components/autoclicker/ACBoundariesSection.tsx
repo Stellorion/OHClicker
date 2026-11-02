@@ -1,10 +1,10 @@
 import React from "react";
-import { Separator } from "../../../components/common/Separator";
+import { Separator } from "../common/Separator";
 import { Scan } from "lucide-react";
-import { ChoiceGroup } from "../../../components/common/ChoiceGroup";
-import { Switch } from "../../../components/common/Switch";
-import { LabeledInput } from "../../../components/common/LabeledInput";
-import { useBoundaries } from "../hooks/useBoundaries";
+import { ChoiceGroup } from "../common/ChoiceGroup";
+import { Switch } from "../common/Switch";
+import { LabeledInput } from "../common/LabeledInput";
+import { useBoundaries } from "../../hooks/useBoundaries";
 
 export const ACBoundariesSection: React.FC = () => {
   const {

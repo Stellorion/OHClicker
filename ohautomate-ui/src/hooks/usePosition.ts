@@ -1,5 +1,5 @@
 import { useAC } from "./useAC";
-import type { ChoiceOption } from "../../../components/common/ChoiceGroup";
+import type { ChoiceOption } from "../components/common/ChoiceGroup";
 import type { ACPositionMode, ACSequencePoint } from "../types/ac-types";
 
 export type SequencePoint = ACSequencePoint;

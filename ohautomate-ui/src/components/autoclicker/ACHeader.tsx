@@ -1,7 +1,7 @@
 import React from "react";
-import { useAC } from "../hooks/useAC";
-import { Button } from "../../../components/common/Button";
-import { Separator } from "../../../components/common/Separator";
+import { useAC } from "../../hooks/useAC";
+import { Button } from "../common/Button";
+import { Separator } from "../common/Separator";
 import { Play, Square } from "lucide-react";
 
 export const ACHeader: React.FC = () => {

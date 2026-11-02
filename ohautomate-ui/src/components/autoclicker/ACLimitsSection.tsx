@@ -1,10 +1,10 @@
 import React from "react";
-import { Separator } from "../../../components/common/Separator";
+import { Separator } from "../common/Separator";
 import { Timer } from "lucide-react";
-import { ChoiceGroup } from "../../../components/common/ChoiceGroup";
-import { Input } from "../../../components/common/Input";
-import { useLimits } from "../hooks/useLimit";
-import { Switch } from "../../../components/common/Switch";
+import { ChoiceGroup } from "../common/ChoiceGroup";
+import { Input } from "../common/Input";
+import { useLimits } from "../../hooks/useLimit";
+import { Switch } from "../common/Switch";
 
 export const ACLimitsSection: React.FC = () => {
   const {

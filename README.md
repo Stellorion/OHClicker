@@ -1,24 +1,27 @@
 # ACAutomate
 
-A modern desktop automation dashboard built with React, TypeScript, and Tailwind CSS.
+ACAutomate is a Windows desktop auto-clicker built with Tauri, Rust, React, and TypeScript.
 
 ## Features
 
-- **Dynamic Mode Toggling:** Switch seamlessly between Minimized and Advanced views.
-- **Screen Mapping Canvas:** Interactive display for click targets, sequence points, bounds overlays, and crosshairs.
-- **Modular Sidebar:** Clean navigation with built-in hover hotkey hints.
-- **Inline Controls:** Compact layout supporting repeat counters and global shortcut triggers.
+- Single-click and hold modes with configurable mouse button and CPS.
+- Configurable startup delay, interval randomization, and button hold time.
+- Fixed click-count and maximum-duration limits.
+- Minimized and advanced control views.
+- F6 global start/stop hotkey.
 
-## Tech Stack
+## Development
 
-- **Framework:** React 18 / Vite
-- **Styling:** Tailwind CSS, Class Variance Authority (CVA)
-- **Language:** TypeScript
+Install the root and frontend dependencies, then run the Tauri development app:
 
-## Setup & Running
-
-```bash
-git clone [https://github.com/your-username/ACAutomate.git](https://github.com/your-username/ACAutomate.git)
-cd ACAutomate
+```powershell
 npm install
-npm run dev
+npm --prefix ohautomate-ui install
+npm run tauri dev
+```
+
+Create a production build with:
+
+```powershell
+npm run tauri build
+```
