@@ -1,4 +1,3 @@
-import React from "react";
 import { Separator } from "../common/Separator";
 import { Mouse } from "lucide-react";
 import { ChoiceGroup } from "../common/ChoiceGroup";

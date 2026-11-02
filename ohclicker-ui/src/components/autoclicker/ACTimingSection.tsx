@@ -1,4 +1,3 @@
-import React from "react";
 import { useAC } from "../../hooks/useAC";
 import { SettingRow } from "../common/SettingRow";
 import { Separator } from "../common/Separator";

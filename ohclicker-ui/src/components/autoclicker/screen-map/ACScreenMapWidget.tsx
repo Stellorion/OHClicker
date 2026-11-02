@@ -1,10 +1,9 @@
-import React from "react";
 import { Target } from "lucide-react";
 import { useAC } from "../../../hooks/useAC";
 import { Separator } from "../../common/Separator";
-import { SCREEN } from "./constants";
+import { SCREEN } from "../../../lib/constants";
 import { friendlyName } from "../../../lib/displayUtil";
-import { useDisplays } from "./UseDisplays";
+import { useDisplays } from "../../../hooks/UseDisplays";
 import { ScreenMapCanvas } from "./ScreenMapCanvas";
 import { DisplaySelector } from "./DisplaySelector";
 
@@ -59,7 +58,7 @@ export const ACScreenMapWidget: React.FC = () => {
         target={target}
         points={points}
         bounds={bounds}
-        onTargetChange={(x, y) => void updateSettings({ targetX: x, targetY: y })}
+        onTargetChange={({ x, y }) => void updateSettings({ targetX: x, targetY: y })}
       />
 
       <div className="flex items-center justify-between gap-3 text-xs font-mono text-app-text-secondary px-0.5">

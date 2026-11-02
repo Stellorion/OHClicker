@@ -1,23 +1,7 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
-
-interface OverlayState {
-  visible: boolean;
-  picking: boolean;
-  pickPointId?: string | null;
-  positionMode: "cursor" | "fixed" | "sequence";
-  targetX: number;
-  targetY: number;
-  jitterPx: number;
-  sequencePoints: Array<{ id: string; x: number; y: number; dwell: number }>;
-  screenWidth: number;
-  screenHeight: number;
-  displayId: string;
-  originX: number;
-  originY: number;
-  scaleFactor: number;
-}
+import type { OverlayState } from "../../types/overlay-types";
 
 export const PositionOverlay = () => {
   const [state, setState] = useState<OverlayState>();

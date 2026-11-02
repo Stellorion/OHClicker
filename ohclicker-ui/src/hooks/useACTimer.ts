@@ -1,4 +1,3 @@
-// src/hooks/useACTimer.ts
 import { useEffect, useRef } from "react";
 import type { ACSettings, ACStats } from "../types/ac-types";
 

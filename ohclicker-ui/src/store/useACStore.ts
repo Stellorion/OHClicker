@@ -1,15 +1,6 @@
 import { create } from 'zustand';
 import type { ACSettings, ACStats } from '../types/ac-types';
-
-interface ACState {
-  settings: ACSettings;
-  stats: ACStats;
-
-  updateSettings: (partial: Partial<ACSettings>) => void;
-  setRunningState: (isRunning: boolean) => void;
-  updateStats: (stats: Partial<ACStats>) => void;
-  resetStats: () => void;
-}
+import type { ACState } from '../types/state-types';
 
 const initialSettings: ACSettings = {
   cps: 12,

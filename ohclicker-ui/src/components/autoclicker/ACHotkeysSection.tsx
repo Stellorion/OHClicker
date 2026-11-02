@@ -1,4 +1,3 @@
-import React from "react";
 import { Separator } from "../common/Separator";
 import { Keyboard } from "lucide-react";
 import { HotkeyInput } from "../common/HotkeyInput";

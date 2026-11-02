@@ -19,7 +19,6 @@ export const relativePosition = (display: ACDisplay): string => {
     : "Aligned with primary";
 };
 
-/** How many displays share each friendly name (to disambiguate duplicates). */
 export const countNames = (displays: ACDisplay[]): Record<string, number> =>
   displays.reduce<Record<string, number>>((counts, display) => {
     const name = friendlyName(display);

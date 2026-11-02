@@ -1,4 +1,3 @@
-import React from "react";
 import { useAC } from "../../hooks/useAC";
 import { Button } from "../common/Button";
 import { Separator } from "../common/Separator";

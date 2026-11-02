@@ -1,4 +1,3 @@
-import React from "react";
 import { Check, ChevronDown, Monitor, RotateCw } from "lucide-react";
 import type { ACDisplay } from "../../../types/ac-types";
 import {

@@ -1,17 +1,7 @@
-import React from "react";
 import { Trash2, Plus, Crosshair } from "lucide-react";
 import { Input } from "../common/Input";
 import { Button } from "../common/Button";
-import type { SequencePoint } from "../../hooks/usePosition";
-
-interface ACSequenceListProps {
-  points: SequencePoint[];
-  onUpdatePoint: (id: string, fields: Partial<SequencePoint>) => void;
-  onRemovePoint: (id: string) => void;
-  onAddPoint: () => void;
-  onPickPoint: (id: string) => void;
-  pickingPointId: string | null;
-}
+import type { ACSequenceListProps } from "../../types/sequence-types";
 
 export const ACSequenceList: React.FC<ACSequenceListProps> = ({
   points,

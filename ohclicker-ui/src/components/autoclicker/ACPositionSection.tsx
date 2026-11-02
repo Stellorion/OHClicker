@@ -1,4 +1,3 @@
-import React from "react";
 import { Separator } from "../common/Separator";
 import { Target, Crosshair } from "lucide-react";
 import { ChoiceGroup } from "../common/ChoiceGroup";

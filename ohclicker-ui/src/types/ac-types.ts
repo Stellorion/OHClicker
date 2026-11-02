@@ -1,13 +1,17 @@
+import type { Point } from './common';
+
 export type ACMouseButton = 'left' | 'middle' | 'right';
 export type ACClickType = 'single' | 'hold';
 export type ACPositionMode = 'cursor' | 'fixed' | 'sequence';
 export type ACCoordinateType = 'absolute' | 'relative';
-export type ACRegionMode = 'fullscreen' | 'window' | 'custom' | 'active_window';
+export type ACRegionMode =
+  | 'fullscreen'
+  | 'window'
+  | 'custom'
+  | 'active_window';
 
-export interface ACSequencePoint {
+export interface ACSequencePoint extends Point {
   id: string;
-  x: number;
-  y: number;
   dwell: number;
 }
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { clickerService } from "../../../services/clickerService";
-import type { ACDisplay } from "../../../types/ac-types";
+import { clickerService } from "../services/clickerService";
+import type { ACDisplay } from "../types/ac-types";
 
 export const useDisplays = (
   selectedId: string,
