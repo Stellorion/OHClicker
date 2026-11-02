@@ -19,27 +19,42 @@ export const clickerService = {
   updateRepeatType: async (repeatType: string) => {
     await invoke("update_repeat_type", { repeatType });
   },
-  updateFixedCountLimit: (limit: number) => 
+  updateFixedCountLimit: (limit: number) =>
     invoke("update_fixed_count_limit", { limit }),
   updateMaxDurationEnabled: async (enabled: boolean) => {
     await invoke("update_max_duration_enabled", { enabled });
   },
-  updateMaxDurationSec: (sec: number) => 
+  updateMaxDurationSec: (sec: number) =>
     invoke("update_max_duration_sec", { sec }),
-  updatePositionMode: (mode: string) => invoke("update_position_mode", { mode }),
+  updatePositionMode: (mode: string) =>
+    invoke("update_position_mode", { mode }),
   updateCoordinateType: (coordinateType: string) =>
     invoke("update_coordinate_type", { coordinateType }),
   updateTargetPosition: (x: number, y: number) =>
     invoke("update_target_position", { x, y }),
   updatePositionJitter: (jitterPx: number) =>
     invoke("update_position_jitter", { jitterPx }),
-  updateSequencePoints: (points: Array<{ id: string; x: number; y: number; dwell: number }>) =>
-    invoke("update_sequence_points", { points }),
+  updateSequencePoints: (
+    points: Array<{ id: string; x: number; y: number; dwell: number }>,
+  ) => invoke("update_sequence_points", { points }),
   beginPositionPick: (pointId?: string) =>
     invoke<void>("begin_position_pick", { pointId }),
   togglePositionOverlay: () => invoke<boolean>("toggle_position_overlay"),
-  getPositionOverlayState: () => invoke<{ picking: boolean; pickPointId?: string | null }>("get_position_overlay_state"),
-  getScreenSize: () => invoke<{ width: number; height: number }>("get_screen_size"),
+  getPositionOverlayState: () =>
+    invoke<{ picking: boolean; pickPointId?: string | null }>(
+      "get_position_overlay_state",
+    ),
+  getScreenSize: () =>
+    invoke<{ width: number; height: number }>("get_screen_size"),
   getDisplays: () => invoke<ACDisplay[]>("get_displays"),
   selectDisplay: (displayId: string) => invoke("select_display", { displayId }),
+  async updateStartStopHotkey(hotkey: string): Promise<void> {
+    await invoke("update_start_stop_hotkey", { hotkey });
+  },
+  async updatePickPositionHotkey(hotkey: string): Promise<void> {
+    await invoke("update_pick_position_hotkey", { hotkey });
+  },
+  async updateToggleOverlayHotkey(hotkey: string): Promise<void> {
+    await invoke("update_toggle_overlay_hotkey", { hotkey });
+  },
 };

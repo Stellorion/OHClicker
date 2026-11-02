@@ -33,7 +33,10 @@ pub fn run() {
             commands::position::begin_position_pick,
             commands::position::complete_position_pick,
             commands::position::toggle_position_overlay,
-            commands::position::get_position_overlay_state
+            commands::position::get_position_overlay_state,
+            commands::hotkeys::update_start_stop_hotkey,
+            commands::hotkeys::update_pick_position_hotkey,
+            commands::hotkeys::update_toggle_overlay_hotkey
         ])
         .setup(move |app| {
             let state = app.state::<app_state::AppState>();

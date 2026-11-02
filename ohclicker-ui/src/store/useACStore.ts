@@ -41,7 +41,6 @@ const initialSettings: ACSettings = {
   startStopHotkey: 'F6',
   pickPositionHotkey: 'F7',
   toggleOverlayHotkey: 'F8',
-  emergencyStopHotkey: 'Ctrl+Shift+Esc',
 };
 
 const initialStats: ACStats = {

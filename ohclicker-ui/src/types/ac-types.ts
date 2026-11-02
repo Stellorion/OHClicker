@@ -56,7 +56,6 @@ export interface ACSettings {
   startStopHotkey: string;
   pickPositionHotkey: string;
   toggleOverlayHotkey: string;
-  emergencyStopHotkey: string;
 }
 
 export interface ACStats {

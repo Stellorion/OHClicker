@@ -12,7 +12,12 @@ export const useAC = () => {
   const updateStats = useACStore((state) => state.updateStats);
   const resetStats = useACStore((state) => state.resetStats);
 
-  useACTimer({ isRunning, settings, totalClicks: stats.totalClicks, updateStats });
+  useACTimer({
+    isRunning,
+    settings,
+    totalClicks: stats.totalClicks,
+    updateStats,
+  });
 
   const updateSettings = async (newSettings: Partial<typeof settings>) => {
     useACStore.getState().updateSettings(newSettings);
@@ -45,7 +50,9 @@ export const useAC = () => {
       await clickerService.updateFixedCountLimit(newSettings.fixedCountLimit);
     }
     if (newSettings.maxDurationEnabled !== undefined) {
-      await clickerService.updateMaxDurationEnabled(newSettings.maxDurationEnabled);
+      await clickerService.updateMaxDurationEnabled(
+        newSettings.maxDurationEnabled,
+      );
     }
     if (newSettings.maxDurationSec !== undefined) {
       await clickerService.updateMaxDurationSec(newSettings.maxDurationSec);
@@ -59,7 +66,10 @@ export const useAC = () => {
     if (newSettings.coordinateType !== undefined) {
       await clickerService.updateCoordinateType(newSettings.coordinateType);
     }
-    if (newSettings.targetX !== undefined || newSettings.targetY !== undefined) {
+    if (
+      newSettings.targetX !== undefined ||
+      newSettings.targetY !== undefined
+    ) {
       const { targetX, targetY } = useACStore.getState().settings;
       await clickerService.updateTargetPosition(targetX, targetY);
     }
@@ -68,6 +78,19 @@ export const useAC = () => {
     }
     if (newSettings.sequencePoints !== undefined) {
       await clickerService.updateSequencePoints(newSettings.sequencePoints);
+    }
+    if (newSettings.startStopHotkey !== undefined) {
+      await clickerService.updateStartStopHotkey(newSettings.startStopHotkey);
+    }
+    if (newSettings.pickPositionHotkey !== undefined) {
+      await clickerService.updatePickPositionHotkey(
+        newSettings.pickPositionHotkey,
+      );
+    }
+    if (newSettings.toggleOverlayHotkey !== undefined) {
+      await clickerService.updateToggleOverlayHotkey(
+        newSettings.toggleOverlayHotkey,
+      );
     }
   };
 
@@ -122,25 +145,26 @@ export const useAC = () => {
     let unlisten: (() => void) | undefined;
 
     const setupListener = async () => {
-      unlisten = await listen<{ x: number; y: number; pointId?: string | null }>(
-        "position-picked",
-        (event) => {
-          const { x, y, pointId } = event.payload;
-          if (pointId) {
-            const points = (
-              useACStore.getState().settings.sequencePoints ?? []
-            ).map((point) => (point.id === pointId ? { ...point, x, y } : point));
-            useACStore.getState().updateSettings({ sequencePoints: points });
-            void clickerService.updateSequencePoints(points);
-            return;
-          }
-          useACStore.getState().updateSettings({
-            positionMode: "fixed",
-            targetX: x,
-            targetY: y,
-          });
-        },
-      );
+      unlisten = await listen<{
+        x: number;
+        y: number;
+        pointId?: string | null;
+      }>("position-picked", (event) => {
+        const { x, y, pointId } = event.payload;
+        if (pointId) {
+          const points = (
+            useACStore.getState().settings.sequencePoints ?? []
+          ).map((point) => (point.id === pointId ? { ...point, x, y } : point));
+          useACStore.getState().updateSettings({ sequencePoints: points });
+          void clickerService.updateSequencePoints(points);
+          return;
+        }
+        useACStore.getState().updateSettings({
+          positionMode: "fixed",
+          targetX: x,
+          targetY: y,
+        });
+      });
     };
 
     setupListener();
