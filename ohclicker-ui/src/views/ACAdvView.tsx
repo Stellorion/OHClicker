@@ -8,11 +8,12 @@ import { ACBoundariesSection } from '../components/autoclicker/ACBoundariesSecti
 import { ACHotkeysSection } from '../components/autoclicker/ACHotkeysSection';
 import { ACScreenMapWidget } from '../components/autoclicker/screen-map/ACScreenMapWidget';
 import { ACEstimateWidget } from '../components/autoclicker/ACEstimateWidget';
+import { ACFilesSection } from '../components/autoclicker/ACFilesSection';
 
 export const ACAdvancedView: React.FC = () => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-      <div className="lg:col-span-2 space-y-6">
+    <div className="flex flex-col-reverse lg:grid lg:grid-cols-5 gap-6 items-stretch">
+      <div className="lg:col-span-3 space-y-6">
         <ACTimingSection />
         <ACClickSection />
         <ACPositionSection />
@@ -20,11 +21,12 @@ export const ACAdvancedView: React.FC = () => {
         <ACBoundariesSection />
       </div>
 
-      <div className="lg:col-span-1 space-y-6">
+      <div className="lg:col-span-2 space-y-6">
         <ACHeader />
         <ACScreenMapWidget />
         <ACEstimateWidget />
         <ACHotkeysSection />
+        <ACFilesSection />
       </div>
     </div>
   );

@@ -14,8 +14,8 @@
   --color-app-text-muted: oklch(0.68 0.01 285);
 
   /* Red accent colors */
---color-app-red: oklch(0.63 0.215 25);
---color-app-red-hover: oklch(0.69 0.20 25);
+  --color-app-red: oklch(0.63 0.215 25);
+  --color-app-red-hover: oklch(0.69 0.20 25);
 }
 
 /* Width and height of the scrollbar */
@@ -41,7 +41,8 @@
 }
 
 /* Firefox support */
-html, body {
+html,
+body {
   scrollbar-width: thin;
   scrollbar-color: rgba(150, 150, 150, 0.3) transparent;
 }
