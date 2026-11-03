@@ -36,7 +36,11 @@ pub fn run() {
             commands::position::get_position_overlay_state,
             commands::hotkeys::update_start_stop_hotkey,
             commands::hotkeys::update_pick_position_hotkey,
-            commands::hotkeys::update_toggle_overlay_hotkey
+            commands::hotkeys::update_toggle_overlay_hotkey,
+            commands::boundaries::set_boundaries_enabled,
+            commands::boundaries::set_region_mode,
+            commands::boundaries::update_boundary_rect,
+            commands::boundaries::set_stop_when_cursor_leaves,
         ])
         .setup(move |app| {
             let state = app.state::<app_state::AppState>();
@@ -47,10 +51,7 @@ pub fn run() {
                         .find(|display| display.is_primary)
                         .or_else(|| displays.first())
                     {
-                        clicker::service::update_selected_display(
-                            &state.clicker,
-                            primary.clone(),
-                        );
+                        clicker::service::update_selected_display(&state.clicker, primary.clone());
                     }
                 }
             }

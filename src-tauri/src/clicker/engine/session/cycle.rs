@@ -10,6 +10,7 @@ use tauri::AppHandle;
 mod click;
 mod limits;
 mod target;
+mod boundaries;
 
 pub(super) fn tick(
     session: &mut ClickSession,

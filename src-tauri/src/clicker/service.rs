@@ -1,11 +1,14 @@
 use crate::app_state::AppState;
-use crate::clicker::engine;
 use crate::clicker::display::DisplayInfo;
-use crate::clicker::position::{RustCoordinateType, RustPositionMode, RustSequencePoint, ScreenSize};
-use crate::clicker::state::{AutoClickerState, RustClickType, RustMouseButton, RustRepeatType};
+use crate::clicker::engine;
+use crate::clicker::position::{
+    RustCoordinateType, RustPositionMode, RustSequencePoint, ScreenSize,
+};
+use crate::clicker::state::{
+    AutoClickerState, RustClickType, RustMouseButton, RustRegionMode, RustRepeatType,
+};
 use std::sync::atomic::Ordering;
-use tauri::AppHandle;
-use tauri::WebviewWindow;
+use tauri::{AppHandle, WebviewWindow};
 
 pub fn start_engine(app_handle: AppHandle, state: AutoClickerState) {
     engine::start_click_loop(app_handle, state);
@@ -69,7 +72,9 @@ pub fn available_displays(window: &WebviewWindow) -> Result<Vec<DisplayInfo>, St
     let primary = window
         .primary_monitor()
         .map_err(|error| format!("Unable to identify primary display: {error}"))?;
-    let primary_id = primary.as_ref().map(|monitor| DisplayInfo::from_monitor(monitor, true).id);
+    let primary_id = primary
+        .as_ref()
+        .map(|monitor| DisplayInfo::from_monitor(monitor, true).id);
     let mut displays: Vec<_> = monitors
         .iter()
         .map(|monitor| {
@@ -112,4 +117,25 @@ pub fn update_max_duration_enabled(state: &AutoClickerState, value: bool) {
 
 pub fn update_max_duration_sec(state: &AutoClickerState, value: u32) {
     state.max_duration_sec.store(value, Ordering::SeqCst);
+}
+
+pub fn set_boundaries_enabled(state: &AutoClickerState, enabled: bool) {
+    state.boundaries_enabled.store(enabled, Ordering::SeqCst);
+}
+
+pub fn set_region_mode(state: &AutoClickerState, mode: RustRegionMode) {
+    *state.region_mode.lock().unwrap() = mode;
+}
+
+pub fn update_boundary_rect(state: &AutoClickerState, x: i32, y: i32, width: u32, height: u32) {
+    state.boundary_x.store(x, Ordering::SeqCst);
+    state.boundary_y.store(y, Ordering::SeqCst);
+    state.boundary_width.store(width, Ordering::SeqCst);
+    state.boundary_height.store(height, Ordering::SeqCst);
+}
+
+pub fn set_stop_when_cursor_leaves(state: &AutoClickerState, enabled: bool) {
+    state
+        .stop_when_cursor_leaves
+        .store(enabled, Ordering::SeqCst);
 }

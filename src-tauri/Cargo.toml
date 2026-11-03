@@ -25,3 +25,4 @@ tauri = { version = "2.12.5", features = [] }
 tauri-plugin-log = "2"
 enigo = "0.6.1"
 tauri-plugin-global-shortcut = "2.4.1"
+windows = "0.62.2"

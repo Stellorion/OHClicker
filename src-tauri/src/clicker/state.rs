@@ -1,6 +1,6 @@
 use crate::clicker::position::PositionSettings;
 use serde::{Deserialize, Serialize};
-use std::sync::atomic::{AtomicBool, AtomicU32};
+use std::sync::atomic::{AtomicBool, AtomicI32, AtomicU32};
 use std::sync::{Arc, Mutex};
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq)]
@@ -25,6 +25,14 @@ pub enum RustRepeatType {
     FixedCount,
 }
 
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "snake_case")]
+pub enum RustRegionMode {
+    Fullscreen,
+    ActiveWindow,
+    Custom,
+}
+
 #[derive(Clone)]
 pub struct AutoClickerState {
     pub(crate) is_running: Arc<AtomicBool>,
@@ -39,6 +47,13 @@ pub struct AutoClickerState {
     pub(crate) max_duration_enabled: Arc<AtomicBool>,
     pub(crate) max_duration_sec: Arc<AtomicU32>,
     pub(crate) position: PositionSettings,
+    pub(crate) boundaries_enabled: Arc<AtomicBool>,
+    pub(crate) region_mode: Arc<Mutex<RustRegionMode>>,
+    pub(crate) boundary_x: Arc<AtomicI32>,
+    pub(crate) boundary_y: Arc<AtomicI32>,
+    pub(crate) boundary_width: Arc<AtomicU32>,
+    pub(crate) boundary_height: Arc<AtomicU32>,
+    pub(crate) stop_when_cursor_leaves: Arc<AtomicBool>,
 }
 
 impl AutoClickerState {
@@ -56,6 +71,13 @@ impl AutoClickerState {
             max_duration_enabled: Arc::new(AtomicBool::new(false)),
             max_duration_sec: Arc::new(AtomicU32::new(300)),
             position: PositionSettings::new(),
+            boundaries_enabled: Arc::new(AtomicBool::new(false)),
+            region_mode: Arc::new(Mutex::new(RustRegionMode::Fullscreen)),
+            boundary_x: Arc::new(AtomicI32::new(320)),
+            boundary_y: Arc::new(AtomicI32::new(180)),
+            boundary_width: Arc::new(AtomicU32::new(1280)),
+            boundary_height: Arc::new(AtomicU32::new(800)),
+            stop_when_cursor_leaves: Arc::new(AtomicBool::new(true)),
         }
     }
 }

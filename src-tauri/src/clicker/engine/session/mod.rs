@@ -17,6 +17,7 @@ pub(super) struct ClickSession {
     pub(super) last_stats_update: Instant,
     pub(super) start_time: Option<Instant>,
     pub(super) sequence_index: usize,
+    pub(super) is_stopped: bool,
 }
 
 impl Default for ClickSession {
@@ -32,6 +33,7 @@ impl Default for ClickSession {
             last_stats_update: now,
             start_time: None,
             sequence_index: 0,
+            is_stopped: false,
         }
     }
 }

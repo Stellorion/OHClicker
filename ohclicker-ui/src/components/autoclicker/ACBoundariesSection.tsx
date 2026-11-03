@@ -1,9 +1,12 @@
+import { useEffect } from "react";
 import { Separator } from "../common/Separator";
 import { Scan } from "lucide-react";
 import { ChoiceGroup } from "../common/ChoiceGroup";
 import { Switch } from "../common/Switch";
 import { LabeledInput } from "../common/LabeledInput";
 import { useBoundaries } from "../../hooks/useBoundaries";
+import { clickerService } from "../../services/clickerService";
+import type { ACRegionMode } from "../../types/ac-types";
 
 export const ACBoundariesSection: React.FC = () => {
   const {
@@ -18,7 +21,51 @@ export const ACBoundariesSection: React.FC = () => {
     updateSettings,
   } = useBoundaries();
 
-  const isCustomRegion = regionMode === "custom";
+  const isCustomRegion: boolean = regionMode === "custom";
+
+  // The backend starts with its own defaults, so push what the UI shows once on mount.
+  useEffect(() => {
+    void clickerService.setBoundariesEnabled(boundariesEnabled);
+    void clickerService.setRegionMode(regionMode);
+    void clickerService.updateBoundaryRect(x, y, width, height);
+    void clickerService.setStopWhenCursorLeaves(stopWhenCursorLeaves);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleToggleBoundaries = (checked: boolean) => {
+    clickerService.setBoundariesEnabled(checked);
+    updateSettings({ boundariesEnabled: checked });
+  };
+
+  const handleRegionModeChange = (mode: ACRegionMode) => {
+    clickerService.setRegionMode(
+      mode as "fullscreen" | "active_window" | "custom",
+    );
+    updateSettings({ regionMode: mode });
+  };
+
+  // Update the store AND push the full rectangle to the backend
+  const handleBoundaryUpdate = (
+    key: "boundaryX" | "boundaryY" | "boundaryWidth" | "boundaryHeight",
+    value: number,
+  ) => {
+    if (!isCustomRegion) return;
+    const v = key === "boundaryWidth" || key === "boundaryHeight" ? Math.max(1, value) : value;
+    const rect = { boundaryX: x, boundaryY: y, boundaryWidth: width, boundaryHeight: height, [key]: v };
+    updateSettings({ [key]: v });
+    void clickerService.updateBoundaryRect(
+      rect.boundaryX,
+      rect.boundaryY,
+      rect.boundaryWidth,
+      rect.boundaryHeight,
+    );
+  };
+
+  // Handle stop when cursor leaves toggle
+  const handleStopWhenCursorLeaves = (checked: boolean) => {
+    clickerService.setStopWhenCursorLeaves(checked);
+    updateSettings({ stopWhenCursorLeaves: checked });
+  };
 
   return (
     <div className="bg-app-surface border border-app-border rounded-xl p-4 pb-3 space-y-3 shadow-sm">
@@ -32,9 +79,7 @@ export const ACBoundariesSection: React.FC = () => {
 
         <Switch
           checked={boundariesEnabled}
-          onCheckedChange={(checked) =>
-            updateSettings({ boundariesEnabled: checked })
-          }
+          onCheckedChange={handleToggleBoundaries}
         />
       </div>
 
@@ -52,7 +97,7 @@ export const ACBoundariesSection: React.FC = () => {
           <ChoiceGroup
             options={regionModeOptions}
             value={regionMode}
-            onChange={(val) => updateSettings({ regionMode: val })}
+            onChange={handleRegionModeChange}
           />
         </div>
 
@@ -68,10 +113,10 @@ export const ACBoundariesSection: React.FC = () => {
 
           <div className="flex items-center gap-2">
             {[
-              { label: "X", value: x, key: "boundaryX" },
-              { label: "Y", value: y, key: "boundaryY" },
-              { label: "W", value: width, key: "boundaryWidth" },
-              { label: "H", value: height, key: "boundaryHeight" },
+              { label: "X", value: x, key: "boundaryX" as const },
+              { label: "Y", value: y, key: "boundaryY" as const },
+              { label: "W", value: width, key: "boundaryWidth" as const },
+              { label: "H", value: height, key: "boundaryHeight" as const },
             ].map((coord) => (
               <LabeledInput
                 key={coord.key}
@@ -79,7 +124,7 @@ export const ACBoundariesSection: React.FC = () => {
                 value={coord.value}
                 disabled={!isCustomRegion}
                 widthClass="w-20"
-                onChange={(val) => updateSettings({ [coord.key]: val })}
+                onChange={(val) => handleBoundaryUpdate(coord.key, val)}
               />
             ))}
           </div>
@@ -99,9 +144,7 @@ export const ACBoundariesSection: React.FC = () => {
 
           <Switch
             checked={stopWhenCursorLeaves}
-            onCheckedChange={(checked) =>
-              updateSettings({ stopWhenCursorLeaves: checked })
-            }
+            onCheckedChange={handleStopWhenCursorLeaves}
           />
         </div>
       </div>

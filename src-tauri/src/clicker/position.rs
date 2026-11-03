@@ -29,13 +29,6 @@ pub struct RustSequencePoint {
 
 #[derive(Debug, Clone, Copy, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct ScreenPoint {
-    pub x: i32,
-    pub y: i32,
-}
-
-#[derive(Debug, Clone, Copy, Serialize)]
-#[serde(rename_all = "camelCase")]
 pub struct ScreenSize {
     pub width: u32,
     pub height: u32,

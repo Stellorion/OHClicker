@@ -1,14 +1,10 @@
-import type { Point } from './common';
+import type { Point } from "./common";
 
-export type ACMouseButton = 'left' | 'middle' | 'right';
-export type ACClickType = 'single' | 'hold';
-export type ACPositionMode = 'cursor' | 'fixed' | 'sequence';
-export type ACCoordinateType = 'absolute' | 'relative';
-export type ACRegionMode =
-  | 'fullscreen'
-  | 'window'
-  | 'custom'
-  | 'active_window';
+export type ACMouseButton = "left" | "middle" | "right";
+export type ACClickType = "single" | "hold";
+export type ACPositionMode = "cursor" | "fixed" | "sequence";
+export type ACCoordinateType = "absolute" | "relative";
+export type ACRegionMode = "fullscreen" | "active_window" | "custom";
 
 export interface ACSequencePoint extends Point {
   id: string;
@@ -38,7 +34,7 @@ export interface ACSettings {
   sequencePoints?: ACSequencePoint[];
 
   // Click Limits & Repeat
-  repeatType: 'until_stopped' | 'fixed_count';
+  repeatType: "until_stopped" | "fixed_count";
   fixedCountLimit: number;
   maxDurationEnabled: boolean;
   maxDurationSec: number;

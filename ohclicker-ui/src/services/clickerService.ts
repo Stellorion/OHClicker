@@ -57,4 +57,14 @@ export const clickerService = {
   async updateToggleOverlayHotkey(hotkey: string): Promise<void> {
     await invoke("update_toggle_overlay_hotkey", { hotkey });
   },
+  setBoundariesEnabled: (enabled: boolean) =>
+    invoke("set_boundaries_enabled", { enabled }),
+  setRegionMode: (mode: "fullscreen" | "active_window" | "custom") =>
+    invoke("set_region_mode", { mode }),
+  updateBoundaryRect: (x: number, y: number, width: number, height: number) =>
+    invoke("update_boundary_rect", { x, y, width, height }),
+  setStopWhenCursorLeaves: (enabled: boolean) =>
+    invoke("set_stop_when_cursor_leaves", { enabled }),
+  getActiveWindowBounds: () =>
+    invoke<{ width: number; height: number }>("get_active_window_bounds"),
 };

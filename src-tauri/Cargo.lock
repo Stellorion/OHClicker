@@ -2223,6 +2223,7 @@ dependencies = [
  "tauri-build",
  "tauri-plugin-global-shortcut",
  "tauri-plugin-log",
+ "windows 0.62.2",
 ]
 
 [[package]]
