@@ -1,7 +1,7 @@
 use crate::app_state::AppState;
 use crate::clicker::service;
 use crate::clicker::state::RustRegionMode;
-use tauri::{AppHandle, WebviewWindow};
+use tauri::{AppHandle};
 
 #[tauri::command]
 pub fn set_boundaries_enabled(_app: AppHandle, state: tauri::State<'_, AppState>, enabled: bool) {
@@ -34,7 +34,6 @@ pub fn set_stop_when_cursor_leaves(
     service::set_stop_when_cursor_leaves(&state.clicker, enabled);
 }
 
-/// Bounds of the window that currently has focus (not this app's own window).
 pub(crate) fn foreground_window_rect() -> Result<(i32, i32, u32, u32), String> {
     use windows::Win32::Foundation::{HWND, RECT};
     use windows::Win32::UI::WindowsAndMessaging::{GetForegroundWindow, GetWindowRect};
@@ -52,30 +51,5 @@ pub(crate) fn foreground_window_rect() -> Result<(i32, i32, u32, u32), String> {
         rect.top,
         (rect.right - rect.left).max(0) as u32,
         (rect.bottom - rect.top).max(0) as u32,
-    ))
-}
-
-#[tauri::command]
-pub fn get_active_window_bounds(window: WebviewWindow) -> Result<(i32, i32, u32, u32), String> {
-    let (x, y, w, h) = get_active_window_rect(&window)?;
-    Ok((x, y, w, h))
-}
-
-fn get_active_window_rect(window: &WebviewWindow) -> Result<(i32, i32, u32, u32), String> {
-    use windows::Win32::Foundation::{RECT};
-    use windows::Win32::UI::WindowsAndMessaging::GetWindowRect;
-
-    let hwnd = window.hwnd().map_err(|e| format!("Failed to get window handle: {}", e))?;
-    
-    let mut rect = unsafe { std::mem::zeroed::<RECT>() };
-    if unsafe { GetWindowRect(hwnd, &mut rect) }.is_err() {
-        return Err("Failed to retrieve window rectangle".to_string());
-    }
-
-    Ok((
-        rect.left,
-        rect.top,
-        (rect.right - rect.left) as u32,
-        (rect.bottom - rect.top) as u32,
     ))
 }
