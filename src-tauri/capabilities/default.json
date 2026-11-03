@@ -4,7 +4,8 @@
   "description": "Default capabilities for OHClicker",
   "windows": [
     "main",
-    "position-overlay"
+    "position-overlay",
+    "boundary-overlay"
   ],
   "permissions": [
     "core:default"

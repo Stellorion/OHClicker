@@ -49,7 +49,9 @@ pub fn select_display(
         .ok_or_else(|| "Selected display is no longer connected".to_string())?;
     service::update_selected_display(&state.clicker, display);
     overlay::move_to_selected_display(&app, &state)?;
+    overlay::update_boundary_window_position(&app, &state)?;
     overlay::publish(&app, &state);
+    overlay::publish_boundary_state(&app, &state);
     Ok(())
 }
 

@@ -1,15 +1,19 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import { PositionOverlay } from './components/overlay/PositionOverlay.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "./App.tsx";
+import { PositionOverlay } from "./components/overlay/PositionOverlay.tsx";
+import { BoundaryOverlay } from "./components/overlay/BoundaryOverlay.tsx";
 
-const root = new URLSearchParams(window.location.search).has('position-overlay')
-  ? <PositionOverlay />
-  : <App />
+const params = new URLSearchParams(window.location.search);
+const root = params.has("boundary-overlay") ? (
+  <BoundaryOverlay />
+) : params.has("position-overlay") ? (
+  <PositionOverlay />
+) : (
+  <App />
+);
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    {root}
-  </StrictMode>,
-)
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>{root}</StrictMode>,
+);

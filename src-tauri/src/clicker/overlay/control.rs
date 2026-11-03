@@ -61,6 +61,7 @@ pub fn toggle(app: &AppHandle, state: &AppState) -> Result<bool, String> {
         }
     }
     publish(app, state);
+    let _ = super::publish_boundary_state(app, state);
     Ok(visible)
 }
 

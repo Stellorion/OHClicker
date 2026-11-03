@@ -3,7 +3,7 @@ import { useAC } from "../../../hooks/useAC";
 import { Separator } from "../../common/Separator";
 import { SCREEN } from "../../../lib/constants";
 import { friendlyName } from "../../../lib/displayUtil";
-import { useDisplays } from "../../../hooks/UseDisplays";
+import { useDisplays } from "../../../hooks/useDisplays";
 import { ScreenMapCanvas } from "./ScreenMapCanvas";
 import { DisplaySelector } from "./DisplaySelector";
 

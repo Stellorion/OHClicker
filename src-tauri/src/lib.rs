@@ -41,6 +41,7 @@ pub fn run() {
             commands::boundaries::set_region_mode,
             commands::boundaries::update_boundary_rect,
             commands::boundaries::set_stop_when_cursor_leaves,
+            commands::boundaries::get_boundary_overlay_state,
         ])
         .setup(move |app| {
             let state = app.state::<app_state::AppState>();
@@ -57,6 +58,7 @@ pub fn run() {
             }
             clicker::service::start_engine(app.handle().clone(), state.clicker.clone());
             clicker::overlay::create_window(app.handle(), &state)?;
+            clicker::overlay::create_boundary_window(app.handle(), &state)?;
 
             let toggle_shortcut = Shortcut::new(None, Code::F6);
 
