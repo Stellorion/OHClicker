@@ -15,7 +15,6 @@ export interface UIState {
 export interface UIActions {
   setClickerMode: (mode: PageMode) => void;
   setIsExpanded: (expanded: boolean | ((prev: boolean) => boolean)) => void;
-  toggleSidebar: () => void;
   showNotice: (notice: Notice) => void;
   closeNotice: () => void;
 }
