@@ -15,7 +15,11 @@ fn select_primary_display(app: &tauri::App, state: &app_state::AppState) {
         return;
     };
     if let Ok(displays) = clicker::service::available_displays(&main_window) {
-        if let Some(primary) = displays.iter().find(|d| d.is_primary).or_else(|| displays.first()) {
+        if let Some(primary) = displays
+            .iter()
+            .find(|d| d.is_primary)
+            .or_else(|| displays.first())
+        {
             clicker::service::update_selected_display(&state.clicker, primary.clone());
         }
     }
@@ -24,6 +28,11 @@ fn select_primary_display(app: &tauri::App, state: &app_state::AppState) {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(
+            tauri_plugin_log::Builder::new()
+                .level(tauri_plugin_log::log::LevelFilter::Info)
+                .build(),
+        )
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .manage(app_state::AppState::new())
@@ -84,6 +93,12 @@ pub fn run() {
             clicker::hotkeys::apply_hotkeys(app.handle(), &state, "F6", "F7", "F8")?;
             clicker::profile::load_on_startup(app.handle(), &state);
             Ok(())
+        })
+        .on_window_event(|window, event| {
+            if let tauri::WindowEvent::CloseRequested { .. } = event {
+                // Force exit the process to release global hotkeys and background workers
+                window.app_handle().exit(0);
+            }
         })
         .run(tauri::generate_context!())
         .expect("error while building tauri application");

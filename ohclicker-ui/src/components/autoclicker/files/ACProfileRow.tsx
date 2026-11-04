@@ -15,7 +15,7 @@ export const ACProfileRow: React.FC<ACProfileRowProps> = ({ busy, onImport, onEx
     <div>
       <p className="text-sm font-bold text-app-text-primary">Profile</p>
       <p className="text-xs text-app-text-secondary leading-relaxed">
-        Save or load settings configuration, including hotkeys
+        Save or load settings configuration
       </p>
     </div>
 

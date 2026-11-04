@@ -35,7 +35,7 @@ export const DisplaySelector: React.FC<DisplaySelectorProps> = ({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex h-9 w-full items-center gap-2 rounded-md border border-app-border bg-app-bg px-3 text-xs font-medium text-app-text-primary transition-colors hover:bg-app-surface-hover focus:outline-none">
+      <DropdownMenuTrigger className="flex h-9 w-full items-center gap-2 cursor-pointer rounded-md border border-app-border bg-app-bg px-3 text-xs font-medium text-app-text-primary transition-colors hover:bg-app-surface-hover focus:outline-none">
         <Monitor className="size-3.5 shrink-0 text-app-text-muted" />
         <span className="min-w-0 flex-1 truncate text-left">
           {selectedDisplay
@@ -62,7 +62,7 @@ export const DisplaySelector: React.FC<DisplaySelectorProps> = ({
             <DropdownMenuItem
               key={display.id}
               onClick={() => onSelect(display.id)}
-              className="min-h-11"
+              className="min-h-11 cursor-pointer"
             >
               <Monitor
                 className={`size-4 shrink-0 ${
@@ -89,7 +89,7 @@ export const DisplaySelector: React.FC<DisplaySelectorProps> = ({
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={onRefresh}
-          className="text-app-text-secondary"
+          className="text-app-text-secondary cursor-pointer"
         >
           <RotateCw className="size-3.5" /> Refresh displays
         </DropdownMenuItem>

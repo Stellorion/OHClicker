@@ -1,6 +1,7 @@
 // Click, then press a key combination to record a hotkey.
 import React, { useState, useEffect, useRef } from "react";
 import { cn } from "../../lib/utils";
+import { Button } from "./Button";
 
 interface HotkeyInputProps {
   value: string;
@@ -63,9 +64,8 @@ export const HotkeyInput: React.FC<HotkeyInputProps> = ({
   }, [isRecording]);
 
   return (
-    <button
+    <Button
       ref={buttonRef}
-      type="button"
       disabled={disabled}
       onClick={() => setIsRecording(true)}
       className={cn(
@@ -78,6 +78,6 @@ export const HotkeyInput: React.FC<HotkeyInputProps> = ({
       )}
     >
       {isRecording ? "Press key..." : value}
-    </button>
+    </Button>
   );
 };

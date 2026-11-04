@@ -34,17 +34,19 @@ export const NoticeDialog: React.FC = () => {
         aria-modal="true"
         aria-labelledby="notice-title"
         aria-describedby="notice-message"
-        className="w-full max-w-md rounded-xl border border-app-border bg-app-surface p-5 shadow-xl"
+        className="max-w-md rounded-xl border border-app-border bg-app-surface p-3.5 shadow-xl"
       >
         <div className="flex items-start gap-3">
-          <TriangleAlert className="mt-0.5 size-5 shrink-0 text-app-red" />
           <div className="min-w-0 space-y-2">
-            <h2
-              id="notice-title"
-              className="text-sm font-bold text-app-text-primary"
-            >
-              {notice.title}
-            </h2>
+            <div className="flex items-center gap-2">
+              <TriangleAlert className="mt-0.5 size-5 shrink-0 text-app-red" />
+              <h2
+                id="notice-title"
+                className="text-sm font-bold text-app-text-primary"
+              >
+                {notice.title}
+              </h2>
+            </div>
             <p
               id="notice-message"
               className="text-xs leading-relaxed text-app-text-secondary"
@@ -54,7 +56,7 @@ export const NoticeDialog: React.FC = () => {
             {notice.details && notice.details.length > 0 && (
               <ul className="max-h-48 space-y-1 overflow-y-auto rounded-lg border border-app-border bg-app-bg p-2.5 font-mono text-[11px] leading-snug text-app-text-primary">
                 {notice.details.map((detail, index) => (
-                  <li key={index} className="break-words">
+                  <li key={index} className="warp-break-words">
                     {detail}
                   </li>
                 ))}
@@ -63,11 +65,11 @@ export const NoticeDialog: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-4 flex justify-end">
+        <div className="mt-3 flex justify-end">
           <Button
             autoFocus
             onClick={closeNotice}
-            className="rounded-lg bg-app-red px-4 py-1.5 text-xs font-bold text-white hover:opacity-90"
+            className="rounded-lg bg-app-red px-5 py-1.5 text-xs font-bold text-white hover:opacity-90"
           >
             OK
           </Button>

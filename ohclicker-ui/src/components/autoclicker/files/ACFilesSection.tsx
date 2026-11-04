@@ -17,12 +17,21 @@ export const ACFilesSection: React.FC = () => {
         <h3 className="text-sm font-bold text-app-text-primary uppercase tracking-wide">
           Files
         </h3>
+        {files.status && (
+          <p className="text-xs font-medium text-app-text-muted">
+            {files.status}
+          </p>
+        )}
       </div>
 
       <Separator className={SEPARATOR} />
 
       <div className="space-y-4">
-        <ACProfileRow busy={files.busy} onImport={files.importProfile} onExport={files.exportProfile} />
+        <ACProfileRow
+          busy={files.busy}
+          onImport={files.importProfile}
+          onExport={files.exportProfile}
+        />
 
         <Separator className={SEPARATOR} />
 
@@ -33,10 +42,6 @@ export const ACFilesSection: React.FC = () => {
           onUnlink={files.unlinkProfile}
           onReveal={files.revealLinked}
         />
-
-        {files.status && (
-          <p className="text-xs font-medium text-app-text-muted">{files.status}</p>
-        )}
       </div>
     </div>
   );
