@@ -8,6 +8,8 @@
     "boundary-overlay"
   ],
   "permissions": [
-    "core:default"
+    "core:default",
+    "log:default",
+    "dialog:default"
   ]
 }

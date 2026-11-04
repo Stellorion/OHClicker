@@ -2,6 +2,7 @@ import { ACPage } from "./views/ACPage";
 import { Button } from "./components/common/Button";
 import { Minimize2, Maximize2, MousePointerClick } from "lucide-react";
 import { useUIStore } from "./store/useUIStore";
+import { NoticeDialog } from "./components/common/NoticeDialog";
 
 export default function App() {
   const currentMode = useUIStore((state) => state.clickerMode);
@@ -48,6 +49,7 @@ export default function App() {
           <ACPage />
         </section>
       </main>
+      <NoticeDialog />
     </div>
   );
 }

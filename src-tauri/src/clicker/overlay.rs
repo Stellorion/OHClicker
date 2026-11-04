@@ -84,7 +84,7 @@ pub fn create_boundary_window(app: &AppHandle, state: &AppState) -> tauri::Resul
     .shadow(false)
     .no_redirection_bitmap(true)
     .build()?;
-    
+
     place_on_display(&window, &display)?;
     window.set_ignore_cursor_events(true)?;
     publish_boundary_state(app, state);
@@ -128,7 +128,14 @@ pub fn boundary_visual_state(state: &AppState) -> BoundaryVisualState {
         )),
         RustRegionMode::ActiveWindow => crate::commands::boundaries::foreground_window_rect()
             .ok()
-            .map(|(x, y, w, h)| (x - display.origin_x, y - display.origin_y, w as i32, h as i32)),
+            .map(|(x, y, w, h)| {
+                (
+                    x - display.origin_x,
+                    y - display.origin_y,
+                    w as i32,
+                    h as i32,
+                )
+            }),
     };
     let (x, y, width, height) = rect.unwrap_or((0, 0, 0, 0));
 
@@ -157,7 +164,11 @@ pub fn update_boundary_window_position(app: &AppHandle, state: &AppState) -> Res
 pub fn publish_boundary_state(app: &AppHandle, state: &AppState) {
     if let Some(window) = app.get_webview_window("boundary-overlay") {
         let visual = boundary_visual_state(state);
-        let _ = if visual.visible { window.show() } else { window.hide() };
+        let _ = if visual.visible {
+            window.show()
+        } else {
+            window.hide()
+        };
         let _ = window.emit("boundary-state", visual);
     }
 }

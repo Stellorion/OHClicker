@@ -22,7 +22,10 @@ impl DisplayInfo {
             .name()
             .cloned()
             .unwrap_or_else(|| format!("Display at {},{}", position.x, position.y));
-        let id = format!("{}:{}:{}x{}", position.x, position.y, size.width, size.height);
+        let id = format!(
+            "{}:{}:{}x{}",
+            position.x, position.y, size.width, size.height
+        );
         Self {
             id,
             name,

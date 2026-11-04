@@ -2,12 +2,22 @@ mod app_state;
 mod clicker;
 mod commands;
 
-use tauri::{Emitter, Manager};
-use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Shortcut, ShortcutState};
+use tauri::Manager;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(
+            tauri_plugin_log::Builder::new()
+                .level(tauri_plugin_log::log::LevelFilter::Info)
+                .build(),
+        )
+        .plugin(
+            tauri_plugin_log::Builder::new()
+                .level(tauri_plugin_log::log::LevelFilter::Info)
+                .build(),
+        )
+        .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .manage(app_state::AppState::new())
         .invoke_handler(tauri::generate_handler![
@@ -42,6 +52,8 @@ pub fn run() {
             commands::boundaries::update_boundary_rect,
             commands::boundaries::set_stop_when_cursor_leaves,
             commands::boundaries::get_boundary_overlay_state,
+            commands::profile::export_profile,
+            commands::profile::import_profile,
         ])
         .setup(move |app| {
             let state = app.state::<app_state::AppState>();
@@ -60,34 +72,8 @@ pub fn run() {
             clicker::overlay::create_window(app.handle(), &state)?;
             clicker::overlay::create_boundary_window(app.handle(), &state)?;
 
-            let toggle_shortcut = Shortcut::new(None, Code::F6);
-
-            app.global_shortcut()
-                .on_shortcut(toggle_shortcut, move |app, _shortcut, event| {
-                    if event.state() == ShortcutState::Pressed {
-                        let state = app.state::<app_state::AppState>();
-                        let running = clicker::service::toggle(&state);
-                        let _ = app.emit("clicker-state-changed", running);
-                    }
-                })?;
-
-            let pick_shortcut = Shortcut::new(None, Code::F7);
-            app.global_shortcut()
-                .on_shortcut(pick_shortcut, move |app, _shortcut, event| {
-                    if event.state() == ShortcutState::Pressed {
-                        let state = app.state::<app_state::AppState>();
-                        let _ = clicker::overlay::begin_pick(app, &state);
-                    }
-                })?;
-
-            let overlay_shortcut = Shortcut::new(None, Code::F8);
-            app.global_shortcut()
-                .on_shortcut(overlay_shortcut, move |app, _shortcut, event| {
-                    if event.state() == ShortcutState::Pressed {
-                        let state = app.state::<app_state::AppState>();
-                        let _ = clicker::overlay::toggle(app, &state);
-                    }
-                })?;
+            // Default hotkeys; they are re-registered when a profile is imported.
+            commands::hotkeys::apply_hotkeys(app.handle(), &state, "F6", "F7", "F8")?;
 
             Ok(())
         })

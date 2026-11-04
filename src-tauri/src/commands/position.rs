@@ -1,14 +1,18 @@
 use crate::app_state::AppState;
 use crate::clicker::display::DisplayInfo;
+use crate::clicker::overlay;
 use crate::clicker::position::{
     RustCoordinateType, RustPositionMode, RustSequencePoint, ScreenSize,
 };
 use crate::clicker::service;
-use crate::clicker::overlay;
 use tauri::{AppHandle, Manager, WebviewWindow};
 
 #[tauri::command]
-pub fn update_position_mode(app: AppHandle, state: tauri::State<'_, AppState>, mode: RustPositionMode) {
+pub fn update_position_mode(
+    app: AppHandle,
+    state: tauri::State<'_, AppState>,
+    mode: RustPositionMode,
+) {
     service::update_position_mode(&state.clicker, mode);
     overlay::publish(&app, &state);
 }
@@ -62,7 +66,11 @@ pub fn update_position_jitter(app: AppHandle, state: tauri::State<'_, AppState>,
 }
 
 #[tauri::command]
-pub fn update_sequence_points(app: AppHandle, state: tauri::State<'_, AppState>, points: Vec<RustSequencePoint>) {
+pub fn update_sequence_points(
+    app: AppHandle,
+    state: tauri::State<'_, AppState>,
+    points: Vec<RustSequencePoint>,
+) {
     service::update_sequence_points(&state.clicker, points);
     overlay::publish(&app, &state);
 }
@@ -95,7 +103,9 @@ pub fn toggle_position_overlay(
 }
 
 #[tauri::command]
-pub fn get_position_overlay_state(state: tauri::State<'_, AppState>) -> overlay::OverlayVisualState {
+pub fn get_position_overlay_state(
+    state: tauri::State<'_, AppState>,
+) -> overlay::OverlayVisualState {
     overlay::visual_state(&state)
 }
 

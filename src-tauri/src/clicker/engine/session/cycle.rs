@@ -7,10 +7,10 @@ use std::thread;
 use std::time::{Duration, Instant};
 use tauri::AppHandle;
 
+mod boundaries;
 mod click;
 mod limits;
 mod target;
-mod boundaries;
 
 pub(super) fn tick(
     session: &mut ClickSession,

@@ -12,6 +12,7 @@ export interface ACSequencePoint extends Point {
 }
 
 export interface ACSettings {
+  scaleFactor: number;
   // Timing Configuration
   cps: number;
   exactIntervalMs: number;

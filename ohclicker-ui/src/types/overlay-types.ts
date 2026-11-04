@@ -29,7 +29,6 @@ export interface TargetMarkerProps extends Point {
   screenHeight: number;
 }
 
-/** Rect is in physical pixels relative to the top-left of the selected display. */
 export interface BoundaryOverlayState {
   visible: boolean;
   regionMode: ACRegionMode;

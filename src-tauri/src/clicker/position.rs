@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use crate::clicker::display::DisplayInfo;
+use serde::{Deserialize, Serialize};
 use std::sync::atomic::{AtomicI32, AtomicU32};
 use std::sync::{Arc, Mutex};
 

@@ -28,10 +28,7 @@ impl ClickTarget {
     }
 }
 
-pub(super) fn resolve(
-    state: &AutoClickerState,
-    session: &mut ClickSession,
-) -> Option<ClickTarget> {
+pub(super) fn resolve(state: &AutoClickerState, session: &mut ClickSession) -> Option<ClickTarget> {
     let position = &state.position;
     let mode = *position.mode.lock().unwrap();
     let coordinate_type = *position.coordinate_type.lock().unwrap();

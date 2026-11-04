@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import type { ACSettings, ACStats } from '../types/ac-types';
-import type { ACState } from '../types/state-types';
+import { create } from "zustand";
+import type { ACSettings, ACStats } from "../types/ac-types";
+import type { ACState } from "../types/state-types";
 
 const initialSettings: ACSettings = {
   cps: 12,
@@ -9,38 +9,39 @@ const initialSettings: ACSettings = {
   buttonHoldTimeMs: 12,
   startDelaySec: 3.0,
 
-  mouseButton: 'left',
-  clickType: 'single',
+  mouseButton: "left",
+  clickType: "single",
 
-  positionMode: 'cursor',
-  selectedDisplayId: 'primary',
-  coordinateType: 'absolute',
-  targetWindow: 'Active Window',
+  positionMode: "cursor",
+  selectedDisplayId: "primary",
+  coordinateType: "absolute",
+  targetWindow: "Active Window",
   targetX: 960,
   targetY: 540,
   positionJitterPx: 2,
   sequencePoints: [
-    { id: '1', x: 412, y: 288, dwell: 40 },
-    { id: '2', x: 1280, y: 420, dwell: 40 },
-    { id: '3', x: 960, y: 780, dwell: 120 },
+    { id: "1", x: 412, y: 288, dwell: 40 },
+    { id: "2", x: 1280, y: 420, dwell: 40 },
+    { id: "3", x: 960, y: 780, dwell: 120 },
   ],
 
-  repeatType: 'until_stopped',
+  repeatType: "until_stopped",
   fixedCountLimit: 500,
   maxDurationEnabled: false,
   maxDurationSec: 300,
 
   boundariesEnabled: false,
-  regionMode: 'custom',
+  regionMode: "custom",
   boundaryX: 320,
   boundaryY: 180,
   boundaryWidth: 1280,
   boundaryHeight: 800,
   stopWhenCursorLeaves: false,
 
-  startStopHotkey: 'F6',
-  pickPositionHotkey: 'F7',
-  toggleOverlayHotkey: 'F8',
+  startStopHotkey: "F6",
+  pickPositionHotkey: "F7",
+  toggleOverlayHotkey: "F8",
+  scaleFactor: 0,
 };
 
 const initialStats: ACStats = {
@@ -59,6 +60,11 @@ export const useACStore = create<ACState>((set) => ({
   updateSettings: (partial) =>
     set((state) => ({
       settings: { ...state.settings, ...partial },
+    })),
+
+  applyProfile: (profile: Partial<ACSettings>) =>
+    set((state) => ({
+      settings: { ...state.settings, ...profile },
     })),
 
   setRunningState: (isRunning) =>

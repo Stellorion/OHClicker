@@ -1,8 +1,8 @@
 use crate::app_state::AppState;
+use crate::clicker::overlay::{boundary_visual_state, publish_boundary_state};
 use crate::clicker::service;
 use crate::clicker::state::RustRegionMode;
-use crate::clicker::overlay::{boundary_visual_state, publish_boundary_state};
-use tauri::{AppHandle};
+use tauri::AppHandle;
 
 #[tauri::command]
 pub fn set_boundaries_enabled(app: AppHandle, state: tauri::State<'_, AppState>, enabled: bool) {
@@ -30,11 +30,7 @@ pub fn update_boundary_rect(
 }
 
 #[tauri::command]
-pub fn set_stop_when_cursor_leaves(
-    app: AppHandle,
-    state: tauri::State<AppState>,
-    enabled: bool,
-) {
+pub fn set_stop_when_cursor_leaves(app: AppHandle, state: tauri::State<AppState>, enabled: bool) {
     service::set_stop_when_cursor_leaves(&state.clicker, enabled);
     publish_boundary_state(&app, &state);
 }
@@ -60,6 +56,8 @@ pub(crate) fn foreground_window_rect() -> Result<(i32, i32, u32, u32), String> {
 }
 
 #[tauri::command]
-pub fn get_boundary_overlay_state(state: tauri::State<'_, AppState>) -> crate::clicker::overlay::BoundaryVisualState {
+pub fn get_boundary_overlay_state(
+    state: tauri::State<'_, AppState>,
+) -> crate::clicker::overlay::BoundaryVisualState {
     boundary_visual_state(&state)
 }

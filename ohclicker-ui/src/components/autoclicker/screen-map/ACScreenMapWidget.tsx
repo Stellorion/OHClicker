@@ -6,9 +6,15 @@ import { friendlyName } from "../../../lib/displayUtil";
 import { useDisplays } from "../../../hooks/useDisplays";
 import { ScreenMapCanvas } from "./ScreenMapCanvas";
 import { DisplaySelector } from "./DisplaySelector";
+import { clickerService } from "../../../services/clickerService";
+import { useEffect, useState } from "react";
 
 export const ACScreenMapWidget: React.FC = () => {
   const { settings, updateSettings } = useAC();
+  const [liveBounds, setLiveBounds] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
 
   const selectDisplay = (id: string) =>
     void updateSettings({ selectedDisplayId: id });
@@ -29,15 +35,40 @@ export const ACScreenMapWidget: React.FC = () => {
     width: settings.boundaryWidth ?? 1280,
     height: settings.boundaryHeight ?? 720,
   };
+  const isTrackingActiveWindow =
+    bounds.enabled && settings.regionMode === "active_window";
   const points = settings.sequencePoints ?? [
     { x: 412, y: 288 },
     { x: 1280, y: 420 },
     { x: 960, y: 780 },
   ];
 
+  useEffect(() => {
+    if (!isTrackingActiveWindow) {
+      setLiveBounds(null);
+      return;
+    }
+
+    const fetchBounds = async () => {
+      try {
+        const res = await clickerService.getActiveWindowBounds();
+        if (res) {
+          setLiveBounds({ width: res.width, height: res.height });
+        }
+      } catch {
+        // Handle or ignore temporary lookup errors when no active window is focused
+      }
+    };
+
+    void fetchBounds();
+    const intervalId = window.setInterval(fetchBounds, 100);
+
+    return () => window.clearInterval(intervalId);
+  }, [isTrackingActiveWindow]);
+
   return (
-    <div className="bg-app-surface border border-app-border rounded-xl p-4 space-y-3 shadow-sm">
-      <div className="flex items-center gap-3">
+    <div className="bg-app-surface border border-app-border rounded-xl p-4 shadow-sm">
+      <div className="flex items-center gap-3 pb-3">
         <Target className="size-4 text-app-text-muted shrink-0" />
         <div className="flex flex-col">
           <h3 className="text-sm font-bold text-app-text-primary uppercase tracking-wide">
@@ -50,7 +81,7 @@ export const ACScreenMapWidget: React.FC = () => {
         </div>
       </div>
 
-      <Separator className="w-[calc(100%+2rem)] -mx-4" />
+      <Separator className="w-[calc(100%+2rem)] -mx-4 mb-3" />
 
       <ScreenMapCanvas
         screenSize={screenSize}
@@ -58,10 +89,12 @@ export const ACScreenMapWidget: React.FC = () => {
         target={target}
         points={points}
         bounds={bounds}
-        onTargetChange={({ x, y }) => void updateSettings({ targetX: x, targetY: y })}
+        onTargetChange={({ x, y }) =>
+          void updateSettings({ targetX: x, targetY: y })
+        }
       />
 
-      <div className="flex items-center justify-between gap-3 text-xs font-mono text-app-text-secondary px-0.5">
+      <div className="flex items-center justify-between gap-3 mt-2 mb-3 text-xs font-mono text-app-text-secondary px-0.5">
         <span>
           Target{" "}
           <strong className="text-app-text-primary">
@@ -72,10 +105,19 @@ export const ACScreenMapWidget: React.FC = () => {
                 : `${target.x}, ${target.y}`}
           </strong>
         </span>
+
         <span>
           Bounds{" "}
           <strong className="text-app-text-primary">
-            {bounds.enabled ? `${bounds.width}×${bounds.height}` : "Disabled"}
+            {bounds.enabled
+              ? settings.regionMode === "fullscreen"
+                ? `${screenSize.width}×${screenSize.height}`
+                : settings.regionMode === "active_window"
+                  ? liveBounds
+                    ? `${liveBounds.width}×${liveBounds.height}`
+                    : `${bounds.width}×${bounds.height}`
+                  : `${bounds.width}×${bounds.height}`
+              : "Disabled"}
           </strong>
         </span>
       </div>

@@ -1,5 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import type { ACDisplay } from "../types/ac-types";
+import type { ConfigProfile } from "../types/profile-types";
 
 export const clickerService = {
   toggleClicker: () => invoke<boolean>("toggle_clicker"),
@@ -66,5 +67,9 @@ export const clickerService = {
   setStopWhenCursorLeaves: (enabled: boolean) =>
     invoke("set_stop_when_cursor_leaves", { enabled }),
   getActiveWindowBounds: () =>
-    invoke<{ width: number; height: number }>("get_active_window_bounds"),
+    invoke<{ width: number; height: number }>("get_boundary_overlay_state"),
+  /** true = file written, false = user cancelled. Rejects with a ProfileError. */
+  exportProfile: () => invoke<boolean>("export_profile"),
+  /** null = user cancelled. Rejects with a ProfileError. */
+  importProfile: () => invoke<ConfigProfile | null>("import_profile"),
 };

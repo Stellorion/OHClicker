@@ -4,6 +4,7 @@ import { type UIState, type UIActions } from '../types/ui-state';
 export const useUIStore = create<UIState & UIActions>((set) => ({
   clickerMode: 'minimized',
   isExpanded: true,
+  notice: null,
 
   setClickerMode: (mode) => set({ clickerMode: mode }),
 
@@ -13,4 +14,7 @@ export const useUIStore = create<UIState & UIActions>((set) => ({
     })),
 
   toggleSidebar: () => set((state) => ({ isExpanded: !state.isExpanded })),
+
+  showNotice: (notice) => set({ notice }),
+  closeNotice: () => set({ notice: null }),
 }));

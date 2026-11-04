@@ -1,6 +1,7 @@
 import type { ACSettings, ACStats } from './ac-types';
 
 export interface ACState {
+  applyProfile: (profile: Partial<ACSettings>) => void;
   settings: ACSettings;
   stats: ACStats;
 

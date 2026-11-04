@@ -96,17 +96,21 @@ export const ACPositionSection: React.FC = () => {
         </>
       )}
 
-      <Separator className="w-[calc(100%+2rem)] -mx-4" />
+      {positionMode !== "cursor" && (
+        <>
+          <Separator className="w-[calc(100%+2rem)] -mx-4" />
 
-      <SettingRow
-        label="Position jitter"
-        description="Random pixel offset around each target"
-        value={jitter}
-        unit="px"
-        min={0}
-        max={50}
-        onChange={(val) => updateSettings({ positionJitterPx: val })}
-      />
+          <SettingRow
+            label="Position jitter"
+            description="Random pixel offset around each target"
+            value={jitter}
+            unit="px"
+            min={0}
+            max={50}
+            onChange={(val) => updateSettings({ positionJitterPx: val })}
+          />
+        </>
+      )}
     </div>
   );
 };

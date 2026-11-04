@@ -3,6 +3,8 @@ import { listen } from "@tauri-apps/api/event";
 import { useACStore } from "../store/useACStore";
 import { clickerService } from "../services/clickerService";
 import { useACTimer } from "./useACTimer";
+import { useUIStore } from "../store/useUIStore";
+import { errorMessage } from "../lib/profile";
 
 export const useAC = () => {
   const settings = useACStore((state) => state.settings);
@@ -20,7 +22,27 @@ export const useAC = () => {
   });
 
   const updateSettings = async (newSettings: Partial<typeof settings>) => {
+    const previous = useACStore.getState().settings;
     useACStore.getState().updateSettings(newSettings);
+
+    // If the OS refuses a hotkey (invalid, duplicate, or used by another app),
+    // put the old value back so the UI doesn't show a key that isn't active.
+    const applyHotkey = async (
+      field: "startStopHotkey" | "pickPositionHotkey" | "toggleOverlayHotkey",
+      send: (hotkey: string) => Promise<void>,
+    ) => {
+      const value = newSettings[field];
+      if (value === undefined) return;
+      try {
+        await send(value);
+      } catch (error) {
+        useACStore.getState().updateSettings({ [field]: previous[field] });
+        useUIStore.getState().showNotice({
+          title: "Hotkey not changed",
+          message: errorMessage(error),
+        });
+      }
+    };
 
     if (newSettings.cps !== undefined) {
       await clickerService.updateCps(newSettings.cps);
@@ -79,19 +101,15 @@ export const useAC = () => {
     if (newSettings.sequencePoints !== undefined) {
       await clickerService.updateSequencePoints(newSettings.sequencePoints);
     }
-    if (newSettings.startStopHotkey !== undefined) {
-      await clickerService.updateStartStopHotkey(newSettings.startStopHotkey);
-    }
-    if (newSettings.pickPositionHotkey !== undefined) {
-      await clickerService.updatePickPositionHotkey(
-        newSettings.pickPositionHotkey,
-      );
-    }
-    if (newSettings.toggleOverlayHotkey !== undefined) {
-      await clickerService.updateToggleOverlayHotkey(
-        newSettings.toggleOverlayHotkey,
-      );
-    }
+    await applyHotkey("startStopHotkey", clickerService.updateStartStopHotkey);
+    await applyHotkey(
+      "pickPositionHotkey",
+      clickerService.updatePickPositionHotkey,
+    );
+    await applyHotkey(
+      "toggleOverlayHotkey",
+      clickerService.updateToggleOverlayHotkey,
+    );
   };
 
   useEffect(() => {
