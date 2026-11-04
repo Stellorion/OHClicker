@@ -7,7 +7,7 @@ OHClicker is an auto-clicker desktop app built with Tauri (Rust backend) and Rea
 - **Rust backend:** Fast, low-latency click loops and global hotkey handling.
 - **Visual screen mapping:** Multi-display support to pick coordinates and set bounding boxes visually.
 - **Sequences and jitter:** Support for multi-step click lists and random coordinate offsets to mimic natural movement.
-- **Dual views:** Switch between a full control panel (`ACAdvView`) and a compact mini widget (`ACMiniView`).
+- **Dual views:** Switch between a full control panel and a compact mini widget.
 - **Native overlays:** Transparent click-through markers and boundary lines.
 - **Profiles:** Save, load, and validate configuration files.
 - **Global hotkeys:** Quick shortcuts to start/stop or trigger actions from anywhere.
