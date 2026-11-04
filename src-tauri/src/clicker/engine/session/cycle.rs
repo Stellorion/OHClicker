@@ -11,8 +11,8 @@ use std::thread;
 use std::time::{Duration, Instant};
 use tauri::AppHandle;
 
-mod bounds_guard;
 mod boundaries;
+mod bounds_guard;
 mod click;
 mod limits;
 mod target;

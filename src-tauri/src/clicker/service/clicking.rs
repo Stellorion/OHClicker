@@ -20,7 +20,9 @@ pub fn update_cps(state: &AutoClickerState, value: u32) {
 }
 
 pub fn update_interval_randomization_pct(state: &AutoClickerState, value: u32) {
-    state.interval_randomization_pct.store(value, Ordering::SeqCst);
+    state
+        .interval_randomization_pct
+        .store(value, Ordering::SeqCst);
 }
 
 pub fn update_button_hold_ms(state: &AutoClickerState, value: u32) {

@@ -26,11 +26,7 @@ pub(super) fn reached(session: &ClickSession, state: &AutoClickerState) -> bool 
 }
 
 /// Fixed count mode and the click total hit the limit.
-pub(super) fn fixed_count_reached(
-    repeat_type: RepeatType,
-    total_clicks: u64,
-    limit: u32,
-) -> bool {
+pub(super) fn fixed_count_reached(repeat_type: RepeatType, total_clicks: u64, limit: u32) -> bool {
     repeat_type == RepeatType::FixedCount && total_clicks >= u64::from(limit)
 }
 

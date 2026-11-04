@@ -2,8 +2,8 @@
 //! Frontend: services/clickerService.ts + components/autoclicker/files/ACLinkedProfileRow.tsx
 use super::pick_profile_path;
 use crate::app_state::AppState;
+use crate::clicker::profile::{ConfigProfile, LinkedProfile, ProfileError, reveal_in_file_manager};
 use crate::clicker::profile::{ensure_stopped, link_profile_file, unlink_profile_file};
-use crate::clicker::profile::{reveal_in_file_manager, ConfigProfile, LinkedProfile, ProfileError};
 use std::path::Path;
 use tauri::{AppHandle, State};
 

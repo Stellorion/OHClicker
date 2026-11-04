@@ -4,8 +4,8 @@ mod profile_sync;
 
 use crate::clicker::profile::LinkedProfile;
 use crate::clicker::state::AutoClickerState;
-use std::sync::atomic::AtomicBool;
 use std::sync::Mutex;
+use std::sync::atomic::AtomicBool;
 
 pub struct AppState {
     /// Click engine settings (cps, position, boundaries ...).

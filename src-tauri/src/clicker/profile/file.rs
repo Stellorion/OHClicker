@@ -1,5 +1,5 @@
 //! Reads a profile file from disk and parses it.
-use super::{parse_profile, ConfigProfile, ProfileError, ProfileErrorKind};
+use super::{ConfigProfile, ProfileError, ProfileErrorKind, parse_profile};
 use std::path::Path;
 
 /// Profiles are tiny; anything bigger is certainly not one.
@@ -9,7 +9,11 @@ const MAX_PROFILE_BYTES: u64 = 1024 * 1024;
 pub fn read_profile_file(path: &Path) -> Result<ConfigProfile, ProfileError> {
     let read_error = |e: std::io::Error| {
         let message = "Couldn't read the selected file.";
-        ProfileError::new(ProfileErrorKind::Read, message, vec![format!("{}: {e}", path.display())])
+        ProfileError::new(
+            ProfileErrorKind::Read,
+            message,
+            vec![format!("{}: {e}", path.display())],
+        )
     };
 
     let size = std::fs::metadata(path).map_err(read_error)?.len();

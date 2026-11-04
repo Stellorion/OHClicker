@@ -8,6 +8,7 @@ mod clicker;
 mod commands;
 
 use tauri::Manager;
+use tauri_plugin_window_state::{Builder as WindowState, StateFlags};
 
 /// Picks the primary monitor as the initial "selected display".
 fn select_primary_display(app: &tauri::App, state: &app_state::AppState) {
@@ -28,9 +29,17 @@ fn select_primary_display(app: &tauri::App, state: &app_state::AppState) {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_window_state::Builder::new().build())
         .plugin(
             tauri_plugin_log::Builder::new()
                 .level(tauri_plugin_log::log::LevelFilter::Info)
+                .build(),
+        )
+        .plugin(
+            WindowState::default()
+                .with_denylist(&["position-overlay", "boundary-overlay"])
+                // Only remember size, position and maximized (not "visible").
+                .with_state_flags(StateFlags::SIZE | StateFlags::POSITION | StateFlags::MAXIMIZED)
                 .build(),
         )
         .plugin(tauri_plugin_dialog::init())

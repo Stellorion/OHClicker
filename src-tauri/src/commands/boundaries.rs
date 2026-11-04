@@ -1,7 +1,9 @@
 //! Tauri commands for the Boundaries section (frontend: clickerService.ts and
 //! components/autoclicker/ACBoundariesSection.tsx).
 use crate::app_state::AppState;
-use crate::clicker::overlay::{boundary_overlay_state, publish_boundary_state, BoundaryOverlayState};
+use crate::clicker::overlay::{
+    BoundaryOverlayState, boundary_overlay_state, publish_boundary_state,
+};
 use crate::clicker::service;
 use crate::clicker::state::RegionMode;
 use tauri::{AppHandle, State};
@@ -22,7 +24,14 @@ pub fn set_region_mode(app: AppHandle, state: State<'_, AppState>, mode: RegionM
 
 /// Custom rectangle (relative to the selected display).
 #[tauri::command]
-pub fn update_boundary_rect(app: AppHandle, state: State<'_, AppState>, x: i32, y: i32, width: u32, height: u32) {
+pub fn update_boundary_rect(
+    app: AppHandle,
+    state: State<'_, AppState>,
+    x: i32,
+    y: i32,
+    width: u32,
+    height: u32,
+) {
     service::update_boundary_rect(&state.clicker, x, y, width, height);
     publish_boundary_state(&app, &state);
 }

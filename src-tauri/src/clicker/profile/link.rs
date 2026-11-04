@@ -1,6 +1,6 @@
 //! Link / unlink a profile file and load it automatically on startup.
 //! The path is stored in `settings.json` (see app_settings.rs).
-use super::{apply_profile_to_app, read_profile_file, ConfigProfile, LinkedProfile};
+use super::{ConfigProfile, LinkedProfile, apply_profile_to_app, read_profile_file};
 use super::{ProfileError, ProfileErrorKind};
 use crate::app_settings;
 use crate::app_state::AppState;

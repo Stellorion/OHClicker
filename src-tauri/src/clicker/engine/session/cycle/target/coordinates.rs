@@ -1,9 +1,9 @@
 //! Turns a configured position into real desktop pixels (adds jitter + display origin).
 mod jitter;
 
+use crate::clicker::display::DisplayInfo;
 use enigo::Coordinate;
 use jitter::random_jitter;
-use crate::clicker::display::DisplayInfo;
 
 /// Adds jitter; absolute positions are converted from display-local to desktop pixels.
 pub(super) fn apply(

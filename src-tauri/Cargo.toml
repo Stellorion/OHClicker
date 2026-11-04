@@ -27,3 +27,6 @@ enigo = "0.6.1"
 tauri-plugin-global-shortcut = "2.4.1"
 windows = "0.62.2"
 tauri-plugin-dialog = "2"
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-window-state = "2"

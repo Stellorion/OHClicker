@@ -1,8 +1,8 @@
 //! "Import": load a profile file once (does not remember it, see link.rs for that).
 use super::pick_profile_path;
 use crate::app_state::AppState;
-use crate::clicker::profile::{apply_profile_to_app, ensure_stopped, read_profile_file};
 use crate::clicker::profile::{ConfigProfile, ProfileError};
+use crate::clicker::profile::{apply_profile_to_app, ensure_stopped, read_profile_file};
 use tauri::{AppHandle, State};
 
 /// Returns the applied profile, or Ok(None) when the user cancelled.

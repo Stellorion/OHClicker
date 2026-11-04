@@ -27,6 +27,10 @@ pub struct ProfileError {
 impl ProfileError {
     /// Builds an error with an optional list of detail lines.
     pub fn new(kind: ProfileErrorKind, message: impl Into<String>, details: Vec<String>) -> Self {
-        Self { kind, message: message.into(), details }
+        Self {
+            kind,
+            message: message.into(),
+            details,
+        }
     }
 }

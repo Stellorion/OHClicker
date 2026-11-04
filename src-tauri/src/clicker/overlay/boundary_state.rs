@@ -2,9 +2,9 @@
 //! frontend-src/types/overlay-types.ts. Event: `boundary-state`.
 use super::windows::place_on_display;
 use crate::app_state::AppState;
+use crate::clicker::service;
 use crate::clicker::state::RegionMode;
 use crate::clicker::window_rect::foreground_window_rect;
-use crate::clicker::service;
 use serde::Serialize;
 use std::sync::atomic::Ordering;
 use tauri::{AppHandle, Emitter, Manager};
@@ -40,7 +40,12 @@ pub fn boundary_overlay_state(state: &AppState) -> BoundaryOverlayState {
             clicker.boundary_height.load(Ordering::SeqCst) as i32,
         )),
         RegionMode::ActiveWindow => foreground_window_rect().ok().map(|(x, y, w, h)| {
-            (x - display.origin_x, y - display.origin_y, w as i32, h as i32)
+            (
+                x - display.origin_x,
+                y - display.origin_y,
+                w as i32,
+                h as i32,
+            )
         }),
     };
     let (x, y, width, height) = rect.unwrap_or((0, 0, 0, 0));
@@ -71,7 +76,11 @@ pub fn update_boundary_window_position(app: &AppHandle, state: &AppState) -> Res
 pub fn publish_boundary_state(app: &AppHandle, state: &AppState) {
     if let Some(window) = app.get_webview_window("boundary-overlay") {
         let visual = boundary_overlay_state(state);
-        let _ = if visual.visible { window.show() } else { window.hide() };
+        let _ = if visual.visible {
+            window.show()
+        } else {
+            window.hide()
+        };
         let _ = window.emit("boundary-state", visual);
     }
 }

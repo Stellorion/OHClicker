@@ -14,7 +14,11 @@ pub fn update_position_mode(app: AppHandle, state: State<'_, AppState>, mode: Po
 
 /// Absolute (screen) or relative (to cursor) coordinates.
 #[tauri::command]
-pub fn update_coordinate_type(app: AppHandle, state: State<'_, AppState>, coordinate_type: CoordinateType) {
+pub fn update_coordinate_type(
+    app: AppHandle,
+    state: State<'_, AppState>,
+    coordinate_type: CoordinateType,
+) {
     service::update_coordinate_type(&state.clicker, coordinate_type);
     overlay::publish(&app, &state);
 }
@@ -35,7 +39,11 @@ pub fn update_position_jitter(app: AppHandle, state: State<'_, AppState>, jitter
 
 /// Replaces the whole sequence list.
 #[tauri::command]
-pub fn update_sequence_points(app: AppHandle, state: State<'_, AppState>, points: Vec<SequencePoint>) {
+pub fn update_sequence_points(
+    app: AppHandle,
+    state: State<'_, AppState>,
+    points: Vec<SequencePoint>,
+) {
     service::update_sequence_points(&state.clicker, points);
     overlay::publish(&app, &state);
 }

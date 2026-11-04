@@ -24,10 +24,7 @@ pub fn complete_pick(app: &AppHandle, state: &AppState, x: i32, y: i32) -> Resul
     }
     let point_id = state.pick_target.lock().unwrap().take();
     if point_id.is_none() {
-        service::update_position_mode(
-            &state.clicker,
-            PositionMode::Fixed,
-        );
+        service::update_position_mode(&state.clicker, PositionMode::Fixed);
     }
     let display = service::selected_display(&state.clicker);
     let local_x = x.clamp(0, display.width.saturating_sub(1) as i32);

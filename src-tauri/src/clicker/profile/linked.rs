@@ -40,7 +40,10 @@ impl LinkedProfile {
 
     /// File linked and applied successfully.
     pub fn loaded(path: &Path, profile: ConfigProfile) -> Self {
-        Self { profile: Some(profile), ..Self::new(Some(path), LinkStatus::Loaded) }
+        Self {
+            profile: Some(profile),
+            ..Self::new(Some(path), LinkStatus::Loaded)
+        }
     }
 
     /// The link is remembered but the file was moved or deleted.
@@ -50,6 +53,9 @@ impl LinkedProfile {
 
     /// The file exists but could not be read, parsed or applied.
     pub fn invalid(path: &Path, error: ProfileError) -> Self {
-        Self { error: Some(error), ..Self::new(Some(path), LinkStatus::Invalid) }
+        Self {
+            error: Some(error),
+            ..Self::new(Some(path), LinkStatus::Invalid)
+        }
     }
 }

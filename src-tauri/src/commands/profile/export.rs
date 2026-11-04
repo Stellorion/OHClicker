@@ -10,7 +10,10 @@ fn write_error(message: &str, detail: String) -> ProfileError {
 
 /// Returns Ok(true) when a file was written, Ok(false) when the user cancelled.
 #[tauri::command]
-pub async fn export_profile(state: State<'_, AppState>, app: AppHandle) -> Result<bool, ProfileError> {
+pub async fn export_profile(
+    state: State<'_, AppState>,
+    app: AppHandle,
+) -> Result<bool, ProfileError> {
     let Some(file) = app
         .dialog()
         .file()
@@ -30,7 +33,11 @@ pub async fn export_profile(state: State<'_, AppState>, app: AppHandle) -> Resul
 
     let json = serde_json::to_string_pretty(&state.to_profile())
         .map_err(|e| write_error("Couldn't serialize the profile.", e.to_string()))?;
-    std::fs::write(&path, json)
-        .map_err(|e| write_error("Couldn't write the profile file.", format!("{}: {e}", path.display())))?;
+    std::fs::write(&path, json).map_err(|e| {
+        write_error(
+            "Couldn't write the profile file.",
+            format!("{}: {e}", path.display()),
+        )
+    })?;
     Ok(true)
 }

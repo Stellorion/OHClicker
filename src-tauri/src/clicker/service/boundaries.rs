@@ -19,5 +19,7 @@ pub fn update_boundary_rect(state: &AutoClickerState, x: i32, y: i32, width: u32
 }
 
 pub fn set_stop_when_cursor_leaves(state: &AutoClickerState, enabled: bool) {
-    state.stop_when_cursor_leaves.store(enabled, Ordering::SeqCst);
+    state
+        .stop_when_cursor_leaves
+        .store(enabled, Ordering::SeqCst);
 }

@@ -19,7 +19,11 @@ pub fn get_screen_size(state: State<'_, AppState>) -> ScreenSize {
 
 /// Selects the display and moves both overlay windows onto it.
 #[tauri::command]
-pub fn select_display(app: AppHandle, state: State<'_, AppState>, display_id: String) -> Result<(), String> {
+pub fn select_display(
+    app: AppHandle,
+    state: State<'_, AppState>,
+    display_id: String,
+) -> Result<(), String> {
     let main = app
         .get_webview_window("main")
         .ok_or_else(|| "Main window is unavailable".to_string())?;

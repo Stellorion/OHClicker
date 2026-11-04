@@ -14,20 +14,33 @@ fn reveal(path: &Path) -> Result<(), String> {
         return Err("The file and its folder no longer exist.".to_string());
     };
     // raw_arg: Explorer needs the quotes exactly as written.
-    Command::new("explorer").raw_arg(argument).spawn().map(|_| ()).map_err(|e| e.to_string())
+    Command::new("explorer")
+        .raw_arg(argument)
+        .spawn()
+        .map(|_| ())
+        .map_err(|e| e.to_string())
 }
 
 /// macOS: `open -R <file>` reveals it in Finder.
 #[cfg(target_os = "macos")]
 fn reveal(path: &Path) -> Result<(), String> {
-    Command::new("open").arg("-R").arg(path).spawn().map(|_| ()).map_err(|e| e.to_string())
+    Command::new("open")
+        .arg("-R")
+        .arg(path)
+        .spawn()
+        .map(|_| ())
+        .map_err(|e| e.to_string())
 }
 
 /// Linux: there is no standard "select file", so open the containing folder.
 #[cfg(all(not(target_os = "windows"), not(target_os = "macos")))]
 fn reveal(path: &Path) -> Result<(), String> {
     let folder = path.parent().ok_or("The file has no folder.")?;
-    Command::new("xdg-open").arg(folder).spawn().map(|_| ()).map_err(|e| e.to_string())
+    Command::new("xdg-open")
+        .arg(folder)
+        .spawn()
+        .map(|_| ())
+        .map_err(|e| e.to_string())
 }
 
 /// Shows `path` in the file manager.

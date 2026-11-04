@@ -1,5 +1,5 @@
 //! Replaces all three global hotkeys at once (all-or-nothing).
-use super::action::{bind, ACTIONS};
+use super::action::{ACTIONS, bind};
 use crate::app_state::AppState;
 use tauri::AppHandle;
 use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut};

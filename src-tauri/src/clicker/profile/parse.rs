@@ -32,8 +32,14 @@ pub fn parse_profile(text: &str) -> Result<ConfigProfile, ProfileError> {
     })?;
 
     let object = value.as_object().ok_or_else(|| {
-        let found = format!("Expected an object at the top level but found {}.", json_type_name(&value));
-        wrong_format("This JSON doesn't look like an autoclicker profile.", vec![found])
+        let found = format!(
+            "Expected an object at the top level but found {}.",
+            json_type_name(&value)
+        );
+        wrong_format(
+            "This JSON doesn't look like an autoclicker profile.",
+            vec![found],
+        )
     })?;
 
     let missing: Vec<String> = REQUIRED_FIELDS
@@ -56,7 +62,11 @@ pub fn parse_profile(text: &str) -> Result<ConfigProfile, ProfileError> {
     let problems = profile.validate();
     if !problems.is_empty() {
         let message = "The profile contains values that are out of range or invalid.";
-        return Err(ProfileError::new(ProfileErrorKind::InvalidValues, message, problems));
+        return Err(ProfileError::new(
+            ProfileErrorKind::InvalidValues,
+            message,
+            problems,
+        ));
     }
     Ok(profile)
 }

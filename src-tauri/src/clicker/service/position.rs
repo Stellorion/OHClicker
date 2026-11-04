@@ -39,7 +39,10 @@ pub fn selected_display(state: &AutoClickerState) -> DisplayInfo {
 /// Size of the selected display (never 0, so it is safe to divide by).
 pub fn screen_size(state: &AutoClickerState) -> ScreenSize {
     let display = state.position.display.lock().unwrap();
-    ScreenSize { width: display.width.max(1), height: display.height.max(1) }
+    ScreenSize {
+        width: display.width.max(1),
+        height: display.height.max(1),
+    }
 }
 
 /// All connected displays, primary first.

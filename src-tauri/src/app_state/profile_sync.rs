@@ -45,22 +45,26 @@ impl AppState {
         let c = &self.clicker;
         let p = &c.position;
         c.cps.store(profile.cps, SeqCst);
-        c.interval_randomization_pct.store(profile.interval_randomization_pct, SeqCst);
+        c.interval_randomization_pct
+            .store(profile.interval_randomization_pct, SeqCst);
         c.button_hold_ms.store(profile.button_hold_ms, SeqCst);
         c.start_delay_ms.store(profile.start_delay_ms, SeqCst);
         *c.mouse_button.lock().unwrap() = profile.mouse_button;
         *c.click_type.lock().unwrap() = profile.click_type;
         *c.repeat_type.lock().unwrap() = profile.repeat_type;
         c.fixed_count_limit.store(profile.fixed_count_limit, SeqCst);
-        c.max_duration_enabled.store(profile.max_duration_enabled, SeqCst);
+        c.max_duration_enabled
+            .store(profile.max_duration_enabled, SeqCst);
         c.max_duration_sec.store(profile.max_duration_sec, SeqCst);
-        c.boundaries_enabled.store(profile.boundaries_enabled, SeqCst);
+        c.boundaries_enabled
+            .store(profile.boundaries_enabled, SeqCst);
         *c.region_mode.lock().unwrap() = profile.region_mode;
         c.boundary_x.store(profile.boundary_x, SeqCst);
         c.boundary_y.store(profile.boundary_y, SeqCst);
         c.boundary_width.store(profile.boundary_width, SeqCst);
         c.boundary_height.store(profile.boundary_height, SeqCst);
-        c.stop_when_cursor_leaves.store(profile.stop_when_cursor_leaves, SeqCst);
+        c.stop_when_cursor_leaves
+            .store(profile.stop_when_cursor_leaves, SeqCst);
         *p.mode.lock().unwrap() = profile.position_mode;
         *p.coordinate_type.lock().unwrap() = profile.coordinate_type;
         p.target_x.store(profile.target_x, SeqCst);

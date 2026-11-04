@@ -8,7 +8,9 @@ use tauri_plugin_global_shortcut::Shortcut;
 /// Pushes a message when `value` is outside `min..=max`.
 fn check_range(problems: &mut Vec<String>, name: &str, value: u32, min: u32, max: u32) {
     if value < min || value > max {
-        problems.push(format!("{name} must be between {min} and {max} (found {value})"));
+        problems.push(format!(
+            "{name} must be between {min} and {max} (found {value})"
+        ));
     }
 }
 
@@ -25,7 +27,13 @@ impl ConfigProfile {
     /// Timing, limits and boundary numbers.
     fn check_numbers(&self, problems: &mut Vec<String>) {
         check_range(problems, "cps", self.cps, 1, 100);
-        check_range(problems, "intervalRandomizationPct", self.interval_randomization_pct, 0, 50);
+        check_range(
+            problems,
+            "intervalRandomizationPct",
+            self.interval_randomization_pct,
+            0,
+            50,
+        );
         check_range(problems, "buttonHoldMs", self.button_hold_ms, 0, 1000);
         check_range(problems, "startDelayMs", self.start_delay_ms, 0, 60_000);
         check_range(problems, "jitterPx", self.jitter_px, 0, 50);
@@ -47,7 +55,10 @@ impl ConfigProfile {
             if point.id.trim().is_empty() {
                 problems.push(format!("sequencePoints[{index}] has an empty id"));
             } else if !seen.insert(point.id.clone()) {
-                problems.push(format!("sequencePoints[{index}] reuses the id \"{}\"", point.id));
+                problems.push(format!(
+                    "sequencePoints[{index}] reuses the id \"{}\"",
+                    point.id
+                ));
             }
         }
         if self.position_mode == PositionMode::Sequence && self.sequence_points.is_empty() {

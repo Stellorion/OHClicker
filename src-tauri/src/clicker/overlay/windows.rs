@@ -10,7 +10,12 @@ use tauri::{
 
 /// Builds one overlay: transparent, borderless, always on top, hidden at first.
 /// `focusable = false` keeps the window from ever stealing keyboard focus.
-fn build_overlay(app: &AppHandle, label: &str, url: &str, focusable: bool) -> tauri::Result<WebviewWindow> {
+fn build_overlay(
+    app: &AppHandle,
+    label: &str,
+    url: &str,
+    focusable: bool,
+) -> tauri::Result<WebviewWindow> {
     WebviewWindowBuilder::new(app, label, WebviewUrl::App(url.into()))
         .focused(focusable)
         .focusable(focusable)
