@@ -1,5 +1,7 @@
+//! Performing clicks (single clicks on a timer, or holding the button down).
 use super::super::ClickSession;
 use super::super::timing;
+use super::bounds_guard::within_bounds;
 use super::target;
 use crate::clicker::engine::{actions, stats};
 use crate::clicker::state::AutoClickerState;
@@ -9,6 +11,7 @@ use std::thread;
 use std::time::{Duration, Instant};
 use tauri::AppHandle;
 
+/// Hold mode: move to the target and keep the button pressed.
 pub(super) fn hold(
     session: &mut ClickSession,
     app: &AppHandle,
@@ -35,6 +38,7 @@ pub(super) fn hold(
     thread::sleep(Duration::from_millis(10));
 }
 
+/// Single mode: click when the interval has passed and the cursor is in the region.
 pub(super) fn click_if_due(
     session: &mut ClickSession,
     app: &AppHandle,
@@ -66,6 +70,7 @@ pub(super) fn click_if_due(
     emit_stats(session, app);
 }
 
+/// Sends sampled statistics to the UI.
 fn emit_stats(session: &mut ClickSession, app: &AppHandle) {
     stats::emit_sampled(
         app,
@@ -73,36 +78,4 @@ fn emit_stats(session: &mut ClickSession, app: &AppHandle) {
         &mut session.sampled_clicks,
         &mut session.last_stats_update,
     );
-}
-
-/// Returns true if it is OK to click. When the cursor is outside the region
-/// this either stops the clicker or pauses until the cursor comes back.
-fn within_bounds(
-    session: &mut ClickSession,
-    _app: &AppHandle,
-    state: &AutoClickerState,
-    enigo: &mut Enigo,
-    button: Button,
-) -> bool {
-    let inside = match super::boundaries::check_boundaries(state, enigo) {
-        Ok(inside) => inside,
-        Err(error) => {
-            eprintln!("Boundary check failed: {error}");
-            false
-        }
-    };
-    if inside {
-        return true;
-    }
-    if session.hold_active {
-        actions::release(enigo, button);
-        session.hold_active = false;
-    }
-    if state.stop_when_cursor_leaves.load(Ordering::SeqCst) {
-        // click_loop sees is_running == false, runs stop() and emits the state event
-        state.is_running.store(false, Ordering::SeqCst);
-    } else {
-        thread::sleep(Duration::from_millis(10));
-    }
-    false
 }

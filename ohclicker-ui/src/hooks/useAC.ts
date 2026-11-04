@@ -1,10 +1,10 @@
-import { useEffect } from "react";
-import { listen } from "@tauri-apps/api/event";
+// Main hook for components: read settings/stats, change settings, start/stop.
+// (Backend events and the elapsed-time timer run once in hooks/ac/useAppRuntime.ts.)
 import { useACStore } from "../store/useACStore";
 import { clickerService } from "../services/clickerService";
-import { useACTimer } from "./useACTimer";
-import { useUIStore } from "../store/useUIStore";
-import { errorMessage } from "../lib/profile";
+import { pushSettings } from "./ac/pushSettings";
+import { pushHotkeys } from "./ac/pushHotkeys";
+import type { ACSettings } from "../types/ac-types";
 
 export const useAC = () => {
   const settings = useACStore((state) => state.settings);
@@ -14,200 +14,24 @@ export const useAC = () => {
   const updateStats = useACStore((state) => state.updateStats);
   const resetStats = useACStore((state) => state.resetStats);
 
-  useACTimer({
-    isRunning,
-    settings,
-    totalClicks: stats.totalClicks,
-    updateStats,
-  });
-
-  const updateSettings = async (newSettings: Partial<typeof settings>) => {
+  /** Updates the UI immediately, then sends the change to the backend. */
+  const updateSettings = async (changed: Partial<ACSettings>) => {
     const previous = useACStore.getState().settings;
-    useACStore.getState().updateSettings(newSettings);
-
-    // If the OS refuses a hotkey (invalid, duplicate, or used by another app),
-    // put the old value back so the UI doesn't show a key that isn't active.
-    const applyHotkey = async (
-      field: "startStopHotkey" | "pickPositionHotkey" | "toggleOverlayHotkey",
-      send: (hotkey: string) => Promise<void>,
-    ) => {
-      const value = newSettings[field];
-      if (value === undefined) return;
-      try {
-        await send(value);
-      } catch (error) {
-        useACStore.getState().updateSettings({ [field]: previous[field] });
-        useUIStore.getState().showNotice({
-          title: "Hotkey not changed",
-          message: errorMessage(error),
-        });
-      }
-    };
-
-    if (newSettings.cps !== undefined) {
-      await clickerService.updateCps(newSettings.cps);
-    }
-    if (newSettings.intervalRandomizationPct !== undefined) {
-      await clickerService.updateIntervalRandomizationPct(
-        newSettings.intervalRandomizationPct,
-      );
-    }
-    if (newSettings.buttonHoldTimeMs !== undefined) {
-      await clickerService.updateButtonHoldMs(newSettings.buttonHoldTimeMs);
-    }
-    if (newSettings.startDelaySec !== undefined) {
-      await clickerService.updateStartDelayMs(newSettings.startDelaySec * 1000);
-    }
-
-    if (newSettings.mouseButton !== undefined) {
-      await clickerService.updateMouseButton(newSettings.mouseButton);
-    }
-    if (newSettings.clickType !== undefined) {
-      await clickerService.updateClickType(newSettings.clickType);
-    }
-    if (newSettings.repeatType !== undefined) {
-      await clickerService.updateRepeatType(newSettings.repeatType);
-    }
-    if (newSettings.fixedCountLimit !== undefined) {
-      await clickerService.updateFixedCountLimit(newSettings.fixedCountLimit);
-    }
-    if (newSettings.maxDurationEnabled !== undefined) {
-      await clickerService.updateMaxDurationEnabled(
-        newSettings.maxDurationEnabled,
-      );
-    }
-    if (newSettings.maxDurationSec !== undefined) {
-      await clickerService.updateMaxDurationSec(newSettings.maxDurationSec);
-    }
-    if (newSettings.positionMode !== undefined) {
-      await clickerService.updatePositionMode(newSettings.positionMode);
-    }
-    if (newSettings.selectedDisplayId !== undefined) {
-      await clickerService.selectDisplay(newSettings.selectedDisplayId);
-    }
-    if (newSettings.coordinateType !== undefined) {
-      await clickerService.updateCoordinateType(newSettings.coordinateType);
-    }
-    if (
-      newSettings.targetX !== undefined ||
-      newSettings.targetY !== undefined
-    ) {
-      const { targetX, targetY } = useACStore.getState().settings;
-      await clickerService.updateTargetPosition(targetX, targetY);
-    }
-    if (newSettings.positionJitterPx !== undefined) {
-      await clickerService.updatePositionJitter(newSettings.positionJitterPx);
-    }
-    if (newSettings.sequencePoints !== undefined) {
-      await clickerService.updateSequencePoints(newSettings.sequencePoints);
-    }
-    await applyHotkey("startStopHotkey", clickerService.updateStartStopHotkey);
-    await applyHotkey(
-      "pickPositionHotkey",
-      clickerService.updatePickPositionHotkey,
-    );
-    await applyHotkey(
-      "toggleOverlayHotkey",
-      clickerService.updateToggleOverlayHotkey,
-    );
+    useACStore.getState().updateSettings(changed);
+    await pushSettings(changed);
+    await pushHotkeys(changed, previous);
   };
 
-  useEffect(() => {
-    if (settings.cps) {
-      clickerService.updateCps(settings.cps);
-    }
-  }, []);
-
-  useEffect(() => {
-    let unlisten: (() => void) | undefined;
-
-    const setupListener = async () => {
-      unlisten = await listen<boolean>("clicker-state-changed", (event) => {
-        const running = event.payload;
-        if (running) {
-          resetStats();
-        }
-        setRunningState(running);
-      });
-    };
-
-    setupListener();
-
-    return () => {
-      if (unlisten) {
-        unlisten();
-      }
-    };
-  }, [setRunningState, resetStats]);
-
-  useEffect(() => {
-    let unlisten: (() => void) | undefined;
-
-    const setupListener = async () => {
-      unlisten = await listen<{ totalClicks: number; currentCps: number }>(
-        "clicker-stats",
-        (event) => updateStats(event.payload),
-      );
-    };
-
-    setupListener();
-
-    return () => {
-      if (unlisten) {
-        unlisten();
-      }
-    };
-  }, [updateStats]);
-
-  useEffect(() => {
-    let unlisten: (() => void) | undefined;
-
-    const setupListener = async () => {
-      unlisten = await listen<{
-        x: number;
-        y: number;
-        pointId?: string | null;
-      }>("position-picked", (event) => {
-        const { x, y, pointId } = event.payload;
-        if (pointId) {
-          const points = (
-            useACStore.getState().settings.sequencePoints ?? []
-          ).map((point) => (point.id === pointId ? { ...point, x, y } : point));
-          useACStore.getState().updateSettings({ sequencePoints: points });
-          void clickerService.updateSequencePoints(points);
-          return;
-        }
-        useACStore.getState().updateSettings({
-          positionMode: "fixed",
-          targetX: x,
-          targetY: y,
-        });
-      });
-    };
-
-    setupListener();
-    return () => unlisten?.();
-  }, []);
-
+  /** Start/stop button. The backend answers with the new running state. */
   const toggleExecution = async () => {
     try {
       const isRunningNow = await clickerService.toggleClicker();
-      if (isRunningNow) {
-        resetStats();
-      }
+      if (isRunningNow) resetStats();
       setRunningState(isRunningNow);
     } catch (error) {
       console.error("Unable to toggle the autoclicker:", error);
     }
   };
 
-  return {
-    settings,
-    stats,
-    isRunning,
-    updateSettings,
-    toggleExecution,
-    updateStats,
-    resetStats,
-  };
+  return { settings, stats, isRunning, updateSettings, toggleExecution, updateStats, resetStats };
 };

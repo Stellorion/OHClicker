@@ -1,5 +1,6 @@
+// Dropdown to choose which display the screen map and overlays use.
 import { Check, ChevronDown, Monitor, RotateCw } from "lucide-react";
-import type { ACDisplay } from "../../../types/ac-types";
+import type { DisplayInfo } from "../../../types/ac-types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,12 +18,13 @@ import {
 } from "../../../lib/displayUtil";
 
 interface DisplaySelectorProps {
-  displays: ACDisplay[];
-  selectedDisplay?: ACDisplay;
+  displays: DisplayInfo[];
+  selectedDisplay?: DisplayInfo;
   onSelect: (id: string) => void;
   onRefresh: () => void;
 }
 
+/** Duplicate display names get their coordinates appended. */
 export const DisplaySelector: React.FC<DisplaySelectorProps> = ({
   displays,
   selectedDisplay,

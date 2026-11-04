@@ -1,8 +1,10 @@
+// "Timing" card: speed, randomization, hold time and start delay.
 import { useAC } from "../../hooks/useAC";
 import { SettingRow } from "../common/SettingRow";
 import { Separator } from "../common/Separator";
 import { Gauge } from "lucide-react";
 
+/** Start delay is shown in seconds but stored in milliseconds (`startDelayMs`). */
 export const ACTimingSection: React.FC = () => {
   const { settings, updateSettings } = useAC();
 
@@ -52,11 +54,11 @@ export const ACTimingSection: React.FC = () => {
             min={0}
             max={1000}
             step={1}
-            value={settings.buttonHoldTimeMs}
+            value={settings.buttonHoldMs}
             unit="ms"
             showSlider={false}
-            onChange={(buttonHoldTimeMs) =>
-              updateSettings({ buttonHoldTimeMs })
+            onChange={(buttonHoldMs) =>
+              updateSettings({ buttonHoldMs })
             }
           />
 
@@ -68,10 +70,10 @@ export const ACTimingSection: React.FC = () => {
             min={0}
             max={60}
             step={0.5}
-            value={settings.startDelaySec ?? 0}
+            value={settings.startDelayMs / 1000}
             unit="s"
             showSlider={false}
-            onChange={(startDelaySec) => updateSettings({ startDelaySec })}
+            onChange={(sec) => updateSettings({ startDelayMs: Math.round(sec * 1000) })}
           />
         </div>
     </div>

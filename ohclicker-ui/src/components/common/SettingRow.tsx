@@ -1,3 +1,4 @@
+// One setting: label + optional slider + number input (value is clamped to min..max).
 import React, { useState, useEffect } from 'react';
 import { Slider } from './Slider';
 import { Input } from './Input';
@@ -15,6 +16,7 @@ interface SettingRowProps {
   className?: string;
 }
 
+/** Keeps the typed text separate from the number so half-typed values are allowed. */
 export const SettingRow: React.FC<SettingRowProps> = ({
   label,
   description,
@@ -33,6 +35,7 @@ export const SettingRow: React.FC<SettingRowProps> = ({
     setTextValue(value.toString());
   }, [value]);
 
+  /** Typing: update the text and send the clamped number. */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;
     setTextValue(raw);
@@ -44,6 +47,7 @@ export const SettingRow: React.FC<SettingRowProps> = ({
     }
   };
 
+  /** Slider: forward the number. */
   const handleSliderChange = (val: number | readonly number[]) => {
     const newValue = Array.isArray(val) ? val[0] : val;
     onChange(Number(newValue));

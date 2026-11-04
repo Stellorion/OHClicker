@@ -1,3 +1,4 @@
+//! State of one run (counters, timers) and its two entry points: `tick` and `stop`.
 mod cycle;
 mod lifecycle;
 mod timing;
@@ -7,6 +8,7 @@ use enigo::Enigo;
 use std::time::Instant;
 use tauri::AppHandle;
 
+/// Everything the engine remembers between ticks of one run.
 pub(super) struct ClickSession {
     pub(super) next_click: Instant,
     pub(super) has_delayed: bool,
@@ -19,6 +21,7 @@ pub(super) struct ClickSession {
     pub(super) sequence_index: usize,
 }
 
+/// Fresh session: nothing clicked yet.
 impl Default for ClickSession {
     fn default() -> Self {
         let now = Instant::now();
@@ -37,10 +40,12 @@ impl Default for ClickSession {
 }
 
 impl ClickSession {
+    /// One step while running (see cycle.rs).
     pub(super) fn tick(&mut self, app: &AppHandle, state: &AutoClickerState, enigo: &mut Enigo) {
         cycle::tick(self, app, state, enigo);
     }
 
+    /// Cleanup after a run (see lifecycle.rs).
     pub(super) fn stop(&mut self, app: &AppHandle, state: &AutoClickerState, enigo: &mut Enigo) {
         lifecycle::stop(self, app, state, enigo);
     }

@@ -1,7 +1,8 @@
+// Logic for the "Click limits" (repeat type, click count, maximum duration).
 import { useAC } from "./useAC";
 import type { ChoiceOption } from "../components/common/ChoiceGroup";
+import type { RepeatType } from "../types/ac-types";
 
-export type RepeatType = "until_stopped" | "fixed_count";
 
 const REPEAT_TYPE_OPTIONS: ChoiceOption<RepeatType>[] = [
   { id: "until_stopped", label: "Until stopped" },

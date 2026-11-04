@@ -1,6 +1,8 @@
+// Dashed rectangle of the boundaries on the screen map.
 import { pct } from "../../../lib/utils";
 import type { ScreenBoundsOverlayProps } from "../../../types/screen-types";
 
+/** Hidden while Boundaries are off. */
 export const ScreenBoundsOverlay = ({
   bounds,
   screenSize,

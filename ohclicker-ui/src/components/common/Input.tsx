@@ -1,7 +1,9 @@
+// Base text/number input.
 import * as React from "react"
 import { Input as InputPrimitive } from "@base-ui/react/input"
 import { cn } from "../../lib/utils"
 
+/** Styled input with the red focus glow. */
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
     <InputPrimitive

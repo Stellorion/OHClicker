@@ -1,3 +1,4 @@
+// Number input with a small label inside (e.g. "X", "px").
 import React from "react";
 import { Input } from "./Input";
 
@@ -12,6 +13,7 @@ interface LabeledInputProps {
   max?: number;
 }
 
+/** `position` puts the label before (prefix) or after (suffix) the number. */
 export const LabeledInput: React.FC<LabeledInputProps> = ({
   label,
   value,

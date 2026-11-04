@@ -1,3 +1,5 @@
+// Entry point. One bundle serves three windows, chosen by the URL query:
+//   ?boundary-overlay -> BoundaryOverlay   ?position-overlay -> PositionOverlay   (none) -> App
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";

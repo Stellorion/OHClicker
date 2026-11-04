@@ -1,12 +1,6 @@
 import { useEffect, useRef } from "react";
-import type { ACSettings, ACStats } from "../types/ac-types";
-
-interface UseACTimerProps {
-  isRunning: boolean;
-  settings: ACSettings;
-  totalClicks: number;
-  updateStats: (stats: Partial<ACStats>) => void;
-}
+// Elapsed time and average rate shown in the header while the clicker runs.
+import type { UseACTimerProps } from "../types/timer-types";
 
 export const useACTimer = ({
   isRunning,
@@ -24,8 +18,7 @@ export const useACTimer = ({
     let interval: ReturnType<typeof setInterval>;
 
     if (isRunning) {
-      const startDelaySec = settings.startDelaySec ?? 0;
-      const delayMs = startDelaySec * 1000;
+      const delayMs = settings.startDelayMs ?? 0; // timer starts after the start delay
       const executionStartTime = Date.now() + delayMs;
 
       interval = setInterval(() => {
@@ -66,7 +59,7 @@ export const useACTimer = ({
   }, [
     isRunning,
     settings.cps,
-    settings.startDelaySec,
+    settings.startDelayMs,
     updateStats,
   ]);
 };

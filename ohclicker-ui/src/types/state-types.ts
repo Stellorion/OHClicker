@@ -1,3 +1,4 @@
+// Shape of the main store (store/useACStore.ts).
 import type { ACSettings, ACStats } from './ac-types';
 
 export interface ACState {

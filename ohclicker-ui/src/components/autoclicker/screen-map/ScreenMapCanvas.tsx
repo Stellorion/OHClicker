@@ -1,3 +1,4 @@
+// The clickable miniature screen. Clicking sets the fixed target.
 
 import { useRef } from "react";
 import { ScreenGrid } from "./ScreenGrid";
@@ -5,6 +6,7 @@ import { ScreenBoundsOverlay } from "./ScreenBoundsOverlay";
 import { ScreenTargets } from "./ScreenTargets";
 import type { ScreenMapCanvasProps } from "../../../types/screen-types";
 
+/** Converts a click on the miniature to display pixels. */
 export const ScreenMapCanvas = ({
   screenSize,
   positionMode,
@@ -15,6 +17,7 @@ export const ScreenMapCanvas = ({
 }: ScreenMapCanvasProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
+  /** Only active in "fixed" mode; result is clamped to the display. */
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (positionMode !== "fixed") return;
 

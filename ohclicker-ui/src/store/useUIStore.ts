@@ -1,3 +1,4 @@
+// UI-only state: view mode, sidebar and the error dialog (NoticeDialog).
 import { create } from 'zustand';
 import { type UIState, type UIActions } from '../types/ui-state';
 

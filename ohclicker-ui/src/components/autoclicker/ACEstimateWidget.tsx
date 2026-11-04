@@ -1,5 +1,7 @@
+// "Estimate" card: how long a fixed click count will take.
 import { useAC } from "../../hooks/useAC";
 
+/** Shows a summary of the current timing settings. */
 export const ACEstimateWidget: React.FC = () => {
   const { settings } = useAC();
 
@@ -9,7 +11,7 @@ export const ACEstimateWidget: React.FC = () => {
   const totalSeconds = Math.round(fixedCountLimit / cps);
 
   const randomizationPct = settings.intervalRandomizationPct ?? 0;
-  const holdTimeMs = settings.buttonHoldTimeMs ?? 12;
+  const holdTimeMs = settings.buttonHoldMs ?? 12;
   const mouseButton = settings.mouseButton ?? "left";
   const clickType = settings.clickType ?? "single";
 

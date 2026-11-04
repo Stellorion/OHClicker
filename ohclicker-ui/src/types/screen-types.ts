@@ -1,5 +1,6 @@
+// Props of the screen map components (components/autoclicker/screen-map).
 import type { Point, Size, Bounds } from './common';
-import type { ACPositionMode } from './ac-types';
+import type { PositionMode } from './ac-types';
 
 export interface ScreenBoundsOverlayProps {
   bounds: Bounds;
@@ -8,7 +9,7 @@ export interface ScreenBoundsOverlayProps {
 
 export interface ScreenMapCanvasProps {
   screenSize: Size;
-  positionMode: ACPositionMode;
+  positionMode: PositionMode;
   target: Point;
   points: Point[];
   bounds: Bounds;
@@ -16,7 +17,7 @@ export interface ScreenMapCanvasProps {
 }
 
 export interface ScreenTargetsProps {
-  positionMode: ACPositionMode;
+  positionMode: PositionMode;
   target: Point;
   points: Point[];
   screenSize: Size;

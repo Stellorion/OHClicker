@@ -1,3 +1,4 @@
+// Segmented control: pick one of several options (e.g. Left / Middle / Right).
 import React from 'react';
 import { Button } from './Button';
 import { cn } from '../../lib/utils';
@@ -17,6 +18,7 @@ interface ChoiceGroupProps<T extends string | number> {
   className?: string;
 }
 
+/** Generic over the option id type; `label` is optional. */
 export function ChoiceGroup<T extends string | number>({
   label,
   description,

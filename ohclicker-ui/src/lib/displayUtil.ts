@@ -1,14 +1,18 @@
-import type { ACDisplay } from "../types/ac-types";
+// Text helpers for the display dropdown (DisplaySelector).
+import type { DisplayInfo } from "../types/ac-types";
 
-export const friendlyName = (display: ACDisplay): string => {
+/** "\\.\\DISPLAY2" -> "Display 2". */
+export const friendlyName = (display: DisplayInfo): string => {
   const match = /DISPLAY(\d+)/i.exec(display.name);
   return match ? `Display ${match[1]}` : display.name;
 };
 
-export const scaleLabel = (display: ACDisplay): string =>
+/** Windows scaling, e.g. "125%". */
+export const scaleLabel = (display: DisplayInfo): string =>
   `${Math.round(display.scaleFactor * 100)}%`;
 
-export const relativePosition = (display: ACDisplay): string => {
+/** Where the display is compared to the primary one ("Left of primary"). */
+export const relativePosition = (display: DisplayInfo): string => {
   if (display.isPrimary) return "Primary";
   const directions = [
     display.originX < 0 ? "Left" : display.originX > 0 ? "Right" : undefined,
@@ -19,7 +23,8 @@ export const relativePosition = (display: ACDisplay): string => {
     : "Aligned with primary";
 };
 
-export const countNames = (displays: ACDisplay[]): Record<string, number> =>
+/** How often each friendly name occurs (to add coordinates to duplicates). */
+export const countNames = (displays: DisplayInfo[]): Record<string, number> =>
   displays.reduce<Record<string, number>>((counts, display) => {
     const name = friendlyName(display);
     counts[name] = (counts[name] ?? 0) + 1;

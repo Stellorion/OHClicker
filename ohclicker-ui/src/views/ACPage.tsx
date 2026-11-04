@@ -1,3 +1,4 @@
+// Chooses between the minimized and the advanced layout.
 import React from 'react';
 import { useUIStore } from '../store/useUIStore';
 import { ACMinimizedView } from './ACMiniView';

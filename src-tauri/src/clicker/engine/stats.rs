@@ -1,7 +1,9 @@
+//! Click statistics sent to the frontend as the `clicker-stats` event.
 use serde::Serialize;
 use std::time::{Duration, Instant};
 use tauri::{AppHandle, Emitter};
 
+/// Event payload (frontend: hooks/ac/useBackendEvents.ts).
 #[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 struct ClickerStats {
@@ -9,6 +11,7 @@ struct ClickerStats {
     current_cps: f64,
 }
 
+/// Emits at most every 200 ms and calculates the current clicks per second.
 pub(super) fn emit_sampled(
     app_handle: &AppHandle,
     total_clicks: u64,
@@ -24,6 +27,7 @@ pub(super) fn emit_sampled(
     }
 }
 
+/// Emits the stats immediately.
 pub(super) fn emit(app_handle: &AppHandle, total_clicks: u64, current_cps: f64) {
     let _ = app_handle.emit(
         "clicker-stats",

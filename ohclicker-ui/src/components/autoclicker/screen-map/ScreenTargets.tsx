@@ -1,7 +1,9 @@
+// Draws the target cross (fixed mode) or numbered points + path (sequence mode).
 
 import { pct } from "../../../lib/utils";
 import type { ScreenTargetsProps } from "../../../types/screen-types";
 
+/** Nothing is drawn in "cursor" mode. */
 export const ScreenTargets = ({
   positionMode,
   target,

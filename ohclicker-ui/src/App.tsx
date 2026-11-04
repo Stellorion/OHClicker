@@ -3,10 +3,20 @@ import { Button } from "./components/common/Button";
 import { Minimize2, Maximize2, MousePointerClick } from "lucide-react";
 import { useUIStore } from "./store/useUIStore";
 import { NoticeDialog } from "./components/common/NoticeDialog";
+import { useAppRuntime } from "./hooks/ac/useAppRuntime";
+import { useStartupProfile } from "./hooks/useStartupProfile";
 
+// Main window: header with the Minimized / Advanced switch + the selected view.
+
+/** Root component of the `main` window. */
 export default function App() {
   const currentMode = useUIStore((state) => state.clickerMode);
   const setClickerMode = useUIStore((state) => state.setClickerMode);
+
+  useAppRuntime(); // backend events + elapsed timer (once for the whole app)
+  const ready = useStartupProfile(); // loads the linked profile before showing settings
+
+  if (!ready) return null;
 
   return (
     <div className="flex h-screen bg-app-bg text-app-text-primary antialiased">

@@ -1,60 +1,27 @@
-import type { Point } from "./common";
+// Types used by the UI state.
+// Shared basic types live in clicker-types.ts / display-types.ts (they mirror the backend).
+import type { ConfigProfile } from "./profile-types";
 
-export type ACMouseButton = "left" | "middle" | "right";
-export type ACClickType = "single" | "hold";
-export type ACPositionMode = "cursor" | "fixed" | "sequence";
-export type ACCoordinateType = "absolute" | "relative";
-export type ACRegionMode = "fullscreen" | "active_window" | "custom";
+export type {
+  ClickType, CoordinateType, MouseButton, PositionMode,
+  RegionMode, RepeatType, SequencePoint,
+} from "./clicker-types";
+export type { DisplayInfo } from "./display-types";
 
-export interface ACSequencePoint extends Point {
-  id: string;
-  dwell: number;
-}
-
-export interface ACSettings {
+/**
+ * UI settings = everything saved in a profile (`ConfigProfile`)
+ * + a few values that only exist in the UI.
+ */
+export interface ACSettings extends ConfigProfile {
   scaleFactor: number;
-  // Timing Configuration
-  cps: number;
+  /** Derived from `cps`, shown in the estimate widget. */
   exactIntervalMs: number;
-  intervalRandomizationPct: number;
-  buttonHoldTimeMs: number;
-  startDelaySec: number;
-
-  // Click Pattern
-  mouseButton: ACMouseButton;
-  clickType: ACClickType;
-
-  // Target Location & Window
-  positionMode: ACPositionMode;
+  /** Id of the display the screen map / overlays are relative to. */
   selectedDisplayId: string;
-  coordinateType: ACCoordinateType;
   targetWindow: string;
-  targetX: number;
-  targetY: number;
-  positionJitterPx: number;
-  sequencePoints?: ACSequencePoint[];
-
-  // Click Limits & Repeat
-  repeatType: "until_stopped" | "fixed_count";
-  fixedCountLimit: number;
-  maxDurationEnabled: boolean;
-  maxDurationSec: number;
-
-  // Boundaries
-  boundariesEnabled: boolean;
-  regionMode: ACRegionMode;
-  boundaryX: number;
-  boundaryY: number;
-  boundaryWidth: number;
-  boundaryHeight: number;
-  stopWhenCursorLeaves: boolean;
-
-  // Hotkeys
-  startStopHotkey: string;
-  pickPositionHotkey: string;
-  toggleOverlayHotkey: string;
 }
 
+/** Live numbers while the clicker runs (event `clicker-stats` + the UI timer). */
 export interface ACStats {
   elapsedFormatted: string;
   avgRate: number;
@@ -62,15 +29,4 @@ export interface ACStats {
   totalClicks: number;
   elapsedMs: number;
   currentCps: number;
-}
-
-export interface ACDisplay {
-  id: string;
-  name: string;
-  width: number;
-  height: number;
-  originX: number;
-  originY: number;
-  scaleFactor: number;
-  isPrimary: boolean;
 }

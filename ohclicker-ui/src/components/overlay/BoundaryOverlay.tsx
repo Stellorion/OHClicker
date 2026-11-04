@@ -1,3 +1,4 @@
+// Transparent full-screen window that draws the click region (backend: clicker/overlay/boundary_state.rs).
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
@@ -9,6 +10,7 @@ const LABELS: Record<BoundaryOverlayState["regionMode"], string> = {
   custom: "CUSTOM",
 };
 
+/** Root of the `boundary-overlay` window; follows the focused window in "active window" mode. */
 export const BoundaryOverlay = () => {
   const [state, setState] = useState<BoundaryOverlayState>();
 

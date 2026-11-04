@@ -1,14 +1,17 @@
+// Lists connected displays and keeps a valid one selected.
 import { useEffect, useState } from "react";
 import { clickerService } from "../services/clickerService";
-import type { ACDisplay } from "../types/ac-types";
+import type { DisplayInfo } from "../types/ac-types";
 
+/** Returns the display list, the selected display and a refresh function. */
 export const useDisplays = (
   selectedId: string,
   onSelect: (id: string) => void,
 ) => {
-  const [displays, setDisplays] = useState<ACDisplay[]>([]);
+  const [displays, setDisplays] = useState<DisplayInfo[]>([]);
 
-  const reconcile = (list: ACDisplay[]) => {
+  /** If the selected id is gone, select the primary (or first) display. */
+  const reconcile = (list: DisplayInfo[]) => {
     const selected =
       list.find((display) => display.id === selectedId) ??
       list.find((display) => display.isPrimary) ??
@@ -31,6 +34,7 @@ export const useDisplays = (
     };
   }, []);
 
+  /** Re-reads the connected displays (user pressed "Refresh displays"). */
   const refresh = async () => {
     try {
       const list = await clickerService.getDisplays();

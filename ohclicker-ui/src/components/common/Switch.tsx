@@ -1,3 +1,4 @@
+// On/off switch (shadcn style, built on @base-ui Switch).
 "use client";
 
 import { Switch as SwitchPrimitive } from "@base-ui/react/switch";

@@ -2,12 +2,13 @@ import { create } from "zustand";
 import type { ACSettings, ACStats } from "../types/ac-types";
 import type { ACState } from "../types/state-types";
 
+// Settings shown before a profile is loaded (the backend gets them via pushSettings).
 const initialSettings: ACSettings = {
   cps: 12,
   exactIntervalMs: 83.3,
   intervalRandomizationPct: 8,
-  buttonHoldTimeMs: 12,
-  startDelaySec: 3.0,
+  buttonHoldMs: 12,
+  startDelayMs: 3000,
 
   mouseButton: "left",
   clickType: "single",
@@ -18,7 +19,7 @@ const initialSettings: ACSettings = {
   targetWindow: "Active Window",
   targetX: 960,
   targetY: 540,
-  positionJitterPx: 2,
+  jitterPx: 2,
   sequencePoints: [
     { id: "1", x: 412, y: 288, dwell: 40 },
     { id: "2", x: 1280, y: 420, dwell: 40 },
@@ -53,6 +54,7 @@ const initialStats: ACStats = {
   avgRate: 0,
 };
 
+// Main UI store: settings (sent to the backend by hooks/ac/pushSettings.ts) and live stats.
 export const useACStore = create<ACState>((set) => ({
   settings: initialSettings,
   stats: initialStats,

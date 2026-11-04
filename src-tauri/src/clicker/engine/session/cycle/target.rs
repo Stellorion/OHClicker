@@ -1,13 +1,15 @@
+//! Decides WHERE the next click happens (cursor / fixed point / next sequence point).
 mod coordinates;
 
 use super::super::ClickSession;
 use crate::clicker::display::DisplayInfo;
-use crate::clicker::position::{RustCoordinateType, RustPositionMode};
+use crate::clicker::position::{CoordinateType, PositionMode};
 use crate::clicker::state::AutoClickerState;
 use enigo::{Coordinate, Enigo, Mouse};
 use std::sync::atomic::Ordering;
 use std::time::Duration;
 
+/// Resolved target: stay at the cursor, or move to a point (with dwell time).
 #[derive(Clone, Copy)]
 pub(super) enum ClickTarget {
     Cursor,
@@ -20,6 +22,7 @@ pub(super) enum ClickTarget {
 }
 
 impl ClickTarget {
+    /// Extra wait after the click (sequence points only).
     pub(super) fn dwell(self) -> Duration {
         match self {
             Self::Cursor => Duration::ZERO,
@@ -28,25 +31,26 @@ impl ClickTarget {
     }
 }
 
+/// Reads the position settings and returns the next target (advances the sequence).
 pub(super) fn resolve(state: &AutoClickerState, session: &mut ClickSession) -> Option<ClickTarget> {
     let position = &state.position;
     let mode = *position.mode.lock().unwrap();
     let coordinate_type = *position.coordinate_type.lock().unwrap();
     let coordinate = match coordinate_type {
-        RustCoordinateType::Absolute => Coordinate::Abs,
-        RustCoordinateType::Relative => Coordinate::Rel,
+        CoordinateType::Absolute => Coordinate::Abs,
+        CoordinateType::Relative => Coordinate::Rel,
     };
     let jitter = position.jitter_px.load(Ordering::Relaxed).min(1000) as i32;
     let display = position.display.lock().unwrap().clone();
 
     match mode {
-        RustPositionMode::Cursor => Some(ClickTarget::Cursor),
-        RustPositionMode::Fixed => {
+        PositionMode::Cursor => Some(ClickTarget::Cursor),
+        PositionMode::Fixed => {
             let x = position.target_x.load(Ordering::Relaxed);
             let y = position.target_y.load(Ordering::Relaxed);
             Some(target(x, y, coordinate, jitter, 0, &display))
         }
-        RustPositionMode::Sequence => {
+        PositionMode::Sequence => {
             let points = position.sequence_points.lock().unwrap();
             if points.is_empty() {
                 return None;
@@ -66,6 +70,7 @@ pub(super) fn resolve(state: &AutoClickerState, session: &mut ClickSession) -> O
     }
 }
 
+/// Moves the mouse to the target (no-op for `Cursor`).
 pub(super) fn move_to(enigo: &mut Enigo, target: ClickTarget) {
     if let ClickTarget::Move {
         x, y, coordinate, ..
@@ -75,6 +80,7 @@ pub(super) fn move_to(enigo: &mut Enigo, target: ClickTarget) {
     }
 }
 
+/// Applies jitter and display offset to a point.
 fn target(
     x: i32,
     y: i32,

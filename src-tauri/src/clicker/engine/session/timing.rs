@@ -1,9 +1,11 @@
+//! Click interval helpers.
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::thread;
 use std::time::{Duration, Instant};
 
 static COUNTER: AtomicU64 = AtomicU64::new(0);
 
+/// Target cps with up to +/- `randomization_pct` % variance (never below 1).
 pub(super) fn randomized_cps(target_cps: f64, randomization_pct: f64) -> f64 {
     if randomization_pct <= 0.0 {
         return target_cps;
@@ -19,6 +21,7 @@ pub(super) fn randomized_cps(target_cps: f64, randomization_pct: f64) -> f64 {
     (target_cps + offset).max(1.0)
 }
 
+/// Sleeps most of the time, then spins for accurate click timing.
 pub(super) fn wait_until(next_click: Instant) {
     let remaining = next_click.saturating_duration_since(Instant::now());
     if remaining > Duration::from_millis(2) {

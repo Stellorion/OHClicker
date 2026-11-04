@@ -1,8 +1,10 @@
+// "Hotkeys" card: start/stop, pick position and toggle overlay.
 import { Separator } from "../common/Separator";
 import { Keyboard } from "lucide-react";
 import { HotkeyInput } from "../common/HotkeyInput";
 import { useHotkeys } from "../../hooks/useHotkeys";
 
+/** A hotkey the OS refuses is reverted with a dialog (hooks/ac/pushHotkeys.ts). */
 export const ACHotkeysSection: React.FC = () => {
   const { startStopKey, pickPositionKey, toggleOverlayKey, updateSettings } =
     useHotkeys();

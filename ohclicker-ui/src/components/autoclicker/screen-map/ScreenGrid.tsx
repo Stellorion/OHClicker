@@ -1,3 +1,4 @@
+// Decorative background of the screen map (grid, fake windows, taskbar).
 export const ScreenGrid: React.FC = () => (
   <div className="absolute inset-0 bg-app-bg border border-app-border rounded-lg overflow-hidden flex items-center justify-center p-3 select-none pointer-events-none">
     <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293d_1px,transparent_1px),linear-gradient(to_bottom,#1f293d_1px,transparent_1px)] bg-size-[1.5rem_1.5rem] opacity-40" />

@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
-import { listen } from "@tauri-apps/api/event";
+// Logic for the "Target position" section: mode, coordinates, sequence list, picker.
 import { useAC } from "./useAC";
-import type { ChoiceOption } from "../components/common/ChoiceGroup";
-import type { ACPositionMode, ACSequencePoint } from "../types/ac-types";
+import { usePickState } from "./usePickState";
 import { clickerService } from "../services/clickerService";
+import type { ChoiceOption } from "../components/common/ChoiceGroup";
+import type { PositionMode, SequencePoint } from "../types/ac-types";
 
-export type SequencePoint = ACSequencePoint;
-
-const POSITION_MODE_OPTIONS: ChoiceOption<ACPositionMode>[] = [
+const POSITION_MODE_OPTIONS: ChoiceOption<PositionMode>[] = [
   { id: "cursor", label: "Cursor" },
   { id: "fixed", label: "Fixed point" },
   { id: "sequence", label: "Sequence" },
@@ -15,86 +13,41 @@ const POSITION_MODE_OPTIONS: ChoiceOption<ACPositionMode>[] = [
 
 export const usePosition = () => {
   const { settings, updateSettings } = useAC();
-  const [isPicking, setIsPicking] = useState(false);
-  const [pickingPointId, setPickingPointId] = useState<string | null>(null);
+  const { isPicking, pickingPointId, setPicking } = usePickState();
+  const sequencePoints = settings.sequencePoints;
 
-  useEffect(() => {
-    let unlistenArmed: (() => void) | undefined;
-    let unlistenPicked: (() => void) | undefined;
-    let unlistenCancelled: (() => void) | undefined;
-    void listen<string | null>("position-pick-armed", (event) => {
-      setIsPicking(true);
-      setPickingPointId(event.payload ?? null);
-    }).then((stop) => {
-      unlistenArmed = stop;
-    });
-    void listen("position-picked", () => {
-      setIsPicking(false);
-      setPickingPointId(null);
-    }).then((stop) => {
-      unlistenPicked = stop;
-    });
-    void listen("position-pick-cancelled", () => {
-      setIsPicking(false);
-      setPickingPointId(null);
-    }).then((stop) => {
-      unlistenCancelled = stop;
-    });
-    void clickerService.getPositionOverlayState().then((state) => {
-      setIsPicking(state.picking);
-      setPickingPointId(state.picking ? (state.pickPointId ?? null) : null);
-    }).catch(() => undefined);
-    return () => {
-      unlistenArmed?.();
-      unlistenPicked?.();
-      unlistenCancelled?.();
-    };
-  }, []);
-
-  const sequencePoints: ACSequencePoint[] = settings.sequencePoints ?? [
-    { id: "1", x: 412, y: 288, dwell: 40 },
-    { id: "2", x: 1280, y: 420, dwell: 40 },
-    { id: "3", x: 960, y: 780, dwell: 120 },
-  ];
-
+  /** Appends a new point at 0,0 (the user then edits or picks it). */
   const addSequencePoint = () => {
-    const newPoint: ACSequencePoint = {
-      id: Date.now().toString(),
-      x: 0,
-      y: 0,
-      dwell: 50,
-    };
-    updateSettings({ sequencePoints: [...sequencePoints, newPoint] });
+    const point: SequencePoint = { id: Date.now().toString(), x: 0, y: 0, dwell: 50 };
+    updateSettings({ sequencePoints: [...sequencePoints, point] });
   };
 
-  const updateSequencePoint = (id: string, fields: Partial<ACSequencePoint>) => {
-    const updated = sequencePoints.map((pt) =>
-      pt.id === id ? { ...pt, ...fields } : pt
-    );
-    updateSettings({ sequencePoints: updated });
+  /** Changes x / y / dwell of one point. */
+  const updateSequencePoint = (id: string, fields: Partial<SequencePoint>) => {
+    updateSettings({ sequencePoints: sequencePoints.map((p) => (p.id === id ? { ...p, ...fields } : p)) });
   };
 
   const removeSequencePoint = (id: string) => {
-    const filtered = sequencePoints.filter((pt) => pt.id !== id);
-    updateSettings({ sequencePoints: filtered });
+    updateSettings({ sequencePoints: sequencePoints.filter((p) => p.id !== id) });
   };
 
+  /** Arms the picker for the fixed target. */
   const beginPositionPick = async () => {
     await clickerService.beginPositionPick();
-    setIsPicking(true);
+    setPicking(true);
   };
 
+  /** Arms the picker for one sequence point. */
   const beginSequencePointPick = async (pointId: string) => {
     await clickerService.beginPositionPick(pointId);
-    setIsPicking(true);
-    setPickingPointId(pointId);
+    setPicking(true, pointId);
   };
 
   return {
-    positionMode: settings.positionMode ?? "fixed",
-    x: settings.targetX ?? 1207,
-    y: settings.targetY ?? 477,
-    jitter: settings.positionJitterPx ?? 2,
+    positionMode: settings.positionMode,
+    x: settings.targetX,
+    y: settings.targetY,
+    jitter: settings.jitterPx,
     sequencePoints,
     positionModeOptions: POSITION_MODE_OPTIONS,
     updateSettings,

@@ -1,8 +1,10 @@
+// "Click options" card: mouse button and click type.
 import { Separator } from "../common/Separator";
 import { Mouse } from "lucide-react";
 import { ChoiceGroup } from "../common/ChoiceGroup";
 import { useClick } from "../../hooks/useClick";
 
+/** Settings are sent to the backend by hooks/ac/pushSettings.ts. */
 export const ACClickSection: React.FC = () => {
   const {
     mouseButton,

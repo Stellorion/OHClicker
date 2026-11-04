@@ -1,54 +1,59 @@
+// Profile file types.
+// Mirrors backend-src/clicker/profile/  (mod.rs, error.rs, linked.rs).
 import type {
-  ACClickType,
-  ACCoordinateType,
-  ACMouseButton,
-  ACPositionMode,
-  ACRegionMode,
-  ACSequencePoint,
-} from "./ac-types";
+  ClickType, CoordinateType, MouseButton, PositionMode,
+  RegionMode, RepeatType, SequencePoint,
+} from "./clicker-types";
 
-/** Shape of the profile JSON file (matches Rust `ConfigProfile`). */
+/** Every user setting. Same JSON keys as the Rust `ConfigProfile` (profile/mod.rs). */
 export interface ConfigProfile {
   cps: number;
   intervalRandomizationPct: number;
   buttonHoldMs: number;
   startDelayMs: number;
-  mouseButton: ACMouseButton;
-  clickType: ACClickType;
-  repeatType: "until_stopped" | "fixed_count";
+  mouseButton: MouseButton;
+  clickType: ClickType;
+  repeatType: RepeatType;
   fixedCountLimit: number;
   maxDurationEnabled: boolean;
   maxDurationSec: number;
   boundariesEnabled: boolean;
-  regionMode: ACRegionMode;
+  regionMode: RegionMode;
   boundaryX: number;
   boundaryY: number;
   boundaryWidth: number;
   boundaryHeight: number;
   stopWhenCursorLeaves: boolean;
-  positionMode: ACPositionMode;
-  coordinateType: ACCoordinateType;
+  positionMode: PositionMode;
+  coordinateType: CoordinateType;
   targetX: number;
   targetY: number;
   jitterPx: number;
-  sequencePoints: ACSequencePoint[];
+  sequencePoints: SequencePoint[];
   startStopHotkey: string;
   pickPositionHotkey: string;
   toggleOverlayHotkey: string;
 }
 
+/** Mirrors Rust `ProfileErrorKind` (+ "unknown" for non-profile errors). */
 export type ProfileErrorKind =
-  | "read"
-  | "write"
-  | "busy"
-  | "invalid_json"
-  | "wrong_format"
-  | "invalid_values"
-  | "hotkey"
-  | "unknown";
+  | "read" | "write" | "busy" | "invalid_json"
+  | "wrong_format" | "invalid_values" | "hotkey" | "unknown";
 
+/** Mirrors Rust `ProfileError`: shown in the NoticeDialog. */
 export interface ProfileError {
   kind: ProfileErrorKind;
   message: string;
   details: string[];
+}
+
+/** Mirrors Rust `LinkStatus`. */
+export type LinkStatus = "unlinked" | "loaded" | "missing" | "invalid";
+
+/** Mirrors Rust `LinkedProfile`: the profile file that loads automatically on start. */
+export interface LinkedProfile {
+  path: string | null;
+  status: LinkStatus;
+  error: ProfileError | null;
+  profile: ConfigProfile | null;
 }

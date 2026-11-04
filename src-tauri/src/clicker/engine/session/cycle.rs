@@ -1,17 +1,23 @@
+//! One engine step: handle start/delay, check limits, then click or hold.
+//!   boundaries.rs region check   bounds_guard.rs stop/pause when outside
+//!   click.rs  click + hold       limits.rs  fixed count / max duration
+//!   target.rs where to click
 use super::{ClickSession, lifecycle};
 use crate::clicker::engine::{actions, stats};
-use crate::clicker::state::{AutoClickerState, RustClickType};
+use crate::clicker::state::{AutoClickerState, ClickType};
 use enigo::Enigo;
 use std::sync::atomic::Ordering;
 use std::thread;
 use std::time::{Duration, Instant};
 use tauri::AppHandle;
 
+mod bounds_guard;
 mod boundaries;
 mod click;
 mod limits;
 mod target;
 
+/// Runs once per loop iteration while the clicker is on.
 pub(super) fn tick(
     session: &mut ClickSession,
     app: &AppHandle,
@@ -44,7 +50,7 @@ pub(super) fn tick(
     }
 
     let button = lifecycle::get_button(*state.mouse_button.lock().unwrap());
-    if *state.click_type.lock().unwrap() == RustClickType::Hold {
+    if *state.click_type.lock().unwrap() == ClickType::Hold {
         click::hold(session, app, state, enigo, button);
         return;
     }

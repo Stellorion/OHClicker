@@ -1,3 +1,4 @@
+// Click, then press a key combination to record a hotkey.
 import React, { useState, useEffect, useRef } from "react";
 import { cn } from "../../lib/utils";
 

@@ -1,10 +1,11 @@
-import type { ACSequencePoint } from './ac-types';
+// Props of the sequence list (components/autoclicker/ACSequenceList.tsx).
+import type { SequencePoint } from './ac-types';
 
 export interface ACSequenceListProps {
-  points: ACSequencePoint[];
+  points: SequencePoint[];
   onUpdatePoint: (
     id: string,
-    fields: Partial<ACSequencePoint>
+    fields: Partial<SequencePoint>
   ) => void;
   onRemovePoint: (id: string) => void;
   onAddPoint: () => void;

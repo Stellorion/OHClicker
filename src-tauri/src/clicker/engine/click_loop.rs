@@ -1,3 +1,4 @@
+//! The thread that clicks: ticks while running, otherwise idles and cleans up.
 use super::session;
 use crate::clicker::state::AutoClickerState;
 use enigo::{Enigo, Settings};
@@ -6,6 +7,8 @@ use std::thread;
 use std::time::Duration;
 use tauri::{AppHandle, Emitter};
 
+/// Runs forever. Emits `clicker-state-changed = false` when the engine stopped by itself
+/// (limit reached, cursor left the region).
 pub(super) fn run(app: AppHandle, state: AutoClickerState) {
     let mut enigo = match Enigo::new(&Settings::default()) {
         Ok(enigo) => enigo,

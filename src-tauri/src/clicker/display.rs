@@ -1,6 +1,8 @@
+//! One physical monitor. Frontend mirror: `DisplayInfo` in frontend-src/types/display-types.ts
 use serde::{Deserialize, Serialize};
 use tauri::Monitor;
 
+/// Monitor geometry in physical pixels; origin is relative to the primary display.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct DisplayInfo {
@@ -15,6 +17,7 @@ pub struct DisplayInfo {
 }
 
 impl DisplayInfo {
+    /// Builds the info from a Tauri monitor (the id encodes position and size).
     pub fn from_monitor(monitor: &Monitor, is_primary: bool) -> Self {
         let size = *monitor.size();
         let position = *monitor.position();
@@ -38,6 +41,7 @@ impl DisplayInfo {
         }
     }
 
+    /// 1920x1080 placeholder used until the real displays are read.
     pub fn fallback_primary() -> Self {
         Self {
             id: "primary".to_string(),

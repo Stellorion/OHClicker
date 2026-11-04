@@ -1,17 +1,21 @@
+// Overlay window types.
+// `PositionOverlayState` mirrors backend-src/clicker/overlay/position_state.rs,
+// `BoundaryOverlayState` mirrors backend-src/clicker/overlay/boundary_state.rs.
 import type { Point } from "./common";
-import type { ACPositionMode, ACSequencePoint, ACRegionMode } from './ac-types';
+import type { PositionMode, RegionMode, SequencePoint } from "./clicker-types";
 
-export interface OverlayState {
+/** Pushed by the backend (event `overlay-state`) to the position overlay. */
+export interface PositionOverlayState {
   visible: boolean;
   picking: boolean;
   pickPointId?: string | null;
 
-  positionMode: ACPositionMode;
+  positionMode: PositionMode;
   targetX: number;
   targetY: number;
   jitterPx: number;
 
-  sequencePoints: ACSequencePoint[];
+  sequencePoints: SequencePoint[];
 
   screenWidth: number;
   screenHeight: number;
@@ -22,6 +26,7 @@ export interface OverlayState {
   scaleFactor: number;
 }
 
+/** Props of one target dot on the position overlay. */
 export interface TargetMarkerProps extends Point {
   order?: number;
   jitter: number;
@@ -29,9 +34,10 @@ export interface TargetMarkerProps extends Point {
   screenHeight: number;
 }
 
+/** Pushed by the backend (event `boundary-state`). Rect is relative to the selected display. */
 export interface BoundaryOverlayState {
   visible: boolean;
-  regionMode: ACRegionMode;
+  regionMode: RegionMode;
   x: number;
   y: number;
   width: number;

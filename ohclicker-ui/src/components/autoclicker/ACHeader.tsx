@@ -1,8 +1,10 @@
+// Top card: running state, live cps, Start/Stop button, clicks / elapsed / average rate.
 import { useAC } from "../../hooks/useAC";
 import { Button } from "../common/Button";
 import { Separator } from "../common/Separator";
 import { Play, Square } from "lucide-react";
 
+/** Reads live stats from the store (filled by hooks/ac/useBackendEvents.ts). */
 export const ACHeader: React.FC = () => {
   const { settings, stats, toggleExecution } = useAC();
 

@@ -1,3 +1,4 @@
+// Advanced layout: settings on the left, header / map / hotkeys / files on the right.
 import React from 'react';
 import { ACHeader } from '../components/autoclicker/ACHeader';
 import { ACTimingSection } from '../components/autoclicker/ACTimingSection';
@@ -8,7 +9,7 @@ import { ACBoundariesSection } from '../components/autoclicker/ACBoundariesSecti
 import { ACHotkeysSection } from '../components/autoclicker/ACHotkeysSection';
 import { ACScreenMapWidget } from '../components/autoclicker/screen-map/ACScreenMapWidget';
 import { ACEstimateWidget } from '../components/autoclicker/ACEstimateWidget';
-import { ACFilesSection } from '../components/autoclicker/ACFilesSection';
+import { ACFilesSection } from '../components/autoclicker/files/ACFilesSection';
 
 export const ACAdvancedView: React.FC = () => {
   return (

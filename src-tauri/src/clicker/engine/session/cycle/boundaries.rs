@@ -1,4 +1,6 @@
-use crate::clicker::state::{AutoClickerState, RustRegionMode};
+//! Region check used before every click (Boundaries section).
+//! The overlay that DRAWS the same region is clicker/overlay/boundary_state.rs.
+use crate::clicker::state::{AutoClickerState, RegionMode};
 use enigo::{Enigo, Mouse};
 use std::sync::atomic::Ordering;
 
@@ -21,15 +23,15 @@ pub(super) fn check_boundaries(
 
     // (left, top, width, height) in desktop coordinates
     let (rx, ry, rw, rh) = match mode {
-        RustRegionMode::Fullscreen => {
+        RegionMode::Fullscreen => {
             let d = state.position.display.lock().unwrap();
             (d.origin_x, d.origin_y, d.width as i32, d.height as i32)
         }
-        RustRegionMode::ActiveWindow => {
-            let (x, y, w, h) = crate::commands::boundaries::foreground_window_rect()?;
+        RegionMode::ActiveWindow => {
+            let (x, y, w, h) = crate::clicker::window_rect::foreground_window_rect()?;
             (x, y, w as i32, h as i32)
         }
-        RustRegionMode::Custom => {
+        RegionMode::Custom => {
             // The rectangle is entered relative to the selected display
             // (same space as the screen map), so shift it by the display origin.
             let d = state.position.display.lock().unwrap();

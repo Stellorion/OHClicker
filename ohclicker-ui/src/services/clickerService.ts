@@ -1,8 +1,12 @@
 import { invoke } from "@tauri-apps/api/core";
-import type { ACDisplay } from "../types/ac-types";
-import type { ConfigProfile } from "../types/profile-types";
+import type { DisplayInfo } from "../types/ac-types";
+import type { BoundaryOverlayState } from "../types/overlay-types";
+import { profileService } from "./profileService";
 
+// Every backend command the UI can call (Rust side: backend-src/commands/*.rs).
+// Profile commands live in profileService.ts and are merged in at the bottom.
 export const clickerService = {
+  /** Start/stop. Resolves to the new running state. */
   toggleClicker: () => invoke<boolean>("toggle_clicker"),
   updateCps: (cps: number) => invoke("update_cps", { cps }),
   updateIntervalRandomizationPct: (pct: number) =>
@@ -38,6 +42,7 @@ export const clickerService = {
   updateSequencePoints: (
     points: Array<{ id: string; x: number; y: number; dwell: number }>,
   ) => invoke("update_sequence_points", { points }),
+  /** Arms the position picker (optionally for one sequence point). */
   beginPositionPick: (pointId?: string) =>
     invoke<void>("begin_position_pick", { pointId }),
   togglePositionOverlay: () => invoke<boolean>("toggle_position_overlay"),
@@ -47,7 +52,8 @@ export const clickerService = {
     ),
   getScreenSize: () =>
     invoke<{ width: number; height: number }>("get_screen_size"),
-  getDisplays: () => invoke<ACDisplay[]>("get_displays"),
+  getDisplays: () => invoke<DisplayInfo[]>("get_displays"),
+  /** Selects the display that positions and boundaries are relative to. */
   selectDisplay: (displayId: string) => invoke("select_display", { displayId }),
   async updateStartStopHotkey(hotkey: string): Promise<void> {
     await invoke("update_start_stop_hotkey", { hotkey });
@@ -66,10 +72,7 @@ export const clickerService = {
     invoke("update_boundary_rect", { x, y, width, height }),
   setStopWhenCursorLeaves: (enabled: boolean) =>
     invoke("set_stop_when_cursor_leaves", { enabled }),
-  getActiveWindowBounds: () =>
-    invoke<{ width: number; height: number }>("get_boundary_overlay_state"),
-  /** true = file written, false = user cancelled. Rejects with a ProfileError. */
-  exportProfile: () => invoke<boolean>("export_profile"),
-  /** null = user cancelled. Rejects with a ProfileError. */
-  importProfile: () => invoke<ConfigProfile | null>("import_profile"),
+  getBoundaryOverlayState: () =>
+    invoke<BoundaryOverlayState>("get_boundary_overlay_state"),
+  ...profileService,
 };

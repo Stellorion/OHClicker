@@ -1,8 +1,10 @@
+//! Run limits: fixed click count and maximum duration.
 use super::super::ClickSession;
 use crate::clicker::state::AutoClickerState;
-use crate::clicker::state::RustRepeatType;
+use crate::clicker::state::RepeatType;
 use std::time::Duration;
 
+/// True when any limit says the run must end.
 pub(super) fn reached(session: &ClickSession, state: &AutoClickerState) -> bool {
     let repeat_type = *state.repeat_type.lock().unwrap();
     let elapsed = session.start_time.map(|start| start.elapsed());
@@ -23,14 +25,16 @@ pub(super) fn reached(session: &ClickSession, state: &AutoClickerState) -> bool 
     )
 }
 
+/// Fixed count mode and the click total hit the limit.
 pub(super) fn fixed_count_reached(
-    repeat_type: RustRepeatType,
+    repeat_type: RepeatType,
     total_clicks: u64,
     limit: u32,
 ) -> bool {
-    repeat_type == RustRepeatType::FixedCount && total_clicks >= u64::from(limit)
+    repeat_type == RepeatType::FixedCount && total_clicks >= u64::from(limit)
 }
 
+/// Max-duration enabled and the elapsed time hit the limit.
 pub(super) fn duration_reached(
     enabled: bool,
     elapsed: Option<Duration>,
@@ -43,14 +47,14 @@ pub(super) fn duration_reached(
 #[cfg(test)]
 mod tests {
     use super::{duration_reached, fixed_count_reached};
-    use crate::clicker::state::RustRepeatType;
+    use crate::clicker::state::RepeatType;
     use std::time::Duration;
 
     #[test]
     fn fixed_count_stops_at_limit_only_when_enabled() {
-        assert!(!fixed_count_reached(RustRepeatType::FixedCount, 4, 5));
-        assert!(fixed_count_reached(RustRepeatType::FixedCount, 5, 5));
-        assert!(!fixed_count_reached(RustRepeatType::UntilStopped, 5, 5));
+        assert!(!fixed_count_reached(RepeatType::FixedCount, 4, 5));
+        assert!(fixed_count_reached(RepeatType::FixedCount, 5, 5));
+        assert!(!fixed_count_reached(RepeatType::UntilStopped, 5, 5));
     }
 
     #[test]

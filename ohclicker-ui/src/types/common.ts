@@ -1,3 +1,4 @@
+// Small geometry types.
 export interface Point {
   x: number;
   y: number;

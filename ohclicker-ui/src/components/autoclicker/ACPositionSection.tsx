@@ -1,32 +1,18 @@
+// "Target position" card: cursor / fixed point / sequence, plus jitter.
 import { Separator } from "../common/Separator";
-import { Target, Crosshair } from "lucide-react";
+import { Target } from "lucide-react";
 import { ChoiceGroup } from "../common/ChoiceGroup";
-import { usePosition } from "../../hooks/usePosition";
 import { SettingRow } from "../common/SettingRow";
-import { Button } from "../common/Button";
+import { usePosition } from "../../hooks/usePosition";
 import { ACSequenceList } from "./ACSequenceList";
-import { LabeledInput } from "../common/LabeledInput";
+import { ACFixedCoordinates } from "./ACFixedCoordinates";
+import { CARD, SEPARATOR } from "../../lib/styles";
 
 export const ACPositionSection: React.FC = () => {
-  const {
-    positionMode,
-    x,
-    y,
-    jitter,
-    sequencePoints,
-    positionModeOptions,
-    updateSettings,
-    beginPositionPick,
-    beginSequencePointPick,
-    isPicking,
-    pickingPointId,
-    addSequencePoint,
-    updateSequencePoint,
-    removeSequencePoint,
-  } = usePosition();
+  const p = usePosition();
 
   return (
-    <div className="bg-app-surface border border-app-border rounded-xl p-4 pb-3 space-y-3 shadow-sm">
+    <div className={CARD}>
       <div className="flex items-center gap-2">
         <Target className="size-4 text-app-text-muted shrink-0" />
         <h3 className="text-sm font-bold text-app-text-primary uppercase tracking-wide">
@@ -34,80 +20,53 @@ export const ACPositionSection: React.FC = () => {
         </h3>
       </div>
 
-      <Separator className="w-[calc(100%+2rem)] -mx-4" />
+      <Separator className={SEPARATOR} />
 
       <ChoiceGroup
         label="Position mode"
-        options={positionModeOptions}
-        value={positionMode}
-        onChange={(val) => updateSettings({ positionMode: val })}
+        options={p.positionModeOptions}
+        value={p.positionMode}
+        onChange={(val) => p.updateSettings({ positionMode: val })}
       />
 
-      {positionMode === "fixed" && (
+      {p.positionMode === "fixed" && (
         <>
-          <Separator className="w-[calc(100%+2rem)] -mx-4" />
-
-          <div className="flex items-center justify-between gap-4">
-            <p className="text-sm font-bold text-app-text-primary">
-              Coordinates
-            </p>
-
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2">
-                <LabeledInput
-                  label="X"
-                  value={x}
-                  widthClass="w-24"
-                  onChange={(val) => updateSettings({ targetX: val })}
-                />
-                <LabeledInput
-                  label="Y"
-                  value={y}
-                  widthClass="w-24"
-                  onChange={(val) => updateSettings({ targetY: val })}
-                />
-              </div>
-
-              <Button
-                type="button"
-                onClick={() => void beginPositionPick()}
-                title="Arm the picker, then click a screen location (F7)"
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-app-bg hover:bg-app-border/40 border border-app-border rounded-lg text-xs font-bold text-app-text-primary transition-all"
-              >
-                <Crosshair className="size-3.5 text-app-red" />
-                {isPicking ? "Click target" : "Pick"}
-              </Button>
-            </div>
-          </div>
-        </>
-      )}
-
-      {positionMode === "sequence" && (
-        <>
-          <Separator className="w-[calc(100%+2rem)] -mx-4" />
-          <ACSequenceList
-            points={sequencePoints}
-            onUpdatePoint={updateSequencePoint}
-            onRemovePoint={removeSequencePoint}
-            onAddPoint={addSequencePoint}
-            onPickPoint={(id) => void beginSequencePointPick(id)}
-            pickingPointId={pickingPointId}
+          <Separator className={SEPARATOR} />
+          <ACFixedCoordinates
+            x={p.x}
+            y={p.y}
+            isPicking={p.isPicking}
+            onChange={p.updateSettings}
+            onPick={() => void p.beginPositionPick()}
           />
         </>
       )}
 
-      {positionMode !== "cursor" && (
+      {p.positionMode === "sequence" && (
         <>
-          <Separator className="w-[calc(100%+2rem)] -mx-4" />
+          <Separator className={SEPARATOR} />
+          <ACSequenceList
+            points={p.sequencePoints}
+            onUpdatePoint={p.updateSequencePoint}
+            onRemovePoint={p.removeSequencePoint}
+            onAddPoint={p.addSequencePoint}
+            onPickPoint={(id) => void p.beginSequencePointPick(id)}
+            pickingPointId={p.pickingPointId}
+          />
+        </>
+      )}
 
+      {p.positionMode !== "cursor" && (
+        <>
+          <Separator className={SEPARATOR} />
           <SettingRow
             label="Position jitter"
             description="Random pixel offset around each target"
-            value={jitter}
+            value={p.jitter}
             unit="px"
             min={0}
             max={50}
-            onChange={(val) => updateSettings({ positionJitterPx: val })}
+            onChange={(val) => p.updateSettings({ jitterPx: val })}
           />
         </>
       )}

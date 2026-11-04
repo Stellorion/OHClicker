@@ -1,3 +1,4 @@
+// Base button (shadcn style, built on @base-ui Button).
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../../lib/utils"

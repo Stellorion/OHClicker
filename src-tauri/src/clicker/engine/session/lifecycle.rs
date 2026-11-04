@@ -1,10 +1,12 @@
+//! Run start/stop helpers.
 use super::ClickSession;
 use crate::clicker::engine::{actions, stats};
-use crate::clicker::state::{AutoClickerState, RustMouseButton};
+use crate::clicker::state::{AutoClickerState, MouseButton};
 use enigo::{Button, Enigo};
 use std::time::Instant;
 use tauri::AppHandle;
 
+/// Releases a held button, emits final stats and resets the timers.
 pub(super) fn stop(
     session: &mut ClickSession,
     app: &AppHandle,
@@ -24,10 +26,11 @@ pub(super) fn stop(
     session.next_click = Instant::now();
 }
 
-pub(super) fn get_button(button: RustMouseButton) -> Button {
+/// Converts our `MouseButton` to enigo's `Button`.
+pub(super) fn get_button(button: MouseButton) -> Button {
     match button {
-        RustMouseButton::Left => Button::Left,
-        RustMouseButton::Middle => Button::Middle,
-        RustMouseButton::Right => Button::Right,
+        MouseButton::Left => Button::Left,
+        MouseButton::Middle => Button::Middle,
+        MouseButton::Right => Button::Right,
     }
 }
