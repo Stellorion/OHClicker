@@ -12,11 +12,6 @@ pub fn run() {
                 .level(tauri_plugin_log::log::LevelFilter::Info)
                 .build(),
         )
-        .plugin(
-            tauri_plugin_log::Builder::new()
-                .level(tauri_plugin_log::log::LevelFilter::Info)
-                .build(),
-        )
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .manage(app_state::AppState::new())
@@ -76,6 +71,12 @@ pub fn run() {
             commands::hotkeys::apply_hotkeys(app.handle(), &state, "F6", "F7", "F8")?;
 
             Ok(())
+        })
+        .on_window_event(|window, event| {
+            if let tauri::WindowEvent::CloseRequested { .. } = event {
+                // Force exit the process to release global hotkeys and background workers
+                window.app_handle().exit(0);
+            }
         })
         .run(tauri::generate_context!())
         .expect("error while building tauri application");
