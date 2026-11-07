@@ -8,6 +8,16 @@ use tauri_plugin_window_state::{Builder as WindowState, StateFlags};
 /// Registers every Tauri plugin (each plugin may only be added once).
 pub fn add_plugins(builder: tauri::Builder<tauri::Wry>) -> tauri::Builder<tauri::Wry> {
     builder
+        // Must be registered first!
+        .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
+            use tauri::Manager;
+
+            if let Some(window) = app.get_webview_window("main") {
+                let _ = window.show();
+                let _ = window.unminimize();
+                let _ = window.set_focus();
+            }
+        }))
         .plugin(
             tauri_plugin_log::Builder::new()
                 .level(tauri_plugin_log::log::LevelFilter::Info)
@@ -15,9 +25,7 @@ pub fn add_plugins(builder: tauri::Builder<tauri::Wry>) -> tauri::Builder<tauri:
         )
         .plugin(
             WindowState::default()
-                // The overlays are placed by our own code (overlay/windows.rs).
                 .with_denylist(&["position-overlay", "boundary-overlay"])
-                // Remember size, position and maximized (not "visible").
                 .with_state_flags(StateFlags::SIZE | StateFlags::POSITION | StateFlags::MAXIMIZED)
                 .build(),
         )
