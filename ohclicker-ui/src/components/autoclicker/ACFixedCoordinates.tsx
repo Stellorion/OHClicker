@@ -23,7 +23,7 @@ export const ACFixedCoordinates: React.FC<ACFixedCoordinatesProps> = ({ x, y, is
       <Button
         type="button"
         onClick={onPick}
-        title="Arm the picker, then click a screen location (F7)"
+        title="Arm the picker, then click a screen location"
         className={OUTLINE_BUTTON}
       >
         <Crosshair className="size-3.5 text-app-red" />

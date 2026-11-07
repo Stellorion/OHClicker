@@ -32,7 +32,6 @@ macro_rules! all_commands {
             commands::overlay::get_position_overlay_state,
             // hotkeys
             commands::hotkeys::update_start_stop_hotkey,
-            commands::hotkeys::update_pick_position_hotkey,
             commands::hotkeys::update_toggle_overlay_hotkey,
             // boundaries
             commands::boundaries::set_boundaries_enabled,

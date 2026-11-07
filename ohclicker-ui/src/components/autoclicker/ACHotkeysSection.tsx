@@ -1,4 +1,4 @@
-// "Hotkeys" card: start/stop, pick position and toggle overlay.
+// "Hotkeys" card: start/stop and toggle overlay.
 import { Separator } from "../common/Separator";
 import { Keyboard } from "lucide-react";
 import { HotkeyInput } from "../common/HotkeyInput";
@@ -6,8 +6,7 @@ import { useHotkeys } from "../../hooks/useHotkeys";
 
 /** A hotkey the OS refuses is reverted with a dialog (hooks/ac/pushHotkeys.ts). */
 export const ACHotkeysSection: React.FC = () => {
-  const { startStopKey, pickPositionKey, toggleOverlayKey, updateSettings } =
-    useHotkeys();
+  const { startStopKey, toggleOverlayKey, updateSettings } = useHotkeys();
 
   return (
     <div className="bg-app-surface border border-app-border rounded-xl p-4 pb-3 space-y-3 shadow-sm">
@@ -28,23 +27,6 @@ export const ACHotkeysSection: React.FC = () => {
           <HotkeyInput
             value={startStopKey}
             onChange={(key) => updateSettings({ startStopHotkey: key })}
-          />
-        </div>
-
-        <Separator className="w-[calc(100%+2rem)] -mx-4" />
-
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <p className="text-sm font-bold text-app-text-primary">
-              Pick position
-            </p>
-            <label className="text-xs text-app-text-secondary block leading-relaxed">
-              Arm the picker, then click a screen location
-            </label>
-          </div>
-          <HotkeyInput
-            value={pickPositionKey}
-            onChange={(key) => updateSettings({ pickPositionHotkey: key })}
           />
         </div>
 

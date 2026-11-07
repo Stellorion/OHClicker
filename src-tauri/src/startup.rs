@@ -59,7 +59,7 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
     clicker::overlay::spawn_z_order_sync(app.handle().clone());
 
     // Default hotkeys; a linked profile may replace them right below.
-    clicker::hotkeys::apply_hotkeys(app.handle(), &state, "F6", "F7", "F8")?;
+    clicker::hotkeys::apply_hotkeys(app.handle(), &state, "F6", "F7")?;
     clicker::profile::load_on_startup(app.handle(), &state);
 
     // Options saved in settings.json: the tray icon only shows when enabled.

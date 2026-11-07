@@ -43,8 +43,7 @@ const initialSettings: ACSettings = {
   stopWhenCursorLeaves: false,
 
   startStopHotkey: "F6",
-  pickPositionHotkey: "F7",
-  toggleOverlayHotkey: "F8",
+  toggleOverlayHotkey: "F7",
   scaleFactor: 0,
 };
 

@@ -18,7 +18,6 @@ pub struct AppState {
     pub pick_target: Mutex<Option<String>>,
     /// Currently registered global hotkeys (OS shortcut strings).
     pub start_stop_hotkey: Mutex<String>,
-    pub pick_position_hotkey: Mutex<String>,
     pub toggle_overlay_hotkey: Mutex<String>,
     /// Profile file that is auto-loaded on start (see `clicker::profile::link`).
     pub linked_profile: Mutex<LinkedProfile>,
@@ -35,8 +34,7 @@ impl AppState {
             pick_armed: AtomicBool::new(false),
             pick_target: Mutex::new(None),
             start_stop_hotkey: Mutex::new("F6".to_string()),
-            pick_position_hotkey: Mutex::new("F7".to_string()),
-            toggle_overlay_hotkey: Mutex::new("F8".to_string()),
+            toggle_overlay_hotkey: Mutex::new("F7".to_string()),
             linked_profile: Mutex::new(LinkedProfile::unlinked()),
             keep_in_tray: AtomicBool::new(false),
         }

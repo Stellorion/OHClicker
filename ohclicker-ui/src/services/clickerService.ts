@@ -61,9 +61,6 @@ export const clickerService = {
   async updateStartStopHotkey(hotkey: string): Promise<void> {
     await invoke("update_start_stop_hotkey", { hotkey });
   },
-  async updatePickPositionHotkey(hotkey: string): Promise<void> {
-    await invoke("update_pick_position_hotkey", { hotkey });
-  },
   async updateToggleOverlayHotkey(hotkey: string): Promise<void> {
     await invoke("update_toggle_overlay_hotkey", { hotkey });
   },

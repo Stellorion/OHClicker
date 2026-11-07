@@ -66,6 +66,5 @@ pub struct ConfigProfile {
     pub jitter_px: u32,
     pub sequence_points: Vec<SequencePoint>,
     pub start_stop_hotkey: String,
-    pub pick_position_hotkey: String,
     pub toggle_overlay_hotkey: String,
 }

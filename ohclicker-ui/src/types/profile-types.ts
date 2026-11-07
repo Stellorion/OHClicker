@@ -33,7 +33,6 @@ export interface ConfigProfile {
   jitterPx: number;
   sequencePoints: SequencePoint[];
   startStopHotkey: string;
-  pickPositionHotkey: string;
   toggleOverlayHotkey: string;
 }
 

@@ -4,19 +4,14 @@ use crate::clicker;
 use tauri::{AppHandle, Emitter, Manager};
 use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut, ShortcutState};
 
-/// The three hotkey slots (same order as the UI: start/stop, pick, overlay).
+/// The two hotkey slots (same order as the UI: start/stop, toggle overlay).
 #[derive(Clone, Copy)]
 pub enum HotkeyAction {
     StartStop,
-    PickPosition,
     ToggleOverlay,
 }
 
-pub const ACTIONS: [HotkeyAction; 3] = [
-    HotkeyAction::StartStop,
-    HotkeyAction::PickPosition,
-    HotkeyAction::ToggleOverlay,
-];
+pub const ACTIONS: [HotkeyAction; 2] = [HotkeyAction::StartStop, HotkeyAction::ToggleOverlay];
 
 /// Runs the action when its key is pressed.
 fn run_action(app: &AppHandle, action: HotkeyAction) {
@@ -25,9 +20,6 @@ fn run_action(app: &AppHandle, action: HotkeyAction) {
         HotkeyAction::StartStop => {
             let running = clicker::service::toggle(&state);
             let _ = app.emit("clicker-state-changed", running);
-        }
-        HotkeyAction::PickPosition => {
-            let _ = clicker::overlay::begin_pick(app, &state);
         }
         HotkeyAction::ToggleOverlay => {
             let _ = clicker::overlay::toggle(app, &state);

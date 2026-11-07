@@ -70,7 +70,6 @@ impl ConfigProfile {
     fn check_hotkeys(&self, problems: &mut Vec<String>) {
         let hotkeys = [
             ("startStopHotkey", &self.start_stop_hotkey),
-            ("pickPositionHotkey", &self.pick_position_hotkey),
             ("toggleOverlayHotkey", &self.toggle_overlay_hotkey),
         ];
         let mut parsed: Vec<(&str, &str, Shortcut)> = Vec::new();

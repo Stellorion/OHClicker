@@ -25,6 +25,5 @@ pub const REQUIRED_FIELDS: &[&str] = &[
     "jitterPx",
     "sequencePoints",
     "startStopHotkey",
-    "pickPositionHotkey",
     "toggleOverlayHotkey",
 ];

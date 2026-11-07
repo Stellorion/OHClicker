@@ -5,7 +5,7 @@ import { Scan } from "lucide-react";
 import { ChoiceGroup } from "../common/ChoiceGroup";
 import { Switch } from "../common/Switch";
 import { useBoundaries } from "../../hooks/useBoundaries";
-import { ACBoundaryRect } from "./ACBoundaryRect";
+import { ACRectangleRow } from "./ACRectangleRow";
 import { ACWindowRow } from "./ACWindowRow";
 import { CARD, SEPARATOR } from "../../lib/styles";
 
@@ -59,24 +59,13 @@ export const ACBoundariesSection: React.FC = () => {
 
         {b.regionMode === "custom" && (
           <>
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-sm font-bold text-app-text-primary">
-                  Rectangle
-                </p>
-                <label className="text-xs text-app-text-secondary block leading-relaxed">
-                  Origin and size in pixels
-                </label>
-              </div>
-              <ACBoundaryRect
-                x={b.x}
-                y={b.y}
-                width={b.width}
-                height={b.height}
-                disabled={b.regionMode !== "custom"}
-                onChange={b.setRectField}
-              />
-            </div>
+            <ACRectangleRow
+              x={b.x}
+              y={b.y}
+              width={b.width}
+              height={b.height}
+              onChange={b.setRectField}
+            />
 
             <Separator className={SEPARATOR} />
           </>

@@ -7,8 +7,7 @@ export const useHotkeys = () => {
 
   return {
     startStopKey: settings.startStopHotkey ?? "F6",
-    pickPositionKey: settings.pickPositionHotkey ?? "F7",
-    toggleOverlayKey: settings.toggleOverlayHotkey ?? "F8",
+    toggleOverlayKey: settings.toggleOverlayHotkey ?? "F7",
     updateSettings,
   };
 };

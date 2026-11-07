@@ -29,7 +29,6 @@ pub fn apply_profile_to_app(
         app,
         state,
         &profile.start_stop_hotkey,
-        &profile.pick_position_hotkey,
         &profile.toggle_overlay_hotkey,
     )
     .map_err(|e| {

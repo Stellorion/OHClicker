@@ -4,12 +4,8 @@ use crate::app_state::AppState;
 use std::sync::atomic::Ordering;
 use tauri::{AppHandle, Emitter, Manager};
 
-/// Arms the picker for the fixed target (hotkey F7 by default).
-pub fn begin_pick(app: &AppHandle, state: &AppState) -> Result<(), String> {
-    begin_pick_for(app, state, None)
-}
-
-/// Arms the picker; `point_id` = sequence point to move (None = fixed target).
+/// Arms the picker (the "Pick" buttons in the UI); `point_id` = sequence point to move
+/// (None = fixed target).
 /// The overlay becomes clickable until a position is chosen.
 pub fn begin_pick_for(
     app: &AppHandle,
@@ -32,7 +28,7 @@ pub fn begin_pick_for(
     Ok(())
 }
 
-/// Shows/hides the overlay (hotkey F8 by default). Returns the new visibility.
+/// Shows/hides the overlay (hotkey F7 by default). Returns the new visibility.
 pub fn toggle(app: &AppHandle, state: &AppState) -> Result<bool, String> {
     let visible = !state.overlay_visible.fetch_xor(true, Ordering::SeqCst);
     let window = app

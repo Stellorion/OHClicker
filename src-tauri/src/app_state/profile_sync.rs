@@ -36,7 +36,6 @@ impl AppState {
             jitter_px: p.jitter_px.load(SeqCst),
             sequence_points: p.sequence_points.lock().unwrap().clone(),
             start_stop_hotkey: self.start_stop_hotkey.lock().unwrap().clone(),
-            pick_position_hotkey: self.pick_position_hotkey.lock().unwrap().clone(),
             toggle_overlay_hotkey: self.toggle_overlay_hotkey.lock().unwrap().clone(),
         }
     }

@@ -6,11 +6,10 @@ import { useUIStore } from "../../store/useUIStore";
 import { errorMessage } from "../../lib/profileError";
 import type { ACSettings } from "../../types/ac-types";
 
-type HotkeyField = "startStopHotkey" | "pickPositionHotkey" | "toggleOverlayHotkey";
+type HotkeyField = "startStopHotkey" | "toggleOverlayHotkey";
 
 const HOTKEY_SENDERS: Record<HotkeyField, (hotkey: string) => Promise<void>> = {
   startStopHotkey: clickerService.updateStartStopHotkey,
-  pickPositionHotkey: clickerService.updatePickPositionHotkey,
   toggleOverlayHotkey: clickerService.updateToggleOverlayHotkey,
 };
 
