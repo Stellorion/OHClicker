@@ -1,6 +1,7 @@
 //! Tauri commands for the Boundaries section (frontend: clickerService.ts and
 //! components/autoclicker/ACBoundariesSection.tsx).
 use crate::app_state::AppState;
+use crate::clicker::os_windows::{self, WindowInfo};
 use crate::clicker::overlay::{
     BoundaryOverlayState, boundary_overlay_state, publish_boundary_state,
 };
@@ -15,7 +16,7 @@ pub fn set_boundaries_enabled(app: AppHandle, state: State<'_, AppState>, enable
     publish_boundary_state(&app, &state);
 }
 
-/// Fullscreen / active window / custom rectangle.
+/// Fullscreen / choose window / custom rectangle.
 #[tauri::command]
 pub fn set_region_mode(app: AppHandle, state: State<'_, AppState>, mode: RegionMode) {
     service::set_region_mode(&state.clicker, mode);
@@ -47,4 +48,17 @@ pub fn set_stop_when_cursor_leaves(app: AppHandle, state: State<'_, AppState>, e
 #[tauri::command]
 pub fn get_boundary_overlay_state(state: State<'_, AppState>) -> BoundaryOverlayState {
     boundary_overlay_state(&state)
+}
+
+/// Open windows the user can choose from (Boundaries -> "Choose window").
+#[tauri::command]
+pub fn list_windows() -> Vec<WindowInfo> {
+    os_windows::list_windows()
+}
+
+/// Chooses the window the region follows. `id` is its handle from `list_windows`.
+#[tauri::command]
+pub fn set_boundary_window(app: AppHandle, state: State<'_, AppState>, id: i64, title: String) {
+    service::set_boundary_window(&state.clicker, id, title);
+    publish_boundary_state(&app, &state);
 }

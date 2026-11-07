@@ -1,5 +1,5 @@
 //! Tauri commands for profile files. Frontend: services/clickerService.ts (profile
-//! section) and components/autoclicker/files/*.
+//! section) and components/autoclicker/options/*.
 pub mod export;
 pub mod import;
 pub mod link;

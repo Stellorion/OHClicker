@@ -19,6 +19,8 @@ export interface ConfigProfile {
   maxDurationSec: number;
   boundariesEnabled: boolean;
   regionMode: RegionMode;
+  /** Title of the window followed by "choose_window" (found again after a restart). */
+  boundaryWindowTitle: string;
   boundaryX: number;
   boundaryY: number;
   boundaryWidth: number;

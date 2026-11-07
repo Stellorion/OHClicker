@@ -1,5 +1,6 @@
 //! Click engine settings shared between the UI commands and the click thread.
 //! Frontend mirror of the enums: frontend-src/types/clicker-types.ts
+use crate::clicker::boundary_window::BoundaryWindow;
 use crate::clicker::position::PositionSettings;
 use serde::{Deserialize, Serialize};
 use std::sync::atomic::{AtomicBool, AtomicI32, AtomicU32};
@@ -30,12 +31,14 @@ pub enum RepeatType {
     FixedCount,
 }
 
-/// Boundaries: whole display, focused window, or a custom rectangle.
+/// Boundaries: whole display, a window the user chose, or a custom rectangle.
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum RegionMode {
     Fullscreen,
-    ActiveWindow,
+    /// Followed window; `active_window` is the old name (kept so old profiles load).
+    #[serde(alias = "active_window")]
+    ChooseWindow,
     Custom,
 }
 
@@ -56,6 +59,7 @@ pub struct AutoClickerState {
     pub(crate) position: PositionSettings,
     pub(crate) boundaries_enabled: Arc<AtomicBool>,
     pub(crate) region_mode: Arc<Mutex<RegionMode>>,
+    pub(crate) boundary_window: BoundaryWindow,
     pub(crate) boundary_x: Arc<AtomicI32>,
     pub(crate) boundary_y: Arc<AtomicI32>,
     pub(crate) boundary_width: Arc<AtomicU32>,
@@ -81,6 +85,7 @@ impl AutoClickerState {
             position: PositionSettings::new(),
             boundaries_enabled: Arc::new(AtomicBool::new(false)),
             region_mode: Arc::new(Mutex::new(RegionMode::Fullscreen)),
+            boundary_window: BoundaryWindow::new(),
             boundary_x: Arc::new(AtomicI32::new(320)),
             boundary_y: Arc::new(AtomicI32::new(180)),
             boundary_width: Arc::new(AtomicU32::new(1280)),

@@ -23,6 +23,7 @@ impl AppState {
             max_duration_sec: c.max_duration_sec.load(SeqCst),
             boundaries_enabled: c.boundaries_enabled.load(SeqCst),
             region_mode: *c.region_mode.lock().unwrap(),
+            boundary_window_title: c.boundary_window.title(),
             boundary_x: c.boundary_x.load(SeqCst),
             boundary_y: c.boundary_y.load(SeqCst),
             boundary_width: c.boundary_width.load(SeqCst),
@@ -59,6 +60,8 @@ impl AppState {
         c.boundaries_enabled
             .store(profile.boundaries_enabled, SeqCst);
         *c.region_mode.lock().unwrap() = profile.region_mode;
+        // Handle unknown after an import: the window is found again by its title.
+        c.boundary_window.set(0, profile.boundary_window_title);
         c.boundary_x.store(profile.boundary_x, SeqCst);
         c.boundary_y.store(profile.boundary_y, SeqCst);
         c.boundary_width.store(profile.boundary_width, SeqCst);

@@ -1,6 +1,9 @@
 import { invoke } from "@tauri-apps/api/core";
 import type { DisplayInfo } from "../types/ac-types";
 import type { BoundaryOverlayState } from "../types/overlay-types";
+import type { RegionMode } from "../types/ac-types";
+import type { WindowInfo } from "../types/window-types";
+import { optionsService } from "./optionsService";
 import { profileService } from "./profileService";
 
 // Every backend command the UI can call (Rust side: backend-src/commands/*.rs).
@@ -66,7 +69,7 @@ export const clickerService = {
   },
   setBoundariesEnabled: (enabled: boolean) =>
     invoke("set_boundaries_enabled", { enabled }),
-  setRegionMode: (mode: "fullscreen" | "active_window" | "custom") =>
+  setRegionMode: (mode: RegionMode) =>
     invoke("set_region_mode", { mode }),
   updateBoundaryRect: (x: number, y: number, width: number, height: number) =>
     invoke("update_boundary_rect", { x, y, width, height }),
@@ -74,5 +77,11 @@ export const clickerService = {
     invoke("set_stop_when_cursor_leaves", { enabled }),
   getBoundaryOverlayState: () =>
     invoke<BoundaryOverlayState>("get_boundary_overlay_state"),
+  /** Open windows the boundary can follow ("Choose window"). */
+  listWindows: () => invoke<WindowInfo[]>("list_windows"),
+  /** Chooses the window the boundary follows (`id` comes from listWindows). */
+  setBoundaryWindow: (id: number, title: string) =>
+    invoke("set_boundary_window", { id, title }),
+  ...optionsService,
   ...profileService,
 };

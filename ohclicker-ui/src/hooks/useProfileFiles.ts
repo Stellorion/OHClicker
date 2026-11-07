@@ -1,4 +1,4 @@
-// Actions of the Files section: import, export, link, unlink, reveal.
+// Actions of the Options section (profile part): import, export, link, unlink, reveal.
 // Backend: commands/profile/*.rs (through services/profileService.ts).
 import { useState } from "react";
 import { profileService } from "../services/profileService";

@@ -6,11 +6,11 @@ import type { BoundaryOverlayState } from "../../types/overlay-types";
 
 const LABELS: Record<BoundaryOverlayState["regionMode"], string> = {
   fullscreen: "FULL SCREEN",
-  active_window: "ACTIVE WINDOW",
+  choose_window: "CHOOSE WINDOW",
   custom: "CUSTOM",
 };
 
-/** Root of the `boundary-overlay` window; follows the focused window in "active window" mode. */
+/** Root of the `boundary-overlay` window; follows the chosen window in "choose window" mode. */
 export const BoundaryOverlay = () => {
   const [state, setState] = useState<BoundaryOverlayState>();
 
@@ -27,8 +27,8 @@ export const BoundaryOverlay = () => {
     return () => unlisten?.();
   }, []);
 
-  // The focused window moves around on its own, so poll while in that mode
-  const following = !!state?.visible && state.regionMode === "active_window";
+  // The chosen window can be moved by the user, so poll while in that mode
+  const following = !!state?.visible && state.regionMode === "choose_window";
   useEffect(() => {
     if (!following) return;
     const id = window.setInterval(() => {
@@ -66,7 +66,9 @@ export const BoundaryOverlay = () => {
         }}
       >
         <span className="absolute left-0 top-0 rounded-br bg-red-500 px-1.5 py-0.5 text-[10px] font-extrabold tracking-wider text-white">
-          {LABELS[state.regionMode]}
+          {state.regionMode === "choose_window" && state.windowTitle
+            ? `WINDOW: ${state.windowTitle}`
+            : LABELS[state.regionMode]}
         </span>
       </div>
     </div>

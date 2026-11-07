@@ -38,10 +38,12 @@ export interface TargetMarkerProps extends Point {
 export interface BoundaryOverlayState {
   visible: boolean;
   regionMode: RegionMode;
+  windowTitle: string;
   x: number;
   y: number;
   width: number;
   height: number;
   screenWidth: number;
   screenHeight: number;
+  windowOpen: boolean;
 }

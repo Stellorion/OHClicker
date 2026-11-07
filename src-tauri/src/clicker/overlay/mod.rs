@@ -12,6 +12,7 @@ mod control;
 mod pick;
 mod position_state;
 mod windows;
+mod z_order;
 
 pub use boundary_state::{
     BoundaryOverlayState, boundary_overlay_state, publish_boundary_state,
@@ -21,3 +22,4 @@ pub use control::{begin_pick, begin_pick_for, toggle};
 pub use pick::complete_pick;
 pub use position_state::{PositionOverlayState, position_overlay_state, publish};
 pub use windows::{create_boundary_window, create_window, move_to_selected_display};
+pub use z_order::spawn_z_order_sync;

@@ -40,12 +40,15 @@ export async function pushSettings(changed: Partial<ACSettings>): Promise<void> 
     if (send && changed[key] !== undefined) await send(changed[key]);
   }
 
-  // Settings the backend takes as a group (x+y, x+y+width+height).
+  // Settings the backend takes as a group (x+y, x+y+width+height, id+title).
   const now = useACStore.getState().settings;
   if (has(changed, "targetX", "targetY")) {
     await s.updateTargetPosition(now.targetX, now.targetY);
   }
   if (has(changed, "boundaryX", "boundaryY", "boundaryWidth", "boundaryHeight")) {
     await s.updateBoundaryRect(now.boundaryX, now.boundaryY, now.boundaryWidth, now.boundaryHeight);
+  }
+  if (has(changed, "boundaryWindowId", "boundaryWindowTitle")) {
+    await s.setBoundaryWindow(now.boundaryWindowId, now.boundaryWindowTitle);
   }
 }

@@ -23,3 +23,8 @@ pub fn set_stop_when_cursor_leaves(state: &AutoClickerState, enabled: bool) {
         .stop_when_cursor_leaves
         .store(enabled, Ordering::SeqCst);
 }
+
+/// Remembers the window that "Choose window" follows.
+pub fn set_boundary_window(state: &AutoClickerState, id: i64, title: String) {
+    state.boundary_window.set(id, title);
+}

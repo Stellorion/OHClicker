@@ -4,7 +4,7 @@ import type { LinkedProfile } from "../types/profile-types";
 
 interface ProfileStore {
   linked: LinkedProfile;
-  /** false until the startup profile was read and applied (see hooks/useStartupProfile.ts). */
+  /** false until the startup profile was read and applied (see hooks/useStartup.ts). */
   ready: boolean;
   setLinked: (linked: LinkedProfile) => void;
   setReady: () => void;

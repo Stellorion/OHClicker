@@ -51,6 +51,9 @@ pub struct ConfigProfile {
     pub max_duration_sec: u32,
     pub boundaries_enabled: bool,
     pub region_mode: RegionMode,
+    /// Window followed by "Choose window" (found again by title; old files may lack it).
+    #[serde(default)]
+    pub boundary_window_title: String,
     pub boundary_x: i32,
     pub boundary_y: i32,
     pub boundary_width: u32,

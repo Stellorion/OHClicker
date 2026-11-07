@@ -27,7 +27,7 @@ export const ACScreenMapWidget: React.FC = () => {
     width: settings.boundaryWidth,
     height: settings.boundaryHeight,
   };
-  const liveBounds = useLiveBounds(bounds.enabled && settings.regionMode === "active_window");
+  const liveBounds = useLiveBounds(settings.regionMode === "choose_window");
 
   return (
     <div className="bg-app-surface border border-app-border rounded-xl p-4 shadow-sm">

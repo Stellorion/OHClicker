@@ -1,20 +1,24 @@
-// On app start: load the linked profile info from the backend and fill the UI.
+// On app start: load the saved options and the linked profile, and fill the UI.
 // Returns false until that is done, so App.tsx does not show defaults for a moment.
 import { useEffect } from "react";
 import { clickerService } from "../services/clickerService";
 import { useACStore } from "../store/useACStore";
+import { useOptionsStore } from "../store/useOptionsStore";
 import { useProfileStore } from "../store/useProfileStore";
 import { useUIStore } from "../store/useUIStore";
 import { profileToSettings } from "../lib/profileSettings";
 import { pushSettings } from "./ac/pushSettings";
 import { reportProfileError } from "../lib/profileError";
 
-export const useStartupProfile = (): boolean => {
+export const useStartup = (): boolean => {
   const ready = useProfileStore((state) => state.ready);
 
   useEffect(() => {
     const load = async () => {
       try {
+        const options = await clickerService.getAppOptions();
+        useOptionsStore.getState().setKeepInTray(options.keepInTray);
+
         const linked = await clickerService.getLinkedProfile();
         useProfileStore.getState().setLinked(linked);
 

@@ -1,21 +1,22 @@
-// "Files" card: import / export a profile and link one that loads on every start.
-// Logic: hooks/useProfileFiles.ts. Backend: backend-src/commands/profile/.
+// "Options" card: profile import/export, linked profile and the system tray option.
+// Profile logic: hooks/useProfileFiles.ts. Backend: backend-src/commands/profile/ and options.rs
 import { Separator } from "../../common/Separator";
-import { Folder } from "lucide-react";
+import { Settings2 } from "lucide-react";
 import { useProfileFiles } from "../../../hooks/useProfileFiles";
 import { ACProfileRow } from "./ACProfileRow";
 import { ACLinkedProfileRow } from "./ACLinkedProfileRow";
+import { ACTrayRow } from "./ACTrayRow";
 import { CARD, SEPARATOR } from "../../../lib/styles";
 
-export const ACFilesSection: React.FC = () => {
+export const ACOptionsSection: React.FC = () => {
   const files = useProfileFiles();
 
   return (
     <div className={CARD}>
       <div className="flex items-center gap-2">
-        <Folder className="size-4 text-app-text-muted shrink-0" />
+        <Settings2 className="size-4 text-app-text-muted shrink-0" />
         <h3 className="text-sm font-bold text-app-text-primary uppercase tracking-wide">
-          Files
+          Options
         </h3>
         {files.status && (
           <p className="text-xs font-medium text-app-text-muted">
@@ -42,6 +43,10 @@ export const ACFilesSection: React.FC = () => {
           onUnlink={files.unlinkProfile}
           onReveal={files.revealLinked}
         />
+
+        <Separator className={SEPARATOR} />
+
+        <ACTrayRow />
       </div>
     </div>
   );

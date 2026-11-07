@@ -1,4 +1,4 @@
-//! Data describing the "linked profile" row in the Files section.
+//! Data describing the "linked profile" row in the Options section.
 //! Frontend mirror: `LinkedProfile` / `LinkStatus` in frontend-src/types/profile-types.ts.
 use super::{ConfigProfile, ProfileError};
 use serde::Serialize;

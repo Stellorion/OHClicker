@@ -1,6 +1,6 @@
 //! Persistent app-level settings (survive closing and reopening the program).
 //! Stored as `settings.json` in the OS app-config folder.
-//! Frontend mirror: none (the frontend reads this through `get_linked_profile`).
+//! Frontend mirror: `AppOptions` in frontend-src/types/options-types.ts (see commands/options.rs).
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 use tauri::{AppHandle, Manager};
@@ -10,6 +10,15 @@ use tauri::{AppHandle, Manager};
 pub struct AppSettings {
     /// Profile file that is loaded automatically on every start.
     pub linked_profile_path: Option<String>,
+    /// Options section: closing the window hides it to the system tray.
+    pub keep_in_tray: bool,
+}
+
+/// The options the UI can change (sent to the frontend by `get_app_options`).
+#[derive(Serialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct AppOptions {
+    pub keep_in_tray: bool,
 }
 
 /// Full path of `settings.json`.

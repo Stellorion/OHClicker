@@ -1,5 +1,5 @@
 //! Linked profile: a file that is loaded automatically every time the app starts.
-//! Frontend: services/clickerService.ts + components/autoclicker/files/ACLinkedProfileRow.tsx
+//! Frontend: services/clickerService.ts + components/autoclicker/options/ACLinkedProfileRow.tsx
 use super::pick_profile_path;
 use crate::app_state::AppState;
 use crate::clicker::profile::{ConfigProfile, LinkedProfile, ProfileError, reveal_in_file_manager};

@@ -9,7 +9,7 @@ interface ScreenMapFooterProps {
   bounds: Bounds;
   regionMode: RegionMode;
   screenSize: Size;
-  /** Size of the focused window ("active window" mode), null when unknown. */
+  /** Size of the chosen window ("choose window" mode), null when unknown. */
   liveBounds: Size | null;
 }
 
@@ -24,7 +24,7 @@ export const ScreenMapFooter: React.FC<ScreenMapFooterProps> = (p) => {
 
   const boundsText = !p.bounds.enabled ? "Disabled"
     : p.regionMode === "fullscreen" ? dims(p.screenSize)
-    : p.regionMode === "active_window" && p.liveBounds ? dims(p.liveBounds)
+    : p.regionMode === "choose_window" && p.liveBounds ? dims(p.liveBounds)
     : dims(p.bounds);
 
   return (

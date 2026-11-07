@@ -22,6 +22,8 @@ pub struct AppState {
     pub toggle_overlay_hotkey: Mutex<String>,
     /// Profile file that is auto-loaded on start (see `clicker::profile::link`).
     pub linked_profile: Mutex<LinkedProfile>,
+    /// Options -> "Keep in system tray" (checked when the window is closed).
+    pub keep_in_tray: AtomicBool,
 }
 
 impl AppState {
@@ -36,6 +38,7 @@ impl AppState {
             pick_position_hotkey: Mutex::new("F7".to_string()),
             toggle_overlay_hotkey: Mutex::new("F8".to_string()),
             linked_profile: Mutex::new(LinkedProfile::unlinked()),
+            keep_in_tray: AtomicBool::new(false),
         }
     }
 }

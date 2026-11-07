@@ -7,7 +7,7 @@ import type { Point } from "./common";
 export type MouseButton = "left" | "middle" | "right";
 export type ClickType = "single" | "hold";
 export type RepeatType = "until_stopped" | "fixed_count";
-export type RegionMode = "fullscreen" | "active_window" | "custom";
+export type RegionMode = "fullscreen" | "choose_window" | "custom";
 export type PositionMode = "cursor" | "fixed" | "sequence";
 export type CoordinateType = "absolute" | "relative";
 

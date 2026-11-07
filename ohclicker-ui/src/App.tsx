@@ -4,7 +4,7 @@ import { Minimize2, Maximize2, MousePointerClick } from "lucide-react";
 import { useUIStore } from "./store/useUIStore";
 import { NoticeDialog } from "./components/common/NoticeDialog";
 import { useAppRuntime } from "./hooks/ac/useAppRuntime";
-import { useStartupProfile } from "./hooks/useStartupProfile";
+import { useStartup } from "./hooks/useStartup";
 
 // Main window: header with the Minimized / Advanced switch + the selected view.
 
@@ -14,7 +14,7 @@ export default function App() {
   const setClickerMode = useUIStore((state) => state.setClickerMode);
 
   useAppRuntime(); // backend events + elapsed timer (once for the whole app)
-  const ready = useStartupProfile(); // loads the linked profile before showing settings
+  const ready = useStartup(); // loads saved options + linked profile before showing settings
 
   if (!ready) return null;
 

@@ -18,7 +18,11 @@ export interface ACSettings extends ConfigProfile {
   exactIntervalMs: number;
   /** Id of the display the screen map / overlays are relative to. */
   selectedDisplayId: string;
+  /** Handle of the chosen window (runtime only, not saved in profiles). */
+  boundaryWindowId: number;
   targetWindow: string;
+
+  boundaryWindowOpen: boolean;
 }
 
 /** Live numbers while the clicker runs (event `clicker-stats` + the UI timer). */

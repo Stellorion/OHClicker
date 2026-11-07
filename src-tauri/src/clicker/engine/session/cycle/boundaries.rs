@@ -27,10 +27,11 @@ pub(super) fn check_boundaries(
             let d = state.position.display.lock().unwrap();
             (d.origin_x, d.origin_y, d.width as i32, d.height as i32)
         }
-        RegionMode::ActiveWindow => {
-            let (x, y, w, h) = crate::clicker::window_rect::foreground_window_rect()?;
-            (x, y, w as i32, h as i32)
-        }
+        RegionMode::ChooseWindow => match state.boundary_window.rect() {
+            Some((x, y, w, h)) => (x, y, w as i32, h as i32),
+            // Window closed or minimized: there is nothing to click in.
+            None => return Ok(false),
+        },
         RegionMode::Custom => {
             // The rectangle is entered relative to the selected display
             // (same space as the screen map), so shift it by the display origin.
@@ -44,5 +45,10 @@ pub(super) fn check_boundaries(
         }
     };
 
-    Ok(mouse_x >= rx && mouse_y >= ry && mouse_x < rx + rw && mouse_y < ry + rh)
+    let inside = mouse_x >= rx && mouse_y >= ry && mouse_x < rx + rw && mouse_y < ry + rh;
+    if mode == RegionMode::ChooseWindow {
+        // Also require that no other window covers the chosen one at the cursor.
+        return Ok(inside && state.boundary_window.is_under(mouse_x, mouse_y));
+    }
+    Ok(inside)
 }
