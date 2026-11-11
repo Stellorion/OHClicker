@@ -50,23 +50,32 @@ fn select_primary_display(app: &tauri::App, state: &AppState) {
 }
 
 /// Runs once when the app starts.
+///
+/// ORDER MATTERS: creating a window (overlays, tray) runs a nested message loop on
+/// Windows, and in that loop the main window's first `invoke` calls are already
+/// answered. So everything the UI reads on startup (hotkeys, linked profile, saved
+/// options) is loaded BEFORE any window is created.
 pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
     let state = app.state::<AppState>();
+    let handle = app.handle();
+
+    // 1) Saved state. A linked profile may replace the default hotkeys.
     select_primary_display(app, &state);
-    clicker::service::start_engine(app.handle().clone(), state.clicker.clone());
-    clicker::overlay::create_window(app.handle(), &state)?;
-    clicker::overlay::create_boundary_window(app.handle(), &state)?;
-    clicker::overlay::spawn_z_order_sync(app.handle().clone());
-
-    // Default hotkeys; a linked profile may replace them right below.
-    clicker::hotkeys::apply_hotkeys(app.handle(), &state, "F6", "F7")?;
-    clicker::profile::load_on_startup(app.handle(), &state);
-
-    // Options saved in settings.json: the tray icon only shows when enabled.
-    let options = app_settings::load(app.handle());
+    clicker::hotkeys::apply_hotkeys(handle, &state, "F6", "F7")?;
+    clicker::profile::load_on_startup(handle, &state);
+    let options = app_settings::load(handle);
     state
         .keep_in_tray
         .store(options.keep_in_tray, Ordering::SeqCst);
-    tray::create(app.handle(), options.keep_in_tray)?;
+
+    // 2) Engine, overlay windows and the tray icon (only visible when the option is on).
+    clicker::service::start_engine(handle.clone(), state.clicker.clone());
+    clicker::overlay::create_window(handle, &state)?;
+    clicker::overlay::create_boundary_window(handle, &state)?;
+    clicker::overlay::spawn_z_order_sync(handle.clone());
+    tray::create(handle, options.keep_in_tray)?;
+
+    // 3) Tell the frontend it can read the saved state now.
+    state.setup_done.store(true, Ordering::SeqCst);
     Ok(())
 }

@@ -42,6 +42,7 @@ macro_rules! all_commands {
             commands::boundaries::list_windows,
             commands::boundaries::set_boundary_window,
             // options (system tray)
+            commands::options::is_backend_ready,
             commands::options::get_app_options,
             commands::options::set_keep_in_tray,
             // profile files

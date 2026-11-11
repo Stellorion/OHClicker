@@ -2,7 +2,7 @@
 //!
 //! Layout:  startup.rs     plugins + one-time setup    commands/   functions the UI invokes
 //!          app_state/     shared state                clicker/    engine, overlays, profiles
-//!          app_settings.rs  settings saved on disk    tray/       system tray icon
+//!          app_settings/    settings saved on disk    tray/       system tray icon
 mod app_settings;
 mod app_state;
 mod clicker;

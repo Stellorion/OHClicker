@@ -5,6 +5,13 @@ use crate::tray;
 use std::sync::atomic::Ordering;
 use tauri::{AppHandle, State};
 
+/// True once the backend finished its start-up work. The frontend waits for this
+/// before it reads the saved options and the linked profile (see hooks/useStartup.ts).
+#[tauri::command]
+pub fn is_backend_ready(state: State<'_, AppState>) -> bool {
+    state.setup_done.load(Ordering::SeqCst)
+}
+
 /// Current options, read once by the frontend on startup.
 #[tauri::command]
 pub fn get_app_options(state: State<'_, AppState>) -> AppOptions {

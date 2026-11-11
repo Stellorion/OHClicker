@@ -9,6 +9,7 @@ import { useUIStore } from "../store/useUIStore";
 import { profileToSettings } from "../lib/profileSettings";
 import { pushSettings } from "./ac/pushSettings";
 import { reportProfileError } from "../lib/profileError";
+import { waitForBackend } from "../lib/waitForBackend";
 
 export const useStartup = (): boolean => {
   const ready = useProfileStore((state) => state.ready);
@@ -16,6 +17,7 @@ export const useStartup = (): boolean => {
   useEffect(() => {
     const load = async () => {
       try {
+        await waitForBackend(); // saved options + linked profile are loaded by then
         const options = await clickerService.getAppOptions();
         useOptionsStore.getState().setKeepInTray(options.keepInTray);
 

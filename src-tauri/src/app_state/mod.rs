@@ -23,6 +23,8 @@ pub struct AppState {
     pub linked_profile: Mutex<LinkedProfile>,
     /// Options -> "Keep in system tray" (checked when the window is closed).
     pub keep_in_tray: AtomicBool,
+    /// true once `startup::setup` finished (saved options + linked profile are loaded).
+    pub setup_done: AtomicBool,
 }
 
 impl AppState {
@@ -37,6 +39,7 @@ impl AppState {
             toggle_overlay_hotkey: Mutex::new("F7".to_string()),
             linked_profile: Mutex::new(LinkedProfile::unlinked()),
             keep_in_tray: AtomicBool::new(false),
+            setup_done: AtomicBool::new(false),
         }
     }
 }
