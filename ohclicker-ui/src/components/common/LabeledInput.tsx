@@ -1,17 +1,7 @@
 // Number input with a small label inside (e.g. "X", "px").
+import type { LabeledInputProps } from "../../types/common-props";
 import React from "react";
 import { Input } from "./Input";
-
-interface LabeledInputProps {
-  label: string;
-  value: number;
-  onChange: (value: number) => void;
-  position?: "prefix" | "suffix";
-  disabled?: boolean;
-  widthClass?: string;
-  min?: number;
-  max?: number;
-}
 
 /** `position` puts the label before (prefix) or after (suffix) the number. */
 export const LabeledInput: React.FC<LabeledInputProps> = ({

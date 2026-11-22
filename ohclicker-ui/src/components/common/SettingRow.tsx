@@ -1,20 +1,9 @@
 // One setting: label + optional slider + number input (value is clamped to min..max).
-import React, { useState, useEffect } from 'react';
+import type { SettingRowProps } from "../../types/common-props";
+import React, { useEffect, useId } from 'react';
+import { useFieldTextStore } from '../../store/useFieldTextStore';
 import { Slider } from './Slider';
 import { Input } from './Input';
-
-interface SettingRowProps {
-  label: string;
-  description?: string;
-  value: number;
-  min?: number;
-  max?: number;
-  step?: number;
-  unit?: string;
-  showSlider?: boolean;
-  onChange: (value: number) => void;
-  className?: string;
-}
 
 /** Keeps the typed text separate from the number so half-typed values are allowed. */
 export const SettingRow: React.FC<SettingRowProps> = ({
@@ -29,16 +18,21 @@ export const SettingRow: React.FC<SettingRowProps> = ({
   onChange,
   className = '',
 }) => {
-  const [textValue, setTextValue] = useState(value.toString());
+  // The typed text lives in a store, under an id that is unique for this row.
+  const id = useId();
+  const textValue = useFieldTextStore((s) => s.texts[id] ?? value.toString());
+  const { setText, clearText } = useFieldTextStore.getState();
 
   useEffect(() => {
-    setTextValue(value.toString());
-  }, [value]);
+    setText(id, value.toString()); // the number changed: show it
+  }, [id, value, setText]);
+
+  useEffect(() => () => clearText(id), [id, clearText]); // forget the text on unmount
 
   /** Typing: update the text and send the clamped number. */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;
-    setTextValue(raw);
+    setText(id, raw);
 
     const num = Number(raw);
     if (!isNaN(num)) {
@@ -85,7 +79,7 @@ export const SettingRow: React.FC<SettingRowProps> = ({
           step={step}
           value={textValue}
           onChange={handleInputChange}
-          onBlur={() => setTextValue(value.toString())}
+          onBlur={() => setText(id, value.toString())}
           className={`font-mono bg-app-bg border-app-border font-bold text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
             unit ? 'w-20 pr-7' : 'w-16'
           }`}

@@ -1,14 +1,9 @@
 // Click, then press a key combination to record a hotkey.
-import React, { useState, useEffect, useRef } from "react";
+import type { HotkeyInputProps } from "../../types/common-props";
+import React, { useEffect, useId, useRef } from "react";
+import { useHotkeyStore } from "../../store/useHotkeyStore";
 import { cn } from "../../lib/utils";
 import { Button } from "./Button";
-
-interface HotkeyInputProps {
-  value: string;
-  onChange?: (key: string) => void;
-  disabled?: boolean;
-  className?: string;
-}
 
 export const HotkeyInput: React.FC<HotkeyInputProps> = ({
   value,
@@ -16,7 +11,10 @@ export const HotkeyInput: React.FC<HotkeyInputProps> = ({
   disabled = false,
   className,
 }) => {
-  const [isRecording, setIsRecording] = useState(false);
+  // Each input has its own id; the store knows which one is waiting for a key.
+  const id = useId();
+  const isRecording = useHotkeyStore((state) => state.recordingId === id);
+  const { startRecording, stopRecording } = useHotkeyStore.getState();
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   // Keep a stable ref for onChange so we don't recreate event listeners on every render
@@ -45,12 +43,12 @@ export const HotkeyInput: React.FC<HotkeyInputProps> = ({
       const newHotkey = [...modifiers, keyName].join("+");
 
       onChangeRef.current?.(newHotkey);
-      setIsRecording(false);
+      stopRecording(id);
     };
 
     const handleMouseDown = (e: MouseEvent) => {
       if (buttonRef.current && !buttonRef.current.contains(e.target as Node)) {
-        setIsRecording(false);
+        stopRecording(id);
       }
     };
 
@@ -61,13 +59,13 @@ export const HotkeyInput: React.FC<HotkeyInputProps> = ({
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("mousedown", handleMouseDown);
     };
-  }, [isRecording]);
+  }, [isRecording, id, stopRecording]);
 
   return (
     <Button
       ref={buttonRef}
       disabled={disabled}
-      onClick={() => setIsRecording(true)}
+      onClick={() => startRecording(id)}
       className={cn(
         "flex items-center justify-center min-w-16 px-3 py-1.5 rounded-lg border border-b-3 border-app-border bg-app-bg text-xs font-bold shadow-sm select-none transition-all outline-none",
         isRecording
