@@ -1,6 +1,5 @@
 // Segmented control: pick one of several options (e.g. Left / Middle / Right).
 import type { ChoiceGroupProps } from "../../types/common-props";
-import React from 'react';
 import { Button } from './Button';
 import { cn } from '../../lib/utils';
 
