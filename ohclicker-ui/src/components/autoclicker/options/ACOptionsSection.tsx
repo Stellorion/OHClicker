@@ -1,4 +1,4 @@
-// "Options" card: profile import/export, linked profile and the system tray option.
+// "Options" card: profile import/export, linked profile, system tray and startup options.
 // Profile logic: hooks/useProfileFiles.ts. Backend: backend-src/commands/profile/ and options.rs
 import { Separator } from "../../common/Separator";
 import { Settings2 } from "lucide-react";
@@ -6,6 +6,7 @@ import { useProfileFiles } from "../../../hooks/useProfileFiles";
 import { ACProfileRow } from "./ACProfileRow";
 import { ACLinkedProfileRow } from "./ACLinkedProfileRow";
 import { ACTrayRow } from "./ACTrayRow";
+import { ACStartupRow } from "./ACStartupRow";
 import { CARD, SEPARATOR } from "../../../lib/styles";
 
 export const ACOptionsSection: React.FC = () => {
@@ -47,6 +48,10 @@ export const ACOptionsSection: React.FC = () => {
         <Separator className={SEPARATOR} />
 
         <ACTrayRow />
+
+        <Separator className={SEPARATOR} />
+
+        <ACStartupRow />
       </div>
     </div>
   );

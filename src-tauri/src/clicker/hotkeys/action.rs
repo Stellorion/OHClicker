@@ -20,6 +20,7 @@ fn run_action(app: &AppHandle, action: HotkeyAction) {
         HotkeyAction::StartStop => {
             let running = clicker::service::toggle(&state);
             let _ = app.emit("clicker-state-changed", running);
+            crate::status::notify_toggled(app, running); // "OHC ENABLED / DISABLED"
         }
         HotkeyAction::ToggleOverlay => {
             let _ = clicker::overlay::toggle(app, &state);

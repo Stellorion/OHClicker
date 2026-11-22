@@ -21,6 +21,8 @@ pub struct AppSettings {
 #[serde(rename_all = "camelCase")]
 pub struct AppOptions {
     pub keep_in_tray: bool,
+    /// Start the app when the PC starts (stored by the OS, not in settings.json).
+    pub open_on_startup: bool,
 }
 
 /// Reads the settings from the first good copy (defaults if there is none).

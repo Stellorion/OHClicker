@@ -1,37 +1,9 @@
-//! Start-up work used by lib.rs: plugins and the one-time `setup`.
+//! One-time `setup` that runs when the app starts (plugins are in plugins.rs).
 use crate::app_state::AppState;
-use crate::{app_settings, clicker, tray};
+use crate::plugins::AUTOSTART_FLAG;
+use crate::{app_settings, clicker, status, tray};
 use std::sync::atomic::Ordering;
 use tauri::Manager;
-use tauri_plugin_window_state::{Builder as WindowState, StateFlags};
-
-/// Registers every Tauri plugin (each plugin may only be added once).
-pub fn add_plugins(builder: tauri::Builder<tauri::Wry>) -> tauri::Builder<tauri::Wry> {
-    builder
-        // Must be registered first!
-        .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
-            use tauri::Manager;
-
-            if let Some(window) = app.get_webview_window("main") {
-                let _ = window.show();
-                let _ = window.unminimize();
-                let _ = window.set_focus();
-            }
-        }))
-        .plugin(
-            tauri_plugin_log::Builder::new()
-                .level(tauri_plugin_log::log::LevelFilter::Info)
-                .build(),
-        )
-        .plugin(
-            WindowState::default()
-                .with_denylist(&["position-overlay", "boundary-overlay"])
-                .with_state_flags(StateFlags::SIZE | StateFlags::POSITION | StateFlags::MAXIMIZED)
-                .build(),
-        )
-        .plugin(tauri_plugin_dialog::init())
-        .plugin(tauri_plugin_global_shortcut::Builder::new().build())
-}
 
 /// Picks the primary monitor as the initial "selected display".
 fn select_primary_display(app: &tauri::App, state: &AppState) {
@@ -60,19 +32,25 @@ pub fn setup(app: &mut tauri::App) -> Result<(), Box<dyn std::error::Error>> {
     let handle = app.handle();
 
     // 1) Saved state. A linked profile may replace the default hotkeys.
-    select_primary_display(app, &state);
-    clicker::hotkeys::apply_hotkeys(handle, &state, "F6", "F7")?;
-    clicker::profile::load_on_startup(handle, &state);
     let options = app_settings::load(handle);
     state
         .keep_in_tray
         .store(options.keep_in_tray, Ordering::SeqCst);
+    // Started by the OS at login with the tray option on: stay hidden in the tray
+    // (opening the app again, or the tray icon, shows the window).
+    let at_login = std::env::args().any(|arg| arg == AUTOSTART_FLAG);
+    tray::set_main_window_visible(handle, !(at_login && options.keep_in_tray));
+    select_primary_display(app, &state);
+    clicker::hotkeys::apply_hotkeys(handle, &state, "F6", "F7")?;
+    clicker::profile::load_on_startup(handle, &state);
 
-    // 2) Engine, overlay windows and the tray icon (only visible when the option is on).
+    // 2) Engine, overlay + status windows and the tray icon (only visible when enabled).
     clicker::service::start_engine(handle.clone(), state.clicker.clone());
     clicker::overlay::create_window(handle, &state)?;
     clicker::overlay::create_boundary_window(handle, &state)?;
     clicker::overlay::spawn_z_order_sync(handle.clone());
+    status::create_windows(handle, &state)?;
+    status::spawn_indicator_sync(handle.clone());
     tray::create(handle, options.keep_in_tray)?;
 
     // 3) Tell the frontend it can read the saved state now.

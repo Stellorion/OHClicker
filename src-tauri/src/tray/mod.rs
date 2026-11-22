@@ -4,7 +4,7 @@
 //!   window.rs - showing the window, and what the close button does
 mod window;
 
-pub use window::{handle_window_event, show_main_window};
+pub use window::{handle_window_event, set_main_window_visible, show_main_window};
 
 use tauri::menu::{Menu, MenuItem};
 use tauri::tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent};

@@ -18,6 +18,24 @@
   --color-app-red-hover: oklch(0.69 0.20 25);
 }
 
+/* "OHC ENABLED / DISABLED" popup (StatusToast.tsx): fade in, stay, fade out (0.7 s) */
+@keyframes ohc-toast {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 /* Width and height of the scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

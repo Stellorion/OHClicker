@@ -21,5 +21,6 @@ pub use boundary_state::{
 pub use control::{begin_pick_for, toggle};
 pub use pick::complete_pick;
 pub use position_state::{PositionOverlayState, position_overlay_state, publish};
+pub(crate) use windows::build_overlay;
 pub use windows::{create_boundary_window, create_window, move_to_selected_display};
 pub use z_order::spawn_z_order_sync;

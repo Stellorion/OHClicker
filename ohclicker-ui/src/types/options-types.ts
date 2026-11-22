@@ -4,4 +4,6 @@
 export interface AppOptions {
   /** Closing the window hides it to the system tray instead of quitting. */
   keepInTray: boolean;
+  /** Start the app when the PC starts (asked from the OS, not from settings.json). */
+  openOnStartup: boolean;
 }

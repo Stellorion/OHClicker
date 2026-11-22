@@ -7,14 +7,16 @@ mod app_settings;
 mod app_state;
 mod clicker;
 mod commands;
+mod plugins;
 mod startup;
+mod status;
 mod tray;
 
 use commands::registry::all_commands;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    startup::add_plugins(tauri::Builder::default())
+    plugins::add_plugins(tauri::Builder::default())
         .manage(app_state::AppState::new())
         .invoke_handler(all_commands!())
         .setup(startup::setup)

@@ -12,6 +12,14 @@ pub fn show_main_window(app: &AppHandle) {
     }
 }
 
+/// Shows or hides the main window without taking focus. Used once at start-up
+/// (hidden when the app was started by the OS at login and the tray option is on).
+pub fn set_main_window_visible(app: &AppHandle, visible: bool) {
+    if let Some(window) = app.get_webview_window("main") {
+        let _ = if visible { window.show() } else { window.hide() };
+    }
+}
+
 /// Close button of the main window:
 ///   option on  -> hide to the tray, the app (and its hotkeys) keep running
 ///   option off -> quit completely

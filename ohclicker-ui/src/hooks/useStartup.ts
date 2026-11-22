@@ -19,7 +19,7 @@ export const useStartup = (): boolean => {
       try {
         await waitForBackend(); // saved options + linked profile are loaded by then
         const options = await clickerService.getAppOptions();
-        useOptionsStore.getState().setKeepInTray(options.keepInTray);
+        useOptionsStore.getState().setOptions(options);
 
         const linked = await clickerService.getLinkedProfile();
         useProfileStore.getState().setLinked(linked);

@@ -10,4 +10,7 @@ export const optionsService = {
   /** Turns the system tray option on/off (saved + tray icon shown/hidden). */
   setKeepInTray: (enabled: boolean) =>
     invoke<void>("set_keep_in_tray", { enabled }),
+  /** Adds/removes the app from the OS startup list (starts when the PC starts). */
+  setOpenOnStartup: (enabled: boolean) =>
+    invoke<void>("set_open_on_startup", { enabled }),
 };

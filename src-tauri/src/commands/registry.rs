@@ -41,10 +41,13 @@ macro_rules! all_commands {
             commands::boundaries::get_boundary_overlay_state,
             commands::boundaries::list_windows,
             commands::boundaries::set_boundary_window,
-            // options (system tray)
+            // options (tray, open on startup)
             commands::options::is_backend_ready,
             commands::options::get_app_options,
             commands::options::set_keep_in_tray,
+            commands::options::set_open_on_startup,
+            // status windows (indicator + toast)
+            commands::status::start_status_drag,
             // profile files
             commands::profile::export::export_profile,
             commands::profile::import::import_profile,

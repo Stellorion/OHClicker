@@ -79,6 +79,8 @@ export const clickerService = {
   /** Chooses the window the boundary follows (`id` comes from listWindows). */
   setBoundaryWindow: (id: number, title: string) =>
     invoke("set_boundary_window", { id, title }),
+  /** Starts dragging the calling window (the "ACTIVE" indicator). */
+  startStatusDrag: () => invoke("start_status_drag"),
   ...optionsService,
   ...profileService,
 };

@@ -8,3 +8,4 @@ pub mod overlay;
 pub mod position;
 pub mod profile;
 pub mod registry;
+pub mod status;

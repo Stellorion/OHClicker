@@ -1,13 +1,18 @@
-// Options section state (saved by the backend in settings.json, see hooks/useKeepInTray.ts).
+// Options section state (saved by the backend, see hooks/useOptionSwitch.ts).
 import { create } from "zustand";
+import type { AppOptions } from "../types/options-types";
 
 interface OptionsStore {
-  /** Closing the window hides it to the system tray instead of quitting. */
-  keepInTray: boolean;
-  setKeepInTray: (enabled: boolean) => void;
+  options: AppOptions;
+  /** Replaces all options (used once at startup). */
+  setOptions: (options: AppOptions) => void;
+  /** Changes one option. */
+  setOption: (key: keyof AppOptions, value: boolean) => void;
 }
 
 export const useOptionsStore = create<OptionsStore>((set) => ({
-  keepInTray: false,
-  setKeepInTray: (keepInTray) => set({ keepInTray }),
+  options: { keepInTray: false, openOnStartup: false },
+  setOptions: (options) => set({ options }),
+  setOption: (key, value) =>
+    set((state) => ({ options: { ...state.options, [key]: value } })),
 }));
