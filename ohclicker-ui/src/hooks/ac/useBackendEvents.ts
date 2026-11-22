@@ -1,15 +1,9 @@
 // Listens to the events the Rust backend emits and copies them into the UI store.
 // Call it ONCE (hooks/ac/useAppRuntime.ts), not in every component.
+import type { PickedPoint } from "../../types/event-types";
 import { useACStore } from "../../store/useACStore";
 import { useTauriEvent } from "../useTauriEvent";
 import { pushSettings } from "./pushSettings";
-
-/** Payload of `position-picked` (backend: clicker/overlay/pick.rs). */
-interface PickedPoint {
-  x: number;
-  y: number;
-  pointId?: string | null;
-}
 
 export const useBackendEvents = () => {
   // The clicker started/stopped (also when it stopped itself: limit reached, cursor left region).

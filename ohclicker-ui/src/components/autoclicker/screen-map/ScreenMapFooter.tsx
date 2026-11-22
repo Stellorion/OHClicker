@@ -1,17 +1,6 @@
 // Text line under the screen map: current target and current bounds size.
-import type { Bounds, Point, Size } from "../../../types/common";
-import type { PositionMode, RegionMode } from "../../../types/ac-types";
-
-interface ScreenMapFooterProps {
-  positionMode: PositionMode;
-  target: Point;
-  pointCount: number;
-  bounds: Bounds;
-  regionMode: RegionMode;
-  screenSize: Size;
-  /** Size of the chosen window ("choose window" mode), null when unknown. */
-  liveBounds: Size | null;
-}
+import type { ScreenMapFooterProps } from "../../../types/screen-types";
+import type { Size } from "../../../types/common";
 
 /** "1280×720" */
 const dims = (size: Size) => `${size.width}×${size.height}`;

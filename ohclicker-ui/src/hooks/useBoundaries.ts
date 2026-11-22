@@ -2,16 +2,15 @@
 // hooks/ac/pushSettings.ts (boundary fields), the overlay redraws from the backend.
 import { useAC } from "./useAC";
 import type { RegionMode } from "../types/ac-types";
+import type { BoundaryField } from "../types/boundary-props";
 import type { WindowInfo } from "../types/window-types";
-import type { ChoiceOption } from "../components/common/ChoiceGroup";
+import type { ChoiceOption } from "../types/common-props";
 
 const REGION_MODE_OPTIONS: ChoiceOption<RegionMode>[] = [
   { id: "fullscreen", label: "Full screen" },
   { id: "choose_window", label: "Choose window" },
   { id: "custom", label: "Custom" },
 ];
-
-export type BoundaryField = "boundaryX" | "boundaryY" | "boundaryWidth" | "boundaryHeight";
 
 export const useBoundaries = () => {
   const { settings, updateSettings } = useAC();

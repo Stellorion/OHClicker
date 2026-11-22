@@ -1,13 +1,7 @@
 // "Profile: Import / Export" row (one-time, does not remember the file).
+import type { ACProfileRowProps } from "../../../types/options-props";
 import { Download, Upload } from "lucide-react";
 import { ACBusyButton } from "./ACBusyButton";
-import type { BusyAction } from "../../../hooks/useProfileFiles";
-
-interface ACProfileRowProps {
-  busy: BusyAction;
-  onImport: () => void;
-  onExport: () => void;
-}
 
 export const ACProfileRow: React.FC<ACProfileRowProps> = ({
   busy,

@@ -1,16 +1,6 @@
 // X / Y / W / H inputs of the custom boundary rectangle (pixels, relative to the selected display).
+import type { ACBoundaryRectProps, BoundaryField } from "../../types/boundary-props";
 import { LabeledInput } from "../common/LabeledInput";
-import type { BoundaryField } from "../../hooks/useBoundaries";
-
-interface ACBoundaryRectProps {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  /** Inputs are only editable in "Custom" region mode. */
-  disabled: boolean;
-  onChange: (field: BoundaryField, value: number) => void;
-}
 
 export const ACBoundaryRect: React.FC<ACBoundaryRectProps> = ({ x, y, width, height, disabled, onChange }) => {
   const fields: { label: string; value: number; key: BoundaryField }[] = [

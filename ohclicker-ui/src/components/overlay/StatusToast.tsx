@@ -2,28 +2,15 @@
 // The backend (backend-src/status/toast.rs) calls `window.__ohcToast(true | false)` to
 // show it and `__ohcToast(null)` to clear it; the fade-out is the `ohc-toast`
 // animation in index.css (0.7 s), the backend hides the window right after.
-import { useEffect, useState } from "react";
-
-declare global {
-  interface Window {
-    __ohcToast?: (enabled: boolean | null) => void;
-  }
-}
-
-interface Toast {
-  enabled: boolean;
-  /** Changes on every call, so React restarts the animation. */
-  id: number;
-}
+import { useEffect } from "react";
+import { useStatusStore } from "../../store/useStatusStore";
 
 export const StatusToast = () => {
-  const [toast, setToast] = useState<Toast | null>(null);
+  const toast = useStatusStore((state) => state.toast);
 
   // Expose the function the backend calls.
   useEffect(() => {
-    let counter = 0;
-    window.__ohcToast = (enabled) =>
-      setToast(enabled === null ? null : { enabled, id: ++counter });
+    window.__ohcToast = (enabled) => useStatusStore.getState().showToast(enabled);
     return () => {
       delete window.__ohcToast;
     };

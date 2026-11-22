@@ -1,13 +1,15 @@
 // Size of the chosen window while Boundaries -> "Choose window" is on.
 // Polls the backend (clicker/overlay/boundary_state.rs) every 100 ms.
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { clickerService } from "../services/clickerService";
 import type { Size } from "../types/common";
 import { useACStore } from "../store/useACStore";
+import { useBoundaryStore } from "../store/useBoundaryStore";
 
 /** Returns the live size, or null when `active` is false / no window is focused. */
 export const useLiveBounds = (active: boolean): Size | null => {
-  const [size, setSize] = useState<Size | null>(null);
+  const size = useBoundaryStore((state) => state.liveSize);
+  const setSize = useBoundaryStore((state) => state.setLiveSize);
 
   useEffect(() => {
     if (!active) {
@@ -36,7 +38,7 @@ export const useLiveBounds = (active: boolean): Size | null => {
     void fetchBounds();
     const id = window.setInterval(fetchBounds, 100);
     return () => window.clearInterval(id);
-  }, [active]);
+  }, [active, setSize]);
 
   return size;
 };

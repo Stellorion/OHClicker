@@ -1,10 +1,10 @@
 // "Linked profile" row: a profile file that is loaded automatically every time the
 // app starts. Clicking the path opens its folder. Backend: commands/profile/link.rs
+import type { ACLinkedProfileRowProps } from "../../../types/options-props";
 import { Link2, Unlink } from "lucide-react";
 import { ACBusyButton } from "./ACBusyButton";
 import { ACLinkedPathButton } from "./ACLinkedPathButton";
-import type { BusyAction } from "../../../hooks/useProfileFiles";
-import type { LinkStatus, LinkedProfile } from "../../../types/profile-types";
+import type { LinkStatus } from "../../../types/profile-types";
 
 /** Badge text + color for each link status (nothing is shown when unlinked). */
 const STATUS_BADGE: Record<LinkStatus, { text: string; color: string } | null> =
@@ -14,14 +14,6 @@ const STATUS_BADGE: Record<LinkStatus, { text: string; color: string } | null> =
     missing: { text: "File not found", color: "text-amber-500" },
     invalid: { text: "Invalid file", color: "text-app-red" },
   };
-
-interface ACLinkedProfileRowProps {
-  linked: LinkedProfile;
-  busy: BusyAction;
-  onLink: () => void;
-  onUnlink: () => void;
-  onReveal: () => void;
-}
 
 export const ACLinkedProfileRow: React.FC<ACLinkedProfileRowProps> = ({
   linked,

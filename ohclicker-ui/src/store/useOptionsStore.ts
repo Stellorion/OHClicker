@@ -1,14 +1,6 @@
 // Options section state (saved by the backend, see hooks/useOptionSwitch.ts).
 import { create } from "zustand";
-import type { AppOptions } from "../types/options-types";
-
-interface OptionsStore {
-  options: AppOptions;
-  /** Replaces all options (used once at startup). */
-  setOptions: (options: AppOptions) => void;
-  /** Changes one option. */
-  setOption: (key: keyof AppOptions, value: boolean) => void;
-}
+import type { OptionsStore } from "../types/store-types";
 
 export const useOptionsStore = create<OptionsStore>((set) => ({
   options: { keepInTray: false, openOnStartup: false },

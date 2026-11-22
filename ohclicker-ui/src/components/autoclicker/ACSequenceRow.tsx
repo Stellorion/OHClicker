@@ -1,8 +1,8 @@
 // One row of the sequence list: number, X, Y, dwell, pick and delete buttons.
+import type { ACSequenceRowProps } from "../../types/position-props";
 import { Trash2, Crosshair } from "lucide-react";
 import { Input } from "../common/Input";
 import { Button } from "../common/Button";
-import type { SequencePoint } from "../../types/ac-types";
 
 /** Grid shared with the header row in ACSequenceList. */
 export const SEQUENCE_GRID = "grid grid-cols-[24px_1fr_1fr_1fr_28px_28px] items-center gap-2";
@@ -11,16 +11,6 @@ const FIELD =
   "w-full text-xs font-bold bg-app-bg border border-app-border rounded-lg py-1.5 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none";
 const ICON_BUTTON =
   "flex items-center justify-center size-7 rounded-lg transition-colors p-4";
-
-interface ACSequenceRowProps {
-  point: SequencePoint;
-  /** 1-based position shown in the red circle. */
-  order: number;
-  isPicking: boolean;
-  onUpdate: (fields: Partial<SequencePoint>) => void;
-  onPick: () => void;
-  onRemove: () => void;
-}
 
 export const ACSequenceRow: React.FC<ACSequenceRowProps> = ({ point, order, isPicking, onUpdate, onPick, onRemove }) => (
   <div className={SEQUENCE_GRID}>

@@ -1,22 +1,21 @@
 // Actions of the Options section (profile part): import, export, link, unlink, reveal.
 // Backend: commands/profile/*.rs (through services/profileService.ts).
-import { useState } from "react";
 import { profileService } from "../services/profileService";
 import { useACStore } from "../store/useACStore";
 import { UNLINKED, useProfileStore } from "../store/useProfileStore";
 import { useUIStore } from "../store/useUIStore";
 import { profileToSettings } from "../lib/profileSettings";
 import { errorMessage, reportProfileError } from "../lib/profileError";
-
-export type BusyAction = "import" | "export" | "link" | "unlink" | null;
+import type { BusyAction } from "../types/options-props";
 
 export const useProfileFiles = () => {
   const linked = useProfileStore((state) => state.linked);
-  const [busy, setBusy] = useState<BusyAction>(null);
-  const [status, setStatus] = useState<string | null>(null);
+  const busy = useProfileStore((state) => state.busy);
+  const status = useProfileStore((state) => state.status);
 
   /** Runs an action with a busy flag; `action` returns the success text (null = cancelled). */
   const run = async (kind: Exclude<BusyAction, null>, action: () => Promise<string | null>) => {
+    const { setBusy, setStatus } = useProfileStore.getState();
     setStatus(null);
     setBusy(kind);
     try {

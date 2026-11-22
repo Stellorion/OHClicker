@@ -2,7 +2,7 @@
 import { useAC } from "./useAC";
 import { usePickState } from "./usePickState";
 import { clickerService } from "../services/clickerService";
-import type { ChoiceOption } from "../components/common/ChoiceGroup";
+import type { ChoiceOption } from "../types/common-props";
 import type { PositionMode, SequencePoint } from "../types/ac-types";
 
 const POSITION_MODE_OPTIONS: ChoiceOption<PositionMode>[] = [

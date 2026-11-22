@@ -1,7 +1,7 @@
 // Logic for the click options (mouse button, click type).
 import { useAC } from "./useAC";
 import type { MouseButton, ClickType } from "../types/ac-types";
-import type { ChoiceOption } from "../components/common/ChoiceGroup";
+import type { ChoiceOption } from "../types/common-props";
 
 const MOUSE_BUTTON_OPTIONS: ChoiceOption<MouseButton>[] = [
   { id: "left", label: "Left" },

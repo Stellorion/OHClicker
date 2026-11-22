@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import type { PositionOverlayState } from "../../types/overlay-types";
+import { useOverlayStore } from "../../store/useOverlayStore";
 import { TargetMarker } from "./TargetMarker";
 
 // Transparent full-screen window that shows the target / sequence points and,
@@ -9,18 +10,19 @@ import { TargetMarker } from "./TargetMarker";
 
 /** Root component of the `position-overlay` window (see main.tsx). */
 export const PositionOverlay = () => {
-  const [state, setState] = useState<PositionOverlayState>();
+  const state = useOverlayStore((s) => s.position);
+  const setPosition = useOverlayStore((s) => s.setPosition);
 
   useEffect(() => {
     let unlisten: (() => void) | undefined;
     const setup = async () => {
-      unlisten = await listen<PositionOverlayState>("overlay-state", (event) => setState(event.payload));
+      unlisten = await listen<PositionOverlayState>("overlay-state", (event) => setPosition(event.payload));
       const current = await invoke<PositionOverlayState>("get_position_overlay_state");
-      setState(current);
+      setPosition(current);
     };
     void setup();
     return () => unlisten?.();
-  }, []);
+  }, [setPosition]);
 
   const pickAtPointer = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!state?.picking) return;

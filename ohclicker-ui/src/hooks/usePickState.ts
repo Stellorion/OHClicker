@@ -1,17 +1,14 @@
 // Tracks whether the position picker is armed (and for which sequence point).
 // Backend: clicker/overlay/control.rs + pick.rs (events position-pick-armed / -picked / -cancelled).
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { clickerService } from "../services/clickerService";
+import { usePickStore } from "../store/usePickStore";
 import { useTauriEvent } from "./useTauriEvent";
 
 export const usePickState = () => {
-  const [isPicking, setIsPicking] = useState(false);
-  const [pickingPointId, setPickingPointId] = useState<string | null>(null);
-
-  const setPicking = (picking: boolean, pointId: string | null = null) => {
-    setIsPicking(picking);
-    setPickingPointId(pointId);
-  };
+  const isPicking = usePickStore((state) => state.isPicking);
+  const pickingPointId = usePickStore((state) => state.pickingPointId);
+  const setPicking = usePickStore((state) => state.setPicking);
 
   useTauriEvent<string | null>("position-pick-armed", (id) => setPicking(true, id ?? null));
   useTauriEvent("position-picked", () => setPicking(false));

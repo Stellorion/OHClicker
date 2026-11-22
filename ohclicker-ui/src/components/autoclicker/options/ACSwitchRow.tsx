@@ -1,12 +1,6 @@
 // One option row: title + description on the left, on/off switch on the right.
+import type { ACSwitchRowProps } from "../../../types/options-props";
 import { Switch } from "../../common/Switch";
-
-interface ACSwitchRowProps {
-  title: string;
-  description: string;
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-}
 
 export const ACSwitchRow: React.FC<ACSwitchRowProps> = ({
   title,

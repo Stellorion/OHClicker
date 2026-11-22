@@ -1,6 +1,6 @@
 // Logic for the "Click limits" (repeat type, click count, maximum duration).
 import { useAC } from "./useAC";
-import type { ChoiceOption } from "../components/common/ChoiceGroup";
+import type { ChoiceOption } from "../types/common-props";
 import type { RepeatType } from "../types/ac-types";
 
 

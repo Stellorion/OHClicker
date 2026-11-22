@@ -1,14 +1,6 @@
 // "Rectangle" row of the Boundaries card (only shown for Region = Custom).
+import type { ACRectangleRowProps } from "../../types/boundary-props";
 import { ACBoundaryRect } from "./ACBoundaryRect";
-import type { BoundaryField } from "../../hooks/useBoundaries";
-
-interface ACRectangleRowProps {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  onChange: (field: BoundaryField, value: number) => void;
-}
 
 export const ACRectangleRow: React.FC<ACRectangleRowProps> = ({
   x,

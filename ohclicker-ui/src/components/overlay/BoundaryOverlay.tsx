@@ -1,8 +1,9 @@
 // Transparent full-screen window that draws the click region (backend: clicker/overlay/boundary_state.rs).
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import type { BoundaryOverlayState } from "../../types/overlay-types";
+import { useOverlayStore } from "../../store/useOverlayStore";
 
 const LABELS: Record<BoundaryOverlayState["regionMode"], string> = {
   fullscreen: "FULL SCREEN",
@@ -12,20 +13,21 @@ const LABELS: Record<BoundaryOverlayState["regionMode"], string> = {
 
 /** Root of the `boundary-overlay` window; follows the chosen window in "choose window" mode. */
 export const BoundaryOverlay = () => {
-  const [state, setState] = useState<BoundaryOverlayState>();
+  const state = useOverlayStore((s) => s.boundary);
+  const setBoundary = useOverlayStore((s) => s.setBoundary);
 
   // Initial state + pushes from the backend (toggle, mode, rectangle, display changes)
   useEffect(() => {
     let unlisten: (() => void) | undefined;
     const setup = async () => {
       unlisten = await listen<BoundaryOverlayState>("boundary-state", (event) =>
-        setState(event.payload),
+        setBoundary(event.payload),
       );
-      setState(await invoke<BoundaryOverlayState>("get_boundary_overlay_state"));
+      setBoundary(await invoke<BoundaryOverlayState>("get_boundary_overlay_state"));
     };
     void setup();
     return () => unlisten?.();
-  }, []);
+  }, [setBoundary]);
 
   // The chosen window can be moved by the user, so poll while in that mode
   const following = !!state?.visible && state.regionMode === "choose_window";
@@ -33,15 +35,11 @@ export const BoundaryOverlay = () => {
     if (!following) return;
     const id = window.setInterval(() => {
       invoke<BoundaryOverlayState>("get_boundary_overlay_state")
-        .then((next) =>
-          setState((prev) =>
-            prev && JSON.stringify(prev) === JSON.stringify(next) ? prev : next,
-          ),
-        )
+        .then(setBoundary) // the store ignores data that did not change
         .catch(() => {});
     }, 100);
     return () => window.clearInterval(id);
-  }, [following]);
+  }, [following, setBoundary]);
 
   if (!state || !state.visible || state.width <= 0 || state.height <= 0) {
     return null;

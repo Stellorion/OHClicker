@@ -1,4 +1,5 @@
 // Dropdown with the open windows (Boundaries -> Region = Choose window).
+import type { ACWindowPickerProps } from "../../types/boundary-props";
 import { AppWindow, Check, ChevronDown, RotateCw } from "lucide-react";
 import {
   DropdownMenu,
@@ -9,13 +10,6 @@ import {
   DropdownMenuTrigger,
 } from "../common/DropdownMenu";
 import { useWindowList } from "../../hooks/useWindowList";
-import type { WindowInfo } from "../../types/window-types";
-
-interface ACWindowPickerProps {
-  title: string;
-  onChoose: (window: WindowInfo) => void;
-  isOpen: boolean
-}
 
 export const ACWindowPicker: React.FC<ACWindowPickerProps> = ({
   title,

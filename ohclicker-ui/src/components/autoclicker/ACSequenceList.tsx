@@ -3,7 +3,7 @@ import { Plus } from "lucide-react";
 import { Button } from "../common/Button";
 import { ACSequenceRow, SEQUENCE_GRID } from "./ACSequenceRow";
 import { OUTLINE_BUTTON } from "../../lib/styles";
-import type { ACSequenceListProps } from "../../types/sequence-types";
+import type { ACSequenceListProps } from "../../types/position-props";
 
 export const ACSequenceList: React.FC<ACSequenceListProps> = ({
   points,

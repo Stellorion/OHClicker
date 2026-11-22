@@ -1,12 +1,6 @@
 // "Window" row of the Boundaries card (only shown for Region = Choose window).
+import type { ACWindowRowProps } from "../../types/boundary-props";
 import { ACWindowPicker } from "./ACWindowPicker";
-import type { WindowInfo } from "../../types/window-types";
-
-interface ACWindowRowProps {
-  title: string;
-  onChoose: (window: WindowInfo) => void;
-  isOpen: boolean
-}
 
 export const ACWindowRow: React.FC<ACWindowRowProps> = ({ title, onChoose, isOpen }) => (
   <div className="flex items-center justify-between gap-4">

@@ -1,16 +1,9 @@
 // "Coordinates X / Y + Pick" row of the fixed-point mode.
+import type { ACFixedCoordinatesProps } from "../../types/position-props";
 import { Crosshair } from "lucide-react";
 import { Button } from "../common/Button";
 import { LabeledInput } from "../common/LabeledInput";
 import { OUTLINE_BUTTON } from "../../lib/styles";
-
-interface ACFixedCoordinatesProps {
-  x: number;
-  y: number;
-  isPicking: boolean;
-  onChange: (fields: { targetX?: number; targetY?: number }) => void;
-  onPick: () => void;
-}
 
 export const ACFixedCoordinates: React.FC<ACFixedCoordinatesProps> = ({ x, y, isPicking, onChange, onPick }) => (
   <div className="flex items-center justify-between gap-4">

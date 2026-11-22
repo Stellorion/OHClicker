@@ -1,10 +1,6 @@
 // Shows the full path of the linked profile; clicking it opens the file's folder.
+import type { ACLinkedPathButtonProps } from "../../../types/options-props";
 import { Button } from "../../common/Button";
-
-interface ACLinkedPathButtonProps {
-  path: string;
-  onReveal: () => void;
-}
 
 export const ACLinkedPathButton: React.FC<ACLinkedPathButtonProps> = ({
   path,
